@@ -1,0 +1,84 @@
+export const paymentPlanOptions:any[] = [
+  {
+      _id: "1",
+      name: "3 Months",
+      duration: 90
+  },
+  {
+      _id: "2",
+      name: "6 Months",
+      duration: 180
+  },
+  {
+      _id: "3",
+      name: "1 Year",
+      duration: 360
+  },
+  {
+      _id: "4",
+      name: "Custom Period"
+  },
+];
+
+export const paymentMethodsOptions:any[] = [
+  {
+      _id: "1",
+      name: "Card",
+  },
+  {
+      _id: "2",
+      name: "Cash",
+  }
+];
+
+export const paymentTypeMaster:any[] = [
+  {
+      _id: "1",
+      name: "Customer Payment",
+  },
+  {
+      _id: "2",
+      name: "Salary",
+  },
+  {
+      _id: "3",
+      name: "Other",
+  }
+];
+
+export const creditDebitOptions:any[] = [
+  {
+      _id: "1",
+      name: "Credit",
+      value: true
+  },
+  {
+      _id: "2",
+      name: "Debit",
+      value: false
+  }
+];
+export const paymentStatusOptions:any[] = [
+  {
+      _id: "1",
+      name: "Completed",
+  },
+  {
+      _id: "2",
+      name: "Pending",
+  }
+];
+export const attendanceStatusOptions:any[] = [
+  {
+      _id: "1",
+      name: "Present",
+      value: true
+  },
+  {
+      _id: "2",
+      name: "Absent",
+      value: false
+  }
+];
+
+export const paginationRowsPerPageOptions = [5, 10, 15, 20];

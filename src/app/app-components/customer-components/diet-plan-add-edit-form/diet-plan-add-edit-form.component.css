@@ -1,0 +1,7 @@
+.icon-actions i {
+  margin-left: 10px;
+  cursor: pointer;
+}
+.form-validation-error input {
+  border-color: red;
+}

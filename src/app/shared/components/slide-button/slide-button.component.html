@@ -1,0 +1,14 @@
+<!-- <div class="slider-container">
+  <span class="slider-text">{{ isCheckedIn ? 'Confirmed' : 'Slide to confirm'}}</span>
+  <input type="range" min="0" max="100" value="0" class="slider" [disabled]="isCheckedIn" (input)="onSlideToConfirm($event)">
+</div> -->
+
+<div class="slider-container" #track>
+  <span class="slider-text" [ngStyle]="{color: getTextColor()}">
+    {{ getStatusText() }}
+  </span>
+
+  <div class="slider-thumb" #thumb [style.display]="(isCheckedIn || isDisable) ? 'none' : 'flex'" >
+    <i class="fas fa-chevron-right"></i>
+  </div>
+</div>

@@ -1,0 +1,197 @@
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { TableModule } from 'primeng/table';
+import { AppComponentsApiService } from '../../app-components-api-service';
+import { DialogModule } from 'primeng/dialog';
+import { CommonModule } from '@angular/common';
+import { catchError, of } from 'rxjs';
+import { CustomerAddEditFormComponent } from '../customer-add-edit-form/customer-add-edit-form.component';
+import { getOffsetHeightForModal, getOffsetHeightForPrimaryTable } from '../../../shared/functions/calcHeightOffset';
+import { dateObjToString } from '../../../shared/functions/date-string-to-obj';
+import { MessageService } from 'primeng/api';
+import { Router } from '@angular/router';
+import { Popover } from 'primeng/popover';
+import { getOffsetHeightByCustomClass } from '../../../shared/functions/calcHeightOffset';
+import { FilterFieldsContainerComponent } from '../../../shared/components/filter-fields-container/filter-fields-container.component';
+import { PaginatorModule } from 'primeng/paginator';
+import { paginationRowsPerPageOptions } from '../../../shared/data/master-data';
+
+
+@Component({
+  selector: 'app-customers',
+  templateUrl: './customers.component.html',
+  styleUrls: ['./customers.component.css'],
+  imports: [CommonModule, TableModule, DialogModule, CustomerAddEditFormComponent,Popover, FilterFieldsContainerComponent,PaginatorModule],
+})
+export class CustomersComponent implements OnInit {
+
+  @ViewChild(CustomerAddEditFormComponent, { static: false })
+    customerAddEditFormComponent!: CustomerAddEditFormComponent;
+
+  formMode: "view" | "edit" | "create" = "view";
+  customersList: any[] = [];
+  isVisibleCustomerddEditDialog:boolean = false;
+  selectedCustomer: any;
+  getBranchOptions: {_id: string, bch_Name: string, bch_Code: string}[] = [];
+  containerOffSetHeightClasses:any[] = ['ofH_calc_nav_bar', 'ofH_calc_body_header'];
+  paginationRowsPerPage = paginationRowsPerPageOptions;
+
+  filterFields = {
+    branchId: null,
+    // bch_Code: null,
+    ctr_Name: null,
+    ctr_Code: null,
+    ctr_MobileNo: null,
+    ctr_WhatsAppNo: null,
+    ctr_Email: null
+  };
+  showFilterFields = {
+    branchId: true,
+    // bch_Code: true,
+    ctr_Name: true,
+    ctr_Code: true,
+    ctr_MobileNo: true,
+    ctr_WhatsAppNo: true,
+    ctr_Email: true
+  };
+
+  xPagination: any = {
+    currentPage: 1,
+    pageSize: 15,
+    totalPages: 1,
+    totalCount: 9,
+    hasNextPage: false,
+    hasPreviousPage: false
+  };
+  pageSize:number = 15;
+  pageNo:number = 1;
+  indexOfFirstRecord:number = 0;
+  totalRecords:any;
+
+  constructor(
+    private service:AppComponentsApiService,
+    private router: Router,
+    private toasterMessage: MessageService) {
+    this.getAllCustomers();
+    this.getAllBranchAutocompleteData();
+  }
+
+  ngOnInit(): void {
+  }
+
+  setFormMode(mode: "view" | "edit" | "create"): void {
+    this.formMode = mode;
+  }
+
+  addCustomer() {
+    this.setFormMode('create');
+    this.selectedCustomer = {};
+    this.isVisibleCustomerddEditDialog = true;
+  }
+  viewCustomer(customer: any) {
+    this.setFormMode('view');
+    this.selectedCustomer = JSON.parse(JSON.stringify(customer));
+    this.router.navigate(['/home/customers/customer-details'], {
+      queryParams: { customerId: this.selectedCustomer?._id }
+    });
+  }
+
+  getAllCustomers(){
+    let params:any = {
+      pageSize : this.pageSize,
+      pageNo : this.pageNo
+    };
+    params = {...params, ...this.filterFields}
+    this.service.getAllCustomer(params).subscribe((res:any)=>{
+      if(res) {
+        console.log(res);
+        this.customersList = JSON.parse(JSON.stringify(res?.Results ?? []));
+        this.xPagination = res?.XPagination;
+        this.indexOfFirstRecord = (this.xPagination.currentPage - 1) * this.xPagination.pageSize;
+        this.totalRecords = this.xPagination.totalCount;
+      } else {
+        console.warn('Unexpected response format:',res);
+      }
+    })
+  }
+
+  getAllBranchAutocompleteData() {
+    this.service.getAllBranchAutocompleteData().pipe(
+      catchError((error) => {
+        console.error('Error fetching branch options:', error);
+        return of([]);
+      })
+    ).subscribe((res: any) => {
+      if (res && Array.isArray(res)) {
+        this.getBranchOptions = res;
+      } else {
+        console.warn('Unexpected response format:', res);
+        this.getBranchOptions = [];
+      }
+    });
+  }
+
+  dialogCloseBtn() {
+    this.isVisibleCustomerddEditDialog = false;
+  }
+
+  onCustomerCreate() {
+    let formData:any = JSON.parse(JSON.stringify(this.selectedCustomer));
+    let isCreateCustomerFormValid:any = this.customerAddEditFormComponent.isCreateCustomerFormValid();
+    if(isCreateCustomerFormValid){
+      formData.ctr_Dob = dateObjToString(formData?.ctr_Dob);
+        this.service.createCustomer(formData).subscribe((res:any) => {
+          if (res?.Results && res?.Results?.error) {
+            const errorMessage = res?.Results?.error;
+            this.toasterMessage.add({ key: 'root-toast', severity: 'error', summary: 'Error', detail: errorMessage });
+          } else {
+            console.log(res?.Results);
+            this.isVisibleCustomerddEditDialog = false;
+            this.getAllCustomers();
+            this.router.navigate(['/home/customers/customer-details'], {
+              queryParams: { customerId: res?.Results?._id }
+            });
+            this.toasterMessage.add({ key: 'root-toast', severity: 'success', summary: 'Success', detail: 'Customer created successfully!' });
+          }
+        })
+    }
+  }
+
+  getOffsetHeightForModal(extra: any = 0) {
+    return getOffsetHeightForModal(extra);
+  }
+
+  getOffsetHeightForPrimaryTable(extra: any = 0) {
+    return getOffsetHeightForPrimaryTable(extra);
+  }
+
+   getOffsetHeightByCustomClass(extra: any = 0, customClasses:any[] = []){
+      return getOffsetHeightByCustomClass(extra, customClasses);
+    }
+
+    onPageChange(event: any) {
+      const page = event.page; // 0-based page index
+      const rows = event.rows; // page size
+
+      const requestedPage = page + 1; // because your backend uses 1-based index
+
+      console.log('Go to page:', requestedPage);
+
+      // Now call API with requestedPage and rows
+      this.pageNo = requestedPage;
+      this.pageSize = rows;
+      this.getAllCustomers();
+    }
+
+    onFilterClear(){
+      this.filterFields = {
+        branchId: null,
+        // bch_Code: null,
+        ctr_Name: null,
+        ctr_Code: null,
+        ctr_MobileNo: null,
+        ctr_WhatsAppNo: null,
+        ctr_Email: null
+      };
+      this.getAllCustomers();
+    }
+}

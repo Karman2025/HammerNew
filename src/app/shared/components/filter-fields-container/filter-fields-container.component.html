@@ -1,0 +1,242 @@
+<form class="primary-form-control">
+  <div class="row">
+    <div class="col-12" *ngIf="showFilterFields?.branchId">
+      <div class="pt-1">
+        <label class="form-label" for="trainer-name">Branch</label>
+        <p-select class="form-control primary-p-select"
+          [options]="branchOptions" dataKey="_id"
+          [(ngModel)]="filterFields.branchId"
+          name="branchId"
+          optionLabel="bch_Name" optionValue="_id"
+          placeholder="Select a Branch"
+          [appendTo]="'body'">
+        </p-select>
+      </div>
+    </div>
+
+    <div class="col-12" *ngIf="showFilterFields?.bch_Code">
+      <div class="pt-1">
+        <label class="form-label" for="Branch_Code">Branch Code</label>
+        <input type="text" class="form-control" id="Branch_Code"
+          [(ngModel)]="filterFields.bch_Code" name="bch_Code"
+          placeholder="ex: BCH000000000">
+      </div>
+    </div>
+
+    <div class="col-12" *ngIf="showFilterFields?.bch_Name">
+      <div class="pt-1">
+        <label class="form-label" for="Branch_Name">Branch Name</label>
+        <input type="text" class="form-control" id="Branch_Name"
+          [(ngModel)]="filterFields.bch_Name" name="bch_Name"
+          placeholder="ex: Hammer">
+      </div>
+    </div>
+
+    <div class="col-12" *ngIf="showFilterFields?.bch_Location">
+      <div class="pt-1">
+        <label class="form-label" for="Branch_Location">Branch Location</label>
+        <input type="text" class="form-control" id="Branch_Location"
+          [(ngModel)]="filterFields.bch_Location" name="bch_Location"
+          placeholder="ex: Al Khan, Sharjah">
+      </div>
+    </div>
+
+    <!--Trainer -->
+    <div class="col-12" *ngIf="showFilterFields?.tnr_Name">
+      <div class="pt-1">
+        <label class="form-label" for="Trainer_Name">Trainer Name</label>
+        <input type="text" class="form-control" id="Trainer_Name"
+          [(ngModel)]="filterFields.tnr_Name" name="tnr_Name"
+          placeholder="ex: Ali">
+      </div>
+    </div>
+
+    <div class="col-12" *ngIf="showFilterFields?.tnr_Code">
+      <div class="pt-1">
+        <label class="form-label" for="Trainer_Code">Trainer Code</label>
+        <input type="text" class="form-control" id="Trainer_Code"
+          [(ngModel)]="filterFields.tnr_Code" name="tnr_Code"
+          placeholder="ex: TNR000000000">
+      </div>
+    </div>
+
+    <div class="col-12" *ngIf="showFilterFields?.tnr_MobileNo">
+      <div class="pt-1">
+        <label class="form-label" for="Trainer-mobile-no">Trainer Mobile No</label>
+        <input type="tel" class="form-control" id="Trainer-mobile-no"
+          [(ngModel)]="filterFields.tnr_MobileNo" name="tnr_MobileNo"
+          placeholder="(+000) 000000000">
+      </div>
+    </div>
+
+    <div class="col-12" *ngIf="showFilterFields?.tnr_Email">
+      <div class="pt-1">
+        <label class="form-label" for="Trainer-email">Trainer Email</label>
+        <input type="email" id="customer-email" class="form-control"
+          [(ngModel)]="filterFields.tnr_Email" name="tnr_Email"
+          placeholder="ex: hammer@example.com">
+      </div>
+    </div>
+
+    <div class="col-12" *ngIf="showFilterFields?.ctr_Name">
+      <div class="pt-1">
+        <label class="form-label" for="Customer_Name">Customer Name</label>
+        <input type="text" class="form-control" id="Customer_Name"
+          [(ngModel)]="filterFields.ctr_Name" name="ctr_Name"
+          placeholder="ex: Ali">
+      </div>
+    </div>
+
+    <div class="col-12" *ngIf="showFilterFields?.ctr_Code">
+      <div class="pt-1">
+        <label class="form-label" for="Customer_Code">Customer Code</label>
+        <input type="text" class="form-control" id="Customer_Code"
+          [(ngModel)]="filterFields.ctr_Code" name="ctr_Code"
+          placeholder="ex: CTR000000000">
+      </div>
+    </div>
+
+    <div class="col-12" *ngIf="showFilterFields?.ctr_MobileNo">
+      <div class="pt-1">
+        <label class="form-label" for="customer-mobile-no">Customer Mobile No</label>
+        <input type="tel" class="form-control" id="customer-mobile-no"
+          [(ngModel)]="filterFields.ctr_MobileNo" name="ctr_MobileNo"
+          placeholder="(+000) 000000000">
+      </div>
+    </div>
+
+    <div class="col-12" *ngIf="showFilterFields?.ctr_WhatsAppNo">
+      <div class="pt-1">
+        <label class="form-label" for="customer-whatsapp-no">Customer WhatsApp No</label>
+        <input type="tel" class="form-control" id="customer-whatsapp-no"
+          [(ngModel)]="filterFields.ctr_WhatsAppNo" name="ctr_WhatsAppNo"
+          placeholder="(+000) 000000000">
+      </div>
+    </div>
+
+    <div class="col-12" *ngIf="showFilterFields?.ctr_Email">
+      <div class="pt-1">
+        <label class="form-label" for="customer-whatsapp-no">Customer Mail</label>
+        <input type="email" id="customer-email" class="form-control"
+          [(ngModel)]="filterFields.ctr_Email" name="ctr_Email"
+          placeholder="ex: hammer@example.com">
+      </div>
+    </div>
+
+    <!-- Accounts -->
+    <div class="col-12" *ngIf="showFilterFields?.paymentTypeId">
+      <div class="pt-1">
+        <label class="form-label" for="payment-type-name">Payment Type</label>
+        <p-select class="form-control primary-p-select"
+          [options]="paymentOptions" dataKey="_id"
+          [(ngModel)]="filterFields.paymentTypeId"
+          name="paymentTypeId"
+          optionLabel="name" optionValue="_id"
+          placeholder="Select payment type"
+          [appendTo]="'body'">
+        </p-select>
+      </div>
+    </div>
+
+    <div class="col-12" *ngIf="showFilterFields?.isCredit">
+      <div class="pt-1">
+        <label class="form-label" for="payment-type-name">Credit Or Debit</label>
+        <p-select class="form-control primary-p-select"
+          [options]="creditStatus" dataKey="_id"
+          [(ngModel)]="filterFields.isCredit"
+          name="isCredit"
+          optionLabel="name" optionValue="value"
+          placeholder="Select type"
+          [appendTo]="'body'">
+        </p-select>
+      </div>
+    </div>
+
+    <div class="col-12" *ngIf="showFilterFields?.remarks">
+      <div class="pt-1">
+        <label class="form-label" for="Accounts-remarks">Remarks</label>
+        <input type="text" class="form-control" id="Accounts-remarks"
+          [(ngModel)]="filterFields.remarks" name="remarks"
+          placeholder="ex: Details of payment">
+      </div>
+    </div>
+
+    <div class="col-12" *ngIf="showFilterFields?.amount">
+      <div class="pt-1">
+      <label class="form-label" for="accounts-amount">Account Amount</label>
+      <input type="number" class="form-control" id="accounts-amount"
+        [(ngModel)]="filterFields.amount" name="amount"
+        placeholder="Enter amount (e.g., 1000)">
+      </div>
+    </div>
+
+    <div class="col-12" *ngIf="showFilterFields?.actionDate">
+      <div class="pt-1">
+        <label class="form-label" for="accounts-actionDate">Payment Date</label>
+          <p-datepicker class="primary-date-picker" [(ngModel)]="filterFields.actionDate" name="actionDate" selectionMode="range" [readonlyInput]="true" dateFormat="dd/mm/yy" placeholder="dd/mm/yy" appendTo="body"/>
+      </div>
+    </div>
+
+    <!-- payments -->
+    <div class="col-12" *ngIf="showFilterFields?.paymentStatus">
+      <div class="pt-1">
+      <label class="form-label" for="payment-status-name">Payment Status</label>
+      <p-select class="form-control primary-p-select"
+        [options]="paymentStatus" dataKey="_id"
+        [(ngModel)]="filterFields.paymentStatus"
+        name="paymentStatus"
+        optionLabel="name" optionValue="name"
+        placeholder="Select payment Status"
+        [appendTo]="'body'">
+      </p-select>
+      </div>
+    </div>
+
+    <div class="col-12" *ngIf="showFilterFields?.paymentPlanId">
+      <div class="pt-1">
+      <label class="form-label" for="payment-plan">Payment Plan</label>
+      <p-select class="form-control primary-p-select"
+        [options]="paymentPlanOptions" dataKey="_id"
+        [(ngModel)]="filterFields.paymentPlanId"
+        name="paymentPlanId"
+        optionLabel="name" optionValue="_id"
+        placeholder="Select payment Plan"
+        [appendTo]="'body'">
+      </p-select>
+      </div>
+    </div>
+
+    <div class="col-12" *ngIf="showFilterFields?.planStartDate">
+      <div class="pt-1">
+        <label class="form-label" for="accounts-planStartDate">Plan Start Date</label>
+          <p-datepicker class="primary-date-picker" [(ngModel)]="filterFields.planStartDate" name="planStartDate" selectionMode="range" [readonlyInput]="true" dateFormat="dd/mm/yy" placeholder="dd/mm/yy" appendTo="body"/>
+      </div>
+    </div>
+
+    <div class="col-12" *ngIf="showFilterFields?.planEndDate">
+      <div class="pt-1">
+        <label class="form-label" for="accounts-planEndDate">Plan End Date</label>
+          <p-datepicker class="primary-date-picker" [(ngModel)]="filterFields.planEndDate" name="planEndDate" selectionMode="range" [readonlyInput]="true" dateFormat="dd/mm/yy" placeholder="dd/mm/yy" appendTo="body"/>
+      </div>
+    </div>
+
+    <!-- atttendance -->
+    <div class="col-12" *ngIf="showFilterFields?.isPresent">
+      <div class="pt-1">
+      <label class="form-label" for="payment-status-name">Attendence Status</label>
+      <p-select class="form-control primary-p-select"
+        [options]="attendanceStatus" dataKey="_id"
+        [(ngModel)]="filterFields.isPresent"
+        name="isPresent"
+        optionLabel="name" optionValue="value"
+        placeholder="Select payment Status"
+        [appendTo]="'body'">
+      </p-select>
+      </div>
+    </div>
+  </div>
+</form>
+
+
+
+<!-- <input type="email" id="customer-email" class="form-control" formControlName="ctr_Email" placeholder="ex: hammer@example.com"> -->

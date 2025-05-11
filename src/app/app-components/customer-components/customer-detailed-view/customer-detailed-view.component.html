@@ -1,0 +1,131 @@
+<div class="custom-container-fluid p-0">
+  <div class="align-items-center d-flex justify-content-between px-3 py-3 ofH_calc_body_header" style="border-bottom: 2px solid var(--primary);">
+    <h5 class="mb-0">Customer Details</h5>
+  </div>
+  <div [ngStyle]="{ 'max-height': getOffsetHeightByCustomClass(25, containerOffSetHeightClasses), 'overflow-x': 'hidden' }">
+    <div>
+      <div class="p-4">
+        <div class="custom-container-card">
+          <div class="custom-card-header">
+            <div>
+              <span class="fw-bold">Customer Info</span>
+            </div>
+            <div>
+              <button (click)="onCustomerInfoEdit()" style="font-size: 0.9rem;" class="custom-primary-outerline-btn py-1">
+                <span><i class="fa-solid fa-pen-to-square"></i></span>
+                <span class="px-1"></span>
+                <span>Edit</span>
+              </button>
+            </div>
+          </div>
+          <div>
+            <app-customer-add-edit-form [formDataMode]="formMode" [branchOptions]="branchOptions" [customerData]="customerDetails?.customerInfo"></app-customer-add-edit-form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="p-4">
+        <div class="custom-container-card">
+          <div class="custom-card-header">
+            <div>
+              <span class="fw-bold">Payment Plan</span>
+            </div>
+            <div>
+              <ng-container *ngIf="!customerDetails?.paymentPlan?.length && customerData?.showExtendPlan">
+                <button (click)="addPaymentPlan()" style="font-size: 0.9rem;" class="custom-primary-outerline-btn py-1">
+                  <span><i class="fa-solid fa-pen-to-square"></i></span>
+                  <span class="px-1"></span>
+                  <span>Add Plan</span>
+                </button>
+              </ng-container>
+            </div>
+          </div>
+          <div class="pt-3">
+            <ng-container>
+              <div>
+                <app-payment-plan-view-add-edit-form #PaymentPlanViewAddEditFormComponent [CustomerPaymentPlan]="customerDetails?.paymentPlan" [formMode]="'view'" [IsCustomer]="true" (changeShowExtendPlan)="changeShowExtendPlan($event)"></app-payment-plan-view-add-edit-form>
+              </div>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="p-4">
+        <div class="custom-container-card">
+          <div class="custom-card-header">
+            <div>
+              <span class="fw-bold">Diet Plan</span>
+            </div>
+            <div>
+              <button *ngIf="customerDetails?.customerDietPlan && customerDetails?.customerDietPlan?.length > 0" (click)="editDietPlan()" style="font-size: 0.9rem;" class="custom-primary-outerline-btn py-1">
+                <span><i class="fa-solid fa-pen-to-square"></i></span>
+                <span class="px-1"></span>
+                <span>Edit</span>
+              </button>
+            </div>
+          </div>
+          <div>
+            <ng-container *ngIf="customerDetails?.customerDietPlan && customerDetails?.customerDietPlan?.length > 0">
+              <app-diet-plan-add-edit-form [dietPlanFormMode]="'view'" [customerDietPlan]="customerDetails?.customerDietPlan"></app-diet-plan-add-edit-form>
+            </ng-container>
+            <ng-container *ngIf="!customerDetails?.customerDietPlan?.length">
+              <div class="d-flex align-items-center justify-content-center" style="min-height: 100px;">
+                <button (click)="addDietPlan()" style="font-size: 0.9rem;" class="custom-primary-outerline-btn py-1">
+                  <span><i class="fa-solid fa-pen-to-square"></i></span>
+                  <span class="px-1"></span>
+                  <span>Create Diet Plan</span>
+                </button>
+              </div>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Customer Info -->
+<p-dialog [draggable]="false" [showHeader]="false" class="primary-p-dialog" [modal]="true" [position]="'right'" [(visible)]="isVisibleCustomerEditDialog" [style]="{ width: '25vw' }">
+  <div class="p-p-dialog-header ofH_calc_modal_header">
+    <div>
+      <span class="p-p-dialog-header-label">{{(formMode == 'view' ? 'View' : formMode == 'create' ? 'Create' : 'Edit')}} Customer</span>
+    </div>
+    <div>
+      <button class="p-p-dialog-header-button" (click)="isVisibleCustomerEditDialog = false" ><i class="fa-solid fa-xmark"></i></button>
+    </div>
+  </div>
+  <div class="p-p-dialog-body" [ngStyle]="{ 'max-height': getOffsetHeightForModal(93), 'overflow-x': 'hidden' }">
+    <app-customer-add-edit-form #CustomerAddEditFormComponent *ngIf="isVisibleCustomerEditDialog" [formDataMode]="'edit'" [branchOptions]="branchOptions" [customerData]="customerData"></app-customer-add-edit-form>
+  </div>
+  <div class="p-p-dialog-footer ofH_calc_modal_footer">
+    <div>
+      <button (click)="isVisibleCustomerEditDialog = false" class="btn btn-danger mx-2 px-3 py-1">{{formMode == 'view' ? 'Close' : 'Cancel'}}</button>
+      <button class="btn btn-success px-3 py-1" (click)="onCustomerUpdate();">Save</button>
+    </div>
+  </div>
+</p-dialog>
+
+
+<!-- Diet Plan -->
+<p-dialog [draggable]="false" [showHeader]="false" class="primary-p-dialog" [modal]="true" [position]="'right'" [(visible)]="isVisibleDietPlanDialog" [style]="{ width: '35vw' }">
+  <div class="p-p-dialog-header ofH_calc_modal_header">
+    <div>
+      <span class="p-p-dialog-header-label">{{(dietPlanFormMode == 'view' ? 'View' : dietPlanFormMode == 'create' ? 'Create' : 'Edit')}} Diet Plan</span>
+    </div>
+    <div>
+      <button class="p-p-dialog-header-button" (click)="isVisibleDietPlanDialog = false" ><i class="fa-solid fa-xmark"></i></button>
+    </div>
+  </div>
+  <div class="p-p-dialog-body" [ngStyle]="{ 'max-height': getOffsetHeightForModal(93), 'overflow-x': 'hidden' }">
+    <app-diet-plan-add-edit-form #DietPlanAddEditFormComponent *ngIf="isVisibleDietPlanDialog" [dietPlanFormMode]="dietPlanFormMode" [customerDietPlan]="customerDietPlan"></app-diet-plan-add-edit-form>
+  </div>
+  <div class="p-p-dialog-footer ofH_calc_modal_footer">
+    <div>
+      <button (click)="isVisibleDietPlanDialog = false" class="btn btn-danger mx-2 px-3 py-1"> {{dietPlanFormMode == 'view' ? 'Close' : 'Cancel'}} </button>
+      <button class="btn btn-success px-3 py-1" (click)="onDietPlanSubmit();">Save</button>
+    </div>
+  </div>
+</p-dialog>

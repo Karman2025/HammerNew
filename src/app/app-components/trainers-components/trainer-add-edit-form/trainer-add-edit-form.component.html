@@ -1,0 +1,63 @@
+<form class="primary-form-control" [formGroup]="createTrainerForm">
+    <div class="row">
+      <div class="col-12">
+        <div class="">
+          <label class="form-label" for="trainer-name">Branch</label>
+          <div [ngClass]="{'form-validation-error': createTrainerForm.get('branchId')?.invalid && createTrainerForm.get('branchId')?.touched}">
+            <p-select class="form-control primary-p-select"
+            [options]="branchOptions" dataKey="_id"
+            formControlName="branchId"
+            optionLabel="bch_Name" optionValue="_id"
+            placeholder="Select a Branch"/>
+            <div class="form-validation-msg">
+              <span>Required</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12">
+        <div class="pt-3">
+          <label class="form-label" for="trainer-name">Name</label>
+          <div [ngClass]="{'form-validation-error': createTrainerForm.get('tnr_Name')?.invalid && createTrainerForm.get('tnr_Name')?.touched}">
+            <input type="text" class="form-control" id="trainer-name" formControlName="tnr_Name" placeholder="ex: Hammer">
+            <div class="form-validation-msg">
+              <span>Required</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12">
+        <div class="pt-3">
+          <label class="form-label" for="trainer-phone">Phone</label>
+          <div [ngClass]="{'form-validation-error': createTrainerForm.get('tnr_MobileNo')?.invalid && createTrainerForm.get('tnr_MobileNo')?.touched}">
+            <input type="tel" id="trainer-phone" pattern="[0-9]{10}" class="form-control" formControlName="tnr_MobileNo" placeholder="(+000) 000000000">
+            <div class="form-validation-msg">
+              <span>Required</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12">
+        <div class="pt-3">
+          <label class="form-label" for="trainer-email">Email</label>
+          <div [ngClass]="{'form-validation-error': createTrainerForm.get('tnr_Email')?.invalid && createTrainerForm.get('tnr_Email')?.touched}">
+            <input type="email" id="trainer-email" class="form-control" formControlName="tnr_Email" placeholder="ex: hammer@example.com">
+            <div class="form-validation-msg">
+              <span>Required</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12">
+        <div class="pt-3">
+          <label class="form-label" for="trainer-address">Address</label>
+          <div [ngClass]="{'form-validation-error': createTrainerForm.get('tnr_Addresses')?.invalid && createTrainerForm.get('tnr_Addresses')?.touched}">
+            <textarea name="" id="trainer-address" class="form-control" style="width: 100%;" formControlName="tnr_Addresses" placeholder="Address"></textarea>
+            <div class="form-validation-msg">
+              <span>Required</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>

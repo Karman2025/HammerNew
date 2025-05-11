@@ -1,0 +1,95 @@
+<form class="primary-form-control" [formGroup]="createBranchForm">
+  <div class="row">
+    <!-- <div class="col-md-4" style="padding: 10px 20px 10px 15px">
+      <img *ngIf="branchImagePreview"
+      [src]="branchImagePreview"
+      class="img-fluid rounded-start"
+      alt=""/>
+      <label for="UploadimgControlInput" class="form-label">Upload Image</label>
+      <input type="file" id="UploadimgControlInput" (change)="onImageChange($event)" formControlName="profilePic" style="display: none;">
+    </div> -->
+    <div class="col-12">
+      <div>
+        <label class="form-label" for="branch-name">Branch Name</label>
+        <div [ngClass]="{'form-validation-error': createBranchForm.get('bch_Name')?.invalid && createBranchForm.get('bch_Name')?.touched}">
+          <input type="text" class="form-control" id="branch-name" formControlName="bch_Name" placeholder="ex: hammer">
+          <div class="form-validation-msg">
+            <span>Required</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-12" *ngIf="formMode === 'view'">
+      <div class="pt-3">
+        <label class="form-label" for="branch-code">Branch Code</label>
+        <input type="text" class="form-control" id="branch-code" formControlName="bch_Code">
+      </div>
+    </div>
+    <div class="col-12">
+      <div class="pt-3">
+        <label class="form-label" for="branch-phone">Phone</label>
+        <div [ngClass]="{'form-validation-error': createBranchForm.get('bch_MobileNo')?.invalid && createBranchForm.get('bch_MobileNo')?.touched}">
+          <input type="tel" id="branch-phone" pattern="[0-9]{10}" class="form-control" formControlName="bch_MobileNo" placeholder="(+000) 000000000">
+          <div class="form-validation-msg">
+            <span>Required</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-12">
+      <div class="pt-3">
+        <label class="form-label" for="branch-vatnumber">VAT Number</label>
+        <div [ngClass]="{'form-validation-error': createBranchForm.get('bch_VatNumber')?.invalid && createBranchForm.get('bch_VatNumber')?.touched}">
+          <input type="text" id="branch-vatnumber" class="form-control" formControlName="bch_VatNumber" placeholder="0000000000">
+          <div class="form-validation-msg">
+            <span>Required</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-12">
+      <div class="pt-3">
+        <label class="form-label" for="branch-location">Location</label>
+        <div [ngClass]="{'form-validation-error': createBranchForm.get('bch_Location')?.invalid && createBranchForm.get('bch_Location')?.touched}">
+          <input type="text" class="form-control" id="branch-location" formControlName="bch_Location" placeholder="ex: abc,def">
+          <div class="form-validation-msg">
+            <span>Required</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-12">
+      <div class="pt-3">
+        <label class="form-label" for="branch-email">Email</label>
+        <div [ngClass]="{'form-validation-error': createBranchForm.get('bch_Email')?.invalid && createBranchForm.get('bch_Email')?.touched}">
+          <input type="email" id="branch-email" class="form-control" formControlName="bch_Email" placeholder="ex: hammer@example.com">
+          <div class="form-validation-msg">
+            <span>Required</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-12">
+      <div class="pt-3">
+        <label class="form-label" for="branch-password">Password</label>
+        <div [ngClass]="{'form-validation-error': createBranchForm.get('bch_Password')?.invalid && createBranchForm.get('bch_Password')?.touched}">
+          <input type="password" id="branch-password" class="form-control" formControlName="bch_Password" placeholder="minimum six characters required">
+          <div class="form-validation-msg">
+            <span>Required</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-12">
+      <div class="pt-3">
+        <label class="form-label" for="branch-address">Address</label>
+        <div [ngClass]="{'form-validation-error': createBranchForm.get('bch_Addresses')?.invalid && createBranchForm.get('bch_Addresses')?.touched}">
+          <textarea name="" id="branch-address" class="form-control" style="width: 100%;" formControlName="bch_Addresses" placeholder="Please provide address"></textarea>
+          <div class="form-validation-msg">
+            <span>Required</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

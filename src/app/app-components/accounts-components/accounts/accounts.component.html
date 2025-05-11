@@ -1,0 +1,136 @@
+<div class="custom-container-fluid p-0">
+  <div class="align-items-center d-flex justify-content-between px-3 py-3 ofH_calc_body_header" style="border-bottom: 2px solid var(--primary);">
+    <h5 class="mb-0">Accounts</h5>
+    <button class="custom-primary-outerline-btn" (click)="openAddAccountsDialog();">
+      <span>Add Accounts</span>
+    </button>
+  </div>
+  <div>
+    <div class="px-5 pt-5">
+      <p-table
+        [scrollable]="true"
+        scrollHeight="{{getOffsetHeightForPrimaryTable(121)}}"
+        [tableStyle]="{'min-height': accountsList.length == 0 ? getOffsetHeightForPrimaryTable(121) : 'unset'}"
+        class="primary-p-table" [value]="accountsList">
+          <ng-template pTemplate="header">
+            <tr>
+              <th>
+                <span>Payment Date</span>
+              </th>
+              <th>
+                <span>Amount</span>
+              </th>
+              <th>
+                <span>Remarks</span>
+              </th>
+              <th>
+                <span>Credit/Debit</span>
+              </th>
+              <th>
+                <span>Payment Type</span>
+              </th>
+              <!-- <th>
+                <span>Action</span>
+              </th> -->
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-account>
+            <tr>
+              <td>
+                <div>
+                  <span>{{ account?.actionDate | date : 'dd/MM/yyy' }}</span>
+                </div>
+              </td>
+              <td>
+                <div>
+                  <span [class]="account?.isCredit ? 'text-success' : 'text-danger'">{{ account?.amount }}</span>
+                </div>
+              </td>
+              <td>
+                <div>
+                  <span>{{ account?.remarks }}</span>
+                </div>
+              </td>
+              <td>
+                <div>
+                  <span [class]="account?.isCredit ? 'text-success' : 'text-danger'">{{ account?.isCredit ? 'Credit' : 'Debit' }}</span>
+                </div>
+              </td>
+              <td>
+                <div>
+                  <span>{{ account?.paymentType?.name }}</span>
+                </div>
+              </td>
+              <!-- <td>
+                <div>
+                  <span class="c-pointer" (click)="viewTrainer(trainer)"><i class="fa-regular fa-eye"></i></span>
+                  <span class="px-3 c-pointer" (click)="editTrainer(trainer)"><i class="fa-regular fa-pen-to-square"></i></span>
+                  <span class="c-pointer"><i class="fas fa-trash-alt"></i></span>
+                </div>
+              </td> -->
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="emptymessage">
+            <tr>
+                <td colspan="10" class="text-center fw-bold">No Data</td>
+            </tr>
+          </ng-template>
+      </p-table>
+    </div>
+    <div class="px-5 d-flex justify-content-center" style="position: fixed; bottom: 20px; width: 100%;">
+      <p-paginator
+      class="standard-paginator"
+      (onPageChange)="onPageChange($event)"
+      [first]="indexOfFirstRecord"
+      [rows]="pageSize"
+      [totalRecords]="xPagination?.totalCount"
+      [showFirstLastIcon]="false"
+      [showCurrentPageReport]="true"
+      currentPageReportTemplate="{first} - {last} of {totalRecords}"
+      [rowsPerPageOptions]="paginationRowsPerPage">
+      </p-paginator>
+    </div>
+  </div>
+  <div class="d-flex justify-content-end" style="position: fixed; bottom: 70px; right: 18px; z-index: 1000;">
+    <div class="filter-icon" (click)="op.toggle($event)"><i class="fa-solid fa-filter"></i></div>
+    <p-popover styleClass="primary-filter-popover" class="p-3" #op>
+      <div>
+          <div style="border-bottom: 1px solid #ccc;" class="d-flex align-items-center justify-content-between px-3 py-3">
+            <div>
+              <span style="font-weight: 700; font-size: 1.1rem;">Filter</span>
+            </div>
+            <div style="line-height: 1rem;">
+              <span (click)="op.hide()"><i class="fa-solid fa-circle-xmark"></i></span>
+            </div>
+          </div>
+          <div class="px-3 py-3" [ngStyle]="{ 'height': getOffsetHeightByCustomClass(175, containerOffSetHeightClasses), 'max-width': '30vw' }" style="overflow-x: hidden;">
+            <app-filter-fields-container [FilterFields]="filterFields" [showFilterFields]="showFilterFields"></app-filter-fields-container>
+          </div>
+          <div style="border-top: 1px solid #ccc;" class="d-flex justify-content-end px-3 py-3">
+            <button  (click)="onFilterClear()" class="btn btn-warning mx-1 px-2 py-1">Clear</button>
+            <button (click)="getAllAccounts()" class="mx-1 btn btn-success mx-1 px-2 py-1">Apply</button>
+          </div>
+      </div>
+    </p-popover>
+  </div>
+</div>
+
+<p-dialog [draggable]="false" [showHeader]="false" class="primary-p-dialog" [modal]="true" [position]="'right'" [(visible)]="isVisibleAccountsAddEditDialog" [style]="{ width: '25vw' }">
+  <div class="p-p-dialog-header ofH_calc_modal_header">
+    <div>
+      <span class="p-p-dialog-header-label">Create Accounts</span>
+    </div>
+    <div>
+      <button class="p-p-dialog-header-button" (click)="isVisibleAccountsAddEditDialog = false"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+  </div>
+  <div class="p-p-dialog-body" [ngStyle]="{ 'max-height': getOffsetHeightForModal(93), 'overflow-x': 'hidden' }">
+    <app-accounts-add-edit-form #AccountsAddEditFormComponent *ngIf="isVisibleAccountsAddEditDialog" [formDataMode]="formMode" [accountsData]="selectedAccounts"></app-accounts-add-edit-form>
+  </div>
+  <div class="p-p-dialog-footer ofH_calc_modal_footer">
+    <div>
+      <button (click)="isVisibleAccountsAddEditDialog = false" class="btn btn-danger mx-2 px-3 py-1">{{formMode == 'view' ? 'Close' : 'Cancel'}}</button>
+      <button class="btn btn-success px-3 py-1" (click)="onAccountsSubmit();">Save</button>
+    </div>
+  </div>
+</p-dialog>

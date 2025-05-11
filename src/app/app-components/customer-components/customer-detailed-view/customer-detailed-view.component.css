@@ -1,0 +1,21 @@
+.custom-container-card {
+  padding: 1rem;
+  border: 1px solid #dee2e6;
+  border-radius: 11px;
+  /* position: relative; */
+}
+
+/* .overlay-header {
+  top: -10px;
+  background: #fff;
+  padding: 0px 5px;
+  position: absolute;
+  display: inline;
+  font-size: 1rem;
+  font-weight: 600;
+} */
+
+.custom-card-header {
+  display: flex;
+  justify-content: space-between;
+}
