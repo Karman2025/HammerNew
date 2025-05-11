@@ -13,7 +13,8 @@ import { CommonModule } from '@angular/common';
 })
 export class SignInComponent implements OnInit {
   signInForm: FormGroup;
-  
+  isLoading: boolean = false;
+
   constructor(
     private fb: FormBuilder,
     private router: Router,
@@ -26,7 +27,6 @@ export class SignInComponent implements OnInit {
   }
 
   ngOnInit() {
-    // Check if user is already logged in
     if (localStorage.getItem('USER-JWT-TOKEN')) {
       this.router.navigate(['/home/welcome']);
     }
@@ -34,30 +34,30 @@ export class SignInComponent implements OnInit {
 
   onSignInSubmit() {
     if (this.signInForm.valid) {
+      this.isLoading = true; 
       const authBody = this.signInForm.value;
-      console.log('Form submitted:', authBody);
-      
+  
       this.service.signin(authBody).subscribe({
         next: (res: any) => {
+          this.isLoading = false; 
           if (res?.message === 'login success') {
-            console.log('Login successful:', res);
             localStorage.setItem('USER-JWT-TOKEN', res?.jwt);
             this.router.navigate(['/home/welcome']);
           }
         },
         error: (err: any) => {
+          this.isLoading = false; 
           console.error('Error during sign-in:', err);
-          // Here you could add error handling UI feedback
         }
       });
     } else {
-      // Mark all form controls as touched to trigger validation messages
       Object.keys(this.signInForm.controls).forEach(key => {
         const control = this.signInForm.get(key);
         control?.markAsTouched();
       });
     }
   }
+  
 
   signOut() {
     localStorage.removeItem('USER-JWT-TOKEN');
