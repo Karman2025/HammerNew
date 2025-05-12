@@ -14,7 +14,6 @@ import { paymentPlanOptions } from '../../../shared/data/master-data';
   imports: [CommonModule, ReactiveFormsModule, SelectModule, DatePickerModule]
 })
 export class CustomerAddEditFormComponent implements OnInit {
-
   @Input() set formDataMode(value: any) {
     this.formMode = JSON.parse(JSON.stringify(value));
     if (this.formMode === 'view') {
@@ -28,6 +27,10 @@ export class CustomerAddEditFormComponent implements OnInit {
     if (value) {
       this.customerFieldData = value;
       this.customerFieldData.ctr_Dob = dateStringToObj(this.customerFieldData?.ctr_Dob);
+      // Set profile image if it exists
+      if (this.customerFieldData.profileImage) {
+        this.profileImage = this.customerFieldData.profileImage;
+      }
       this.loadCustomerFormData();
     }
   }
@@ -36,8 +39,11 @@ export class CustomerAddEditFormComponent implements OnInit {
   }
 
   formMode:"view" | "edit" | "create" = "view";
-  createCustomerForm!  : FormGroup;
+  createCustomerForm!: FormGroup;
   customerFieldData: any;
+  profileImage: string | ArrayBuffer | null = null;
+  selectedFile: File | null = null;
+  
   defaultValues = {
     ctr_Name: '',
     ctr_Email: '',
@@ -50,9 +56,12 @@ export class CustomerAddEditFormComponent implements OnInit {
     ctr_CustomPaymentPlanStartDate: null,
     ctr_CustomPaymentPlanEndDate: null,
     branch: null,
-    branchId: null
+    branchId: null,
+    profileImage: null
   };
+
   paymentPlanOptions:any[] = paymentPlanOptions;
+
   constructor(
     private fb: FormBuilder,
   ) {
@@ -85,7 +94,30 @@ export class CustomerAddEditFormComponent implements OnInit {
       ctr_CustomPaymentPlanStartDate: new FormControl(''),
       ctr_CustomPaymentPlanEndDate: new FormControl(''),
       branchId: new FormControl(null, Validators.required),
+      profileImage: new FormControl(null)
     });
+  }
+
+  onFileSelected(event: any): void {
+    const file: File = event.target.files[0];
+    if (file) {
+      this.selectedFile = file;
+      
+      // Preview the image
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        this.profileImage = e.target.result;
+        // Update the form control value with the base64 string
+        this.createCustomerForm.patchValue({
+          profileImage: e.target.result
+        });
+        // Also update the customerFieldData if it exists
+        if (this.customerFieldData) {
+          this.customerFieldData.profileImage = e.target.result;
+        }
+      };
+      reader.readAsDataURL(file);
+    }
   }
 
   loadCustomerFormData() {
@@ -100,6 +132,8 @@ export class CustomerAddEditFormComponent implements OnInit {
 
   onFormClear() {
     this.createCustomerForm.reset(this.defaultValues);
+    this.profileImage = null;
+    this.selectedFile = null;
   }
 
   isCreateCustomerFormValid(){
@@ -109,5 +143,10 @@ export class CustomerAddEditFormComponent implements OnInit {
       this.createCustomerForm.markAllAsTouched();
       return false;
     }
+  }
+
+  // Method to get the image file when submitting the form
+  getProfileImageFile(): File | null {
+    return this.selectedFile;
   }
 }

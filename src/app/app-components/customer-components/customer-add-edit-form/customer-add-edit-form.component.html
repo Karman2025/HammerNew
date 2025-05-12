@@ -1,4 +1,21 @@
 <form class="primary-form-control" [formGroup]="createCustomerForm">
+
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="profile-picture-container">
+        <div class="profile-picture-wrapper">
+          <div class="profile-picture-circle">
+            <img [src]="profileImage || '../../assets/images/default-profile.png'" alt="Profile Picture" class="profile-image">
+            <label *ngIf="formMode !== 'view'" for="profileImageUpload" class="edit-icon">
+              <i class="fas fa-pencil-alt"></i>
+              <input id="profileImageUpload" type="file" (change)="onFileSelected($event)" accept="image/*" style="display: none;">
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="row">
     <div [ngClass]="{'col-xl-3 col-lg-4 col-sm-6 col-12': formMode == 'view', 'col-12': formMode != 'view'}">
       <div class="pt-1">
