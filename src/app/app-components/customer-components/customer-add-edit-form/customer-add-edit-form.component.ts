@@ -1,11 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { SelectModule } from 'primeng/select';
 import { DatePickerModule } from 'primeng/datepicker';
 import { dateStringToObj } from '../../../shared/functions/date-string-to-obj';
 import { paymentPlanOptions } from '../../../shared/data/master-data';
-
 
 @Component({
   selector: 'app-customer-add-edit-form',
@@ -14,6 +13,9 @@ import { paymentPlanOptions } from '../../../shared/data/master-data';
   imports: [CommonModule, ReactiveFormsModule, SelectModule, DatePickerModule]
 })
 export class CustomerAddEditFormComponent implements OnInit {
+  @ViewChild('videoElement') videoElement!: ElementRef;
+  @ViewChild('canvasElement') canvasElement!: ElementRef;
+  
   @Input() set formDataMode(value: any) {
     this.formMode = JSON.parse(JSON.stringify(value));
     if (this.formMode === 'view') {
@@ -27,7 +29,6 @@ export class CustomerAddEditFormComponent implements OnInit {
     if (value) {
       this.customerFieldData = value;
       this.customerFieldData.ctr_Dob = dateStringToObj(this.customerFieldData?.ctr_Dob);
-      // Set profile image if it exists
       if (this.customerFieldData.profileImage) {
         this.profileImage = this.customerFieldData.profileImage;
       }
@@ -43,6 +44,12 @@ export class CustomerAddEditFormComponent implements OnInit {
   customerFieldData: any;
   profileImage: string | ArrayBuffer | null = null;
   selectedFile: File | null = null;
+  
+  // Webcam variables
+  showWebcamDialog = false;
+  isWebcamReady = false;
+  capturedImage: string | null = null;
+  mediaStream: MediaStream | null = null;
   
   defaultValues = {
     ctr_Name: '',
@@ -67,11 +74,10 @@ export class CustomerAddEditFormComponent implements OnInit {
   ) {
     this.inItFormControl();
 
-    // Listen for changes and update the object directly
     if(this.createCustomerForm){
       this.createCustomerForm.valueChanges.subscribe(updatedData => {
         if(updatedData && this.customerFieldData){
-          Object.assign(this.customerFieldData, updatedData); // Modify the original object
+          Object.assign(this.customerFieldData, updatedData);
         }
       });
     }
@@ -98,26 +104,107 @@ export class CustomerAddEditFormComponent implements OnInit {
     });
   }
 
+  // File upload handler
   onFileSelected(event: any): void {
     const file: File = event.target.files[0];
     if (file) {
       this.selectedFile = file;
-      
-      // Preview the image
       const reader = new FileReader();
       reader.onload = (e: any) => {
-        this.profileImage = e.target.result;
-        // Update the form control value with the base64 string
-        this.createCustomerForm.patchValue({
-          profileImage: e.target.result
-        });
-        // Also update the customerFieldData if it exists
-        if (this.customerFieldData) {
-          this.customerFieldData.profileImage = e.target.result;
-        }
+        this.updateProfileImage(e.target.result);
       };
       reader.readAsDataURL(file);
     }
+  }
+
+  // Webcam dialog handlers
+  async openWebcamDialog() {
+    this.showWebcamDialog = true;
+    this.capturedImage = null;
+    
+    try {
+      this.mediaStream = await navigator.mediaDevices.getUserMedia({ 
+        video: { 
+          width: { ideal: 500 }, 
+          height: { ideal: 500 },
+          facingMode: 'user' 
+        },
+        audio: false 
+      });
+      
+      this.videoElement.nativeElement.srcObject = this.mediaStream;
+      this.isWebcamReady = true;
+    } catch (err) {
+      console.error('Error accessing webcam:', err);
+      this.isWebcamReady = false;
+    }
+  }
+
+  closeWebcamDialog() {
+    this.stopWebcam();
+    this.showWebcamDialog = false;
+    this.capturedImage = null;
+  }
+
+  stopWebcam() {
+    if (this.mediaStream) {
+      this.mediaStream.getTracks().forEach(track => track.stop());
+      this.mediaStream = null;
+    }
+    if (this.videoElement?.nativeElement?.srcObject) {
+      this.videoElement.nativeElement.srcObject = null;
+    }
+    this.isWebcamReady = false;
+  }
+
+  captureImage() {
+    if (!this.isWebcamReady) return;
+    
+    const video = this.videoElement.nativeElement;
+    const canvas = this.canvasElement.nativeElement;
+    const context = canvas.getContext('2d');
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    context.drawImage(video, 0, 0, canvas.width, canvas.height);
+    this.capturedImage = canvas.toDataURL('image/png');
+  }
+
+  retryCapture() {
+    this.capturedImage = null;
+  }
+
+  useCapturedImage() {
+    if (this.capturedImage) {
+      this.updateProfileImage(this.capturedImage);
+      const blob = this.dataURItoBlob(this.capturedImage);
+      this.selectedFile = new File([blob], 'webcam-capture.png', { type: 'image/png' });
+      this.closeWebcamDialog();
+    }
+  }
+
+
+  private updateProfileImage(imageData: string) {
+    this.profileImage = imageData;
+    this.createCustomerForm.patchValue({
+      profileImage: imageData
+    });
+    if (this.customerFieldData) {
+      this.customerFieldData.profileImage = imageData;
+    }
+  }
+
+
+  private dataURItoBlob(dataURI: string): Blob {
+    const byteString = atob(dataURI.split(',')[1]);
+    const mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+    const ab = new ArrayBuffer(byteString.length);
+    const ia = new Uint8Array(ab);
+    
+    for (let i = 0; i < byteString.length; i++) {
+      ia[i] = byteString.charCodeAt(i);
+    }
+    
+    return new Blob([ab], { type: mimeString });
   }
 
   loadCustomerFormData() {
@@ -145,7 +232,6 @@ export class CustomerAddEditFormComponent implements OnInit {
     }
   }
 
-  // Method to get the image file when submitting the form
   getProfileImageFile(): File | null {
     return this.selectedFile;
   }

@@ -48,3 +48,107 @@
   .edit-icon i {
     font-size: 14px;
   }
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: white;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 600px;
+  max-height: 90vh;
+  overflow: auto;
+}
+
+.modal-header {
+  padding: 15px;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-header h5 {
+  margin: 0;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.modal-body {
+  padding: 15px;
+}
+
+.webcam-container {
+  position: relative;
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+.webcam-video, .webcam-canvas {
+  width: 100%;
+  border-radius: 4px;
+  display: block;
+}
+
+.webcam-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: none;
+}
+
+.webcam-controls {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+
+.edit-options {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  display: flex;
+  gap: 5px;
+}
+
+.edit-icon, .webcam-icon {
+  background: #007bff;
+  color: white;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: none;
+}
+
+.webcam-icon {
+  background: #28a745;
+}
+
+.edit-icon:hover {
+  background: #0056b3;
+}
+
+.webcam-icon:hover {
+  background: #218838;
+}

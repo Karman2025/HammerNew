@@ -87,7 +87,6 @@
 </div>
 
 
-<!-- Customer Info -->
 <p-dialog [draggable]="false" [showHeader]="false" class="primary-p-dialog" [modal]="true" [position]="'right'" [(visible)]="isVisibleCustomerEditDialog" [style]="{ width: '25vw' }">
   <div class="p-p-dialog-header ofH_calc_modal_header">
     <div>
@@ -101,15 +100,19 @@
     <app-customer-add-edit-form #CustomerAddEditFormComponent *ngIf="isVisibleCustomerEditDialog" [formDataMode]="'edit'" [branchOptions]="branchOptions" [customerData]="customerData"></app-customer-add-edit-form>
   </div>
   <div class="p-p-dialog-footer ofH_calc_modal_footer">
-    <div>
-      <button (click)="isVisibleCustomerEditDialog = false" class="btn btn-danger mx-2 px-3 py-1">{{formMode == 'view' ? 'Close' : 'Cancel'}}</button>
-      <button class="btn btn-success px-3 py-1" (click)="onCustomerUpdate();">Save</button>
-    </div>
+  <div>
+    <button (click)="isVisibleCustomerEditDialog = false" class="btn btn-danger mx-2 px-3 py-1">{{formMode == 'view' ? 'Close' : 'Cancel'}}</button>
+    <button class="btn btn-success px-3 py-1" (click)="onCustomerUpdate();" [disabled]="isSaving">
+      <span *ngIf="!isSaving">Save</span>
+      <span *ngIf="isSaving">
+        <i class="fa fa-spinner fa-spin"></i> Saving...
+      </span>
+    </button>
   </div>
+</div>
 </p-dialog>
 
 
-<!-- Diet Plan -->
 <p-dialog [draggable]="false" [showHeader]="false" class="primary-p-dialog" [modal]="true" [position]="'right'" [(visible)]="isVisibleDietPlanDialog" [style]="{ width: '35vw' }">
   <div class="p-p-dialog-header ofH_calc_modal_header">
     <div>
