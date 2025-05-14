@@ -1,3 +1,3 @@
 export const environment = {
-    baseAPIUrl: "http://localhost:5454/",
+    baseAPIUrl: "https://hammer-server-coral.vercel.app/",
 };
