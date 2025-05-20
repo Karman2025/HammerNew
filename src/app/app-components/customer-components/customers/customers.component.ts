@@ -33,6 +33,7 @@ export class CustomersComponent implements OnInit {
   customersList: any[] = [];
   isVisibleCustomerddEditDialog:boolean = false;
   selectedCustomer: any;
+  isSaving: boolean = false;
   getBranchOptions: {_id: string, bch_Name: string, bch_Code: string}[] = [];
   containerOffSetHeightClasses:any[] = ['ofH_calc_nav_bar', 'ofH_calc_body_header'];
   paginationRowsPerPage = paginationRowsPerPageOptions;
@@ -113,7 +114,7 @@ export class CustomersComponent implements OnInit {
     let params:any = {
       pageSize : this.pageSize,
       pageNo : this.pageNo
-    }; 
+    };
     this.filterFields.createdDateFrom = this.filterFields?.createdDate?.[0] ? dateObjToString(this.filterFields?.createdDate[0]) : null;
     this.filterFields.createdDateTo = this.filterFields?.createdDate?.[1] ? dateObjToString(this.filterFields?.createdDate[1]) : null;
     params = {...params, ...this.filterFields}
@@ -152,29 +153,73 @@ export class CustomersComponent implements OnInit {
     this.isVisibleCustomerddEditDialog = false;
   }
 
-  onCustomerCreate() {
-    let formData:any = JSON.parse(JSON.stringify(this.selectedCustomer));
-    let isCreateCustomerFormValid:any = this.customerAddEditFormComponent.isCreateCustomerFormValid();
-    if(isCreateCustomerFormValid){
-      this.isButtonLoading = true;
-      formData.ctr_Dob = dateObjToString(formData?.ctr_Dob);
-        this.service.createCustomer(formData).subscribe((res:any) => {
-          if (res?.Results && res?.Results?.error) {
-            const errorMessage = res?.Results?.error;
-            this.toasterMessage.add({ key: 'root-toast', severity: 'error', summary: 'Error', detail: errorMessage });
-          } else {
-            console.log(res?.Results);
-            this.isVisibleCustomerddEditDialog = false;
-            this.getAllCustomers();
-            this.router.navigate(['/home/customers/customer-details'], {
-              queryParams: { customerId: res?.Results?._id }
-            });
-            this.toasterMessage.add({ key: 'root-toast', severity: 'success', summary: 'Success', detail: 'Customer created successfully!' });
-          };
-          this.isButtonLoading = false;
-        })
-    }
+  // onCustomerCreate() {
+  //   let formData:any = JSON.parse(JSON.stringify(this.selectedCustomer));
+  //   let isCreateCustomerFormValid:any = this.customerAddEditFormComponent.isCreateCustomerFormValid();
+  //   if(isCreateCustomerFormValid){
+  //     this.isButtonLoading = true;
+  //     formData.ctr_Dob = dateObjToString(formData?.ctr_Dob);
+  //       this.service.createCustomer(formData).subscribe((res:any) => {
+  //         if (res?.Results && res?.Results?.error) {
+  //           const errorMessage = res?.Results?.error;
+  //           this.toasterMessage.add({ key: 'root-toast', severity: 'error', summary: 'Error', detail: errorMessage });
+  //         } else {
+  //           console.log(res?.Results);
+  //           this.isVisibleCustomerddEditDialog = false;
+  //           this.getAllCustomers();
+  //           this.router.navigate(['/home/customers/customer-details'], {
+  //             queryParams: { customerId: res?.Results?._id }
+  //           });
+  //           this.toasterMessage.add({ key: 'root-toast', severity: 'success', summary: 'Success', detail: 'Customer created successfully!' });
+  //         };
+  //         this.isButtonLoading = false;
+  //       })
+  //   }
+  // }
+  // Update the onCustomerCreate method
+onCustomerCreate() {
+  let formData:any = JSON.parse(JSON.stringify(this.selectedCustomer));
+  let isCreateCustomerFormValid:any = this.customerAddEditFormComponent.isCreateCustomerFormValid();
+
+  if(isCreateCustomerFormValid) {
+    this.isSaving = true; // Start loading
+    formData.ctr_Dob = dateObjToString(formData?.ctr_Dob);
+
+    this.service.createCustomer(formData).subscribe({
+      next: (res:any) => {
+        if (res?.Results && res?.Results?.error) {
+          const errorMessage = res?.Results?.error;
+          this.toasterMessage.add({ key: 'root-toast', severity: 'error', summary: 'Error', detail: errorMessage });
+        } else {
+          this.isVisibleCustomerddEditDialog = false;
+          this.getAllCustomers();
+          this.router.navigate(['/home/customers/customer-details'], {
+            queryParams: { customerId: res?.Results?._id }
+          });
+          this.toasterMessage.add({
+            key: 'root-toast',
+            severity: 'success',
+            summary: 'Success',
+            detail: 'Customer created successfully!'
+          });
+        }
+      },
+      error: (error) => {
+        this.toasterMessage.add({
+          key: 'root-toast',
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Failed to create customer'
+        });
+      },
+      complete: () => {
+        this.isSaving = false; // End loading
+      }
+    });
+  } else {
+    this.isSaving = false;
   }
+}
 
   getOffsetHeightForModal(extra: any = 0) {
     return getOffsetHeightForModal(extra);

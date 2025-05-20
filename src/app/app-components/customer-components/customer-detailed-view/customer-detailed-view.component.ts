@@ -41,6 +41,7 @@ export class CustomerDetailedViewComponent implements OnInit {
   isButtonLoading: boolean = false;
   toastErrorMessage: string = 'Something went wrong';
   customerData:any = {};
+  isSaving: boolean = false;
   customerDietPlan:any[] = [];
   customerId:any;
   containerOffSetHeightClasses:any[] = ['ofH_calc_nav_bar', 'ofH_calc_body_header'];
@@ -82,26 +83,58 @@ export class CustomerDetailedViewComponent implements OnInit {
     this.isVisibleCustomerEditDialog = true;
   }
 
-  onCustomerUpdate() {
-    let formData:any = JSON.parse(JSON.stringify(this.customerData));
-    let isCreateCustomerFormValid:any = this.customerAddEditFormComponent.isCreateCustomerFormValid();
-    if(isCreateCustomerFormValid){
-      this.isButtonLoading =  true;
-      formData.ctr_Dob = dateObjToString(formData?.ctr_Dob);
-        this.service.updateCustomer(formData).subscribe((res:any) => {
-          if (res?.Results && res?.Results?.error) {
-            const errorMessage = res?.Results?.error;
-            this.toasterMessage.add({ key: 'root-toast', severity: 'error', summary: 'Error', detail: errorMessage });
-          } else {
-            this.isVisibleCustomerEditDialog = false;
-            this.getCustomerDetailsById(this.customerId);
-            const successMessage = 'Customer updated successfully!'
-            this.toasterMessage.add({ key: 'root-toast', severity: 'success', summary: 'Success', detail: successMessage });
-          };
-          this.isButtonLoading = false;
-        })
-    }
+  // onCustomerUpdate() {
+  //   let formData:any = JSON.parse(JSON.stringify(this.customerData));
+  //   let isCreateCustomerFormValid:any = this.customerAddEditFormComponent.isCreateCustomerFormValid();
+  //   if(isCreateCustomerFormValid){
+  //     this.isButtonLoading =  true;
+  //     formData.ctr_Dob = dateObjToString(formData?.ctr_Dob);
+  //       this.service.updateCustomer(formData).subscribe((res:any) => {
+  //         if (res?.Results && res?.Results?.error) {
+  //           const errorMessage = res?.Results?.error;
+  //           this.toasterMessage.add({ key: 'root-toast', severity: 'error', summary: 'Error', detail: errorMessage });
+  //         } else {
+  //           this.isVisibleCustomerEditDialog = false;
+  //           this.getCustomerDetailsById(this.customerId);
+  //           const successMessage = 'Customer updated successfully!'
+  //           this.toasterMessage.add({ key: 'root-toast', severity: 'success', summary: 'Success', detail: successMessage });
+  //         };
+  //         this.isButtonLoading = false;
+  //       })
+  //   }
+  // }
+
+onCustomerUpdate() {
+  let formData:any = JSON.parse(JSON.stringify(this.customerData));
+  let isCreateCustomerFormValid:any = this.customerAddEditFormComponent.isCreateCustomerFormValid();
+
+  if(isCreateCustomerFormValid){
+    this.isSaving = true;
+    formData.ctr_Dob = dateObjToString(formData?.ctr_Dob);
+
+    this.service.updateCustomer(formData).subscribe({
+      next: (res:any) => {
+        if (res?.Results && res?.Results?.error) {
+          const errorMessage = res?.Results?.error;
+          this.toasterMessage.add({ key: 'root-toast', severity: 'error', summary: 'Error', detail: errorMessage });
+        } else {
+          this.isVisibleCustomerEditDialog = false;
+          this.getCustomerDetailsById(this.customerId);
+          const successMessage = 'Customer updated successfully!'
+          this.toasterMessage.add({ key: 'root-toast', severity: 'success', summary: 'Success', detail: successMessage });
+        }
+      },
+      error: (error) => {
+        this.toasterMessage.add({ key: 'root-toast', severity: 'error', summary: 'Error', detail: 'Failed to update customer' });
+      },
+      complete: () => {
+        this.isSaving = false;
+      }
+    });
+  } else {
+    this.isSaving = false;
   }
+}
 
   getOffsetHeightForModal(extra: any = 0) {
     return getOffsetHeightForModal(extra);

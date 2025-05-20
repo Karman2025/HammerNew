@@ -1,4 +1,26 @@
 <form class="primary-form-control" [formGroup]="createCustomerForm">
+
+   <div class="row mb-4">
+    <div class="col-12">
+      <div class="profile-picture-container">
+        <div class="profile-picture-wrapper">
+          <div class="profile-picture-circle">
+            <img [src]="profileImage || '../../assets/images/default-profile.png'" alt="Profile Picture" class="profile-image">
+            <div *ngIf="formMode !== 'view'" class="edit-options">
+              <label for="profileImageUpload" class="edit-icon">
+                <i class="fas fa-pencil-alt"></i>
+                <input id="profileImageUpload" type="file" (change)="onFileSelected($event)" accept="image/*" style="display: none;">
+              </label>
+              <button type="button" class="edit-icon webcam-icon" (click)="openWebcamDialog()">
+                <i class="fas fa-camera"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="row">
     <div [ngClass]="{'col-xl-3 col-lg-4 col-sm-6 col-12': formMode == 'view', 'col-12': formMode != 'view'}">
       <div class="pt-1">
@@ -113,3 +135,29 @@
     </div>
   </div>
 </form>
+
+<div *ngIf="showWebcamDialog" class="modal-overlay">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5>Take a Photo</h5>
+      <button type="button" class="close-btn" (click)="closeWebcamDialog()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="webcam-container">
+        <video #videoElement autoplay playsinline class="webcam-video"></video>
+        <canvas #canvasElement class="webcam-canvas"></canvas>
+      </div>
+      <div class="webcam-controls">
+        <button type="button" class="btn btn-primary" (click)="captureImage()" [disabled]="!isWebcamReady">
+          <i class="fas fa-camera"></i> Capture
+        </button>
+        <button type="button" class="btn btn-secondary" (click)="retryCapture()" *ngIf="capturedImage">
+          <i class="fas fa-redo"></i> Retry
+        </button>
+        <button type="button" class="btn btn-success" (click)="useCapturedImage()" *ngIf="capturedImage">
+          <i class="fas fa-check"></i> Use This Photo
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

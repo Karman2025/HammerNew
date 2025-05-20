@@ -96,23 +96,18 @@ export class PaymentPlanViewAddEditFormComponent implements OnInit {
       payableAmount: new FormControl('', Validators.required),
       paidAmount: new FormControl('', Validators.required),
       paymentMethod: new FormControl('', Validators.required),
-      planStartDate: new FormControl(''),
+      planStartDate: ['', Validators.required],
       planEndDate: new FormControl(''),
     });
 
     this.createPaymentPlanForm.get('paymentPlanId')?.valueChanges.subscribe((value) => {
-      const startDateControl = this.createPaymentPlanForm.get('planStartDate');
       const endDateControl = this.createPaymentPlanForm.get('planEndDate');
 
       if (value == 4) {
-        startDateControl?.setValidators([Validators.required]);
         endDateControl?.setValidators([Validators.required]);
       } else {
-        startDateControl?.clearValidators();
         endDateControl?.clearValidators();
       }
-
-      startDateControl?.updateValueAndValidity();
       endDateControl?.updateValueAndValidity();
     });
   }
@@ -139,50 +134,111 @@ export class PaymentPlanViewAddEditFormComponent implements OnInit {
 
 
 
-  createCustomerPaymentPlan(){
-    // this.createPaymentPlanForm.get('paidAmount')?.setErrors(null);
-    this.paidAmountValidationMsg = 'Required';
-    if(this.createPaymentPlanForm?.value?.paidAmount > this.createPaymentPlanForm?.value?.payableAmount){
-      this.paidAmountValidationMsg = 'Amount cannot exceed the payable amount';
-      this.createPaymentPlanForm.get('paidAmount')?.setErrors({ customError: true });
+  // createCustomerPaymentPlan(){
+  //   // this.createPaymentPlanForm.get('paidAmount')?.setErrors(null);
+  //   this.paidAmountValidationMsg = 'Required';
+  //   if(this.createPaymentPlanForm?.value?.paidAmount > this.createPaymentPlanForm?.value?.payableAmount){
+  //     this.paidAmountValidationMsg = 'Amount cannot exceed the payable amount';
+  //     this.createPaymentPlanForm.get('paidAmount')?.setErrors({ customError: true });
+  //   }
+
+  //   this.createPaymentPlanForm.markAllAsTouched();
+  //   if(this.createPaymentPlanForm?.valid){
+  //     this.isButtonLoading = true;
+  //     let customer = this.selectedPaymentPlan?.customer;
+  //     let body = this.createPaymentPlanForm?.value;
+  //     body.customerId = customer?._id;
+  //     if(body?.paymentPlanId == '4'){
+  //       body.planStartDate = dateObjToString(body?.planStartDate);
+  //       body.planEndDate = dateObjToString(body?.planEndDate);
+  //     }
+  //     this.service.createCustomerPaymentPlan(this.createPaymentPlanForm?.value).subscribe((res:any)=>{
+  //       console.log(res);
+  //         if(res?.Results?.customerPaymentPlan){
+  //           this.isVisibleCreatePaymentPlanDialog = false;
+  //           if(this.IsCustomer){
+  //             // let tempCustomerPaymentPlan = this.customerPaymentPlan?.filter((x:any)=>x?.customer?._id != customer?._id);
+  //             res.Results.customerPaymentPlan.customer = customer;
+  //             this.customerPaymentPlan?.unshift(res?.Results?.customerPaymentPlan);
+  //             // this.customerPaymentPlan = JSON.parse(JSON.stringify(tempCustomerPaymentPlan));
+  //             const successMessage = 'Customer payment plan created successfully'
+  //             this.toasterMessage.add({ key: 'root-toast', severity: 'success', summary: 'Success', detail: successMessage });
+  //           } else {
+  //             res.Results.customerPaymentPlan.customer = customer;
+  //             const index = this.customerPaymentPlan?.findIndex((x: any) => x?.customer?._id == customer?._id);
+  //             if (index !== -1 && index != null) {
+  //               this.customerPaymentPlan[index] = JSON.parse(JSON.stringify(res.Results.customerPaymentPlan));
+  //             }
+  //           }
+  //           this.changeShowExtendPlan.emit(false);
+  //         } else {
+  //            this.toasterMessage.add({ key: 'root-toast', severity: 'error', summary: 'Error', detail: res?.Results?.error ?? 'Something went wrong please try again later' });
+  //         };
+  //         this.isButtonLoading = false;
+  //       })
+  //   }
+  // }
+
+createCustomerPaymentPlan() {
+  this.paidAmountValidationMsg = 'Required';
+  if (this.createPaymentPlanForm?.value?.paidAmount > this.createPaymentPlanForm?.value?.payableAmount) {
+    this.paidAmountValidationMsg = 'Amount cannot exceed the payable amount';
+    this.createPaymentPlanForm.get('paidAmount')?.setErrors({ customError: true });
+  }
+
+  this.createPaymentPlanForm.markAllAsTouched();
+  if (this.createPaymentPlanForm?.valid) {
+    let customer = this.selectedPaymentPlan?.customer;
+    let body = this.createPaymentPlanForm?.value;
+    body.customerId = customer?._id;
+
+
+    if (body?.planStartDate) {
+      body.planStartDate = dateObjToString(body?.planStartDate);
     }
 
-    this.createPaymentPlanForm.markAllAsTouched();
-    if(this.createPaymentPlanForm?.valid){
-      this.isButtonLoading = true;
-      let customer = this.selectedPaymentPlan?.customer;
-      let body = this.createPaymentPlanForm?.value;
-      body.customerId = customer?._id;
-      if(body?.paymentPlanId == '4'){
-        body.planStartDate = dateObjToString(body?.planStartDate);
-        body.planEndDate = dateObjToString(body?.planEndDate);
-      }
-      this.service.createCustomerPaymentPlan(this.createPaymentPlanForm?.value).subscribe((res:any)=>{
-        console.log(res);
-          if(res?.Results?.customerPaymentPlan){
-            this.isVisibleCreatePaymentPlanDialog = false;
-            if(this.IsCustomer){
-              // let tempCustomerPaymentPlan = this.customerPaymentPlan?.filter((x:any)=>x?.customer?._id != customer?._id);
-              res.Results.customerPaymentPlan.customer = customer;
-              this.customerPaymentPlan?.unshift(res?.Results?.customerPaymentPlan);
-              // this.customerPaymentPlan = JSON.parse(JSON.stringify(tempCustomerPaymentPlan));
-              const successMessage = 'Customer payment plan created successfully'
-              this.toasterMessage.add({ key: 'root-toast', severity: 'success', summary: 'Success', detail: successMessage });
-            } else {
-              res.Results.customerPaymentPlan.customer = customer;
-              const index = this.customerPaymentPlan?.findIndex((x: any) => x?.customer?._id == customer?._id);
-              if (index !== -1 && index != null) {
-                this.customerPaymentPlan[index] = JSON.parse(JSON.stringify(res.Results.customerPaymentPlan));
-              }
-            }
-            this.changeShowExtendPlan.emit(false);
-          } else {
-             this.toasterMessage.add({ key: 'root-toast', severity: 'error', summary: 'Error', detail: res?.Results?.error ?? 'Something went wrong please try again later' });
-          };
-          this.isButtonLoading = false;
-        })
+    if (body?.paymentPlanId == '4') {
+      body.planEndDate = dateObjToString(body?.planEndDate);
     }
+
+    this.service.createCustomerPaymentPlan(this.createPaymentPlanForm?.value).subscribe((res: any) => {
+
+      if (res?.Results?.customerPaymentPlan) {
+        this.isVisibleCreatePaymentPlanDialog = false;
+        this.toasterMessage.add({ key: 'root-toast', severity: 'success', summary: 'Success', detail: 'Plan created successfully!' });
+
+        if (this.IsCustomer) {
+          let tempCustomerPaymentPlan = this.customerPaymentPlan?.filter((x: any) => x?.customer?._id != customer?._id);
+          res.Results.customerPaymentPlan.customer = customer;
+          tempCustomerPaymentPlan?.unshift(res?.Results?.customerPaymentPlan);
+          this.customerPaymentPlan = JSON.parse(JSON.stringify(tempCustomerPaymentPlan));
+          const successMessage = 'Customer payment plan created successfully'
+          this.toasterMessage.add({ key: 'root-toast', severity: 'success', summary: 'Success', detail: successMessage });
+        } else {
+          res.Results.customerPaymentPlan.customer = customer;
+          const index = this.customerPaymentPlan?.findIndex((x: any) => x?.customer?._id == customer?._id);
+          if (index !== -1 && index != null) {
+            this.customerPaymentPlan[index] = JSON.parse(JSON.stringify(res.Results.customerPaymentPlan));
+          }
+        }
+        this.changeShowExtendPlan.emit(false);
+        // this.formatCustomerPaymentPlanData(this.customerPaymentPlan);
+      } else {
+        this.toasterMessage.add({ key: 'root-toast', severity: 'error', summary: 'Error', detail: res?.Results?.error ?? 'Something went wrong please try again later' });
+      }
+    });
   }
+}
+
+getMinEndDate() {
+  const startDate = this.createPaymentPlanForm.get('planStartDate')?.value;
+  if (startDate instanceof Date) {
+    return startDate;
+  } else if (typeof startDate === 'string') {
+    return new Date(startDate);
+  }
+  return new Date(); // fallback to current date
+}
 
   openPayBalanceAmountDialog(plan:any){
     this.selectedPaymentPlan = JSON.parse(JSON.stringify(plan));

@@ -199,23 +199,32 @@
             </div>
           </div>
         </div>
-        <ng-container *ngIf="createPaymentPlanForm.get('paymentPlanId')?.value == '4'">
-          <div class="col-12">
-            <div class="pt-1">
-              <label class="form-label" for="planStartDate">Plan Start Date</label>
-              <div [ngClass]="{'form-validation-error': createPaymentPlanForm.get('planStartDate')?.invalid && createPaymentPlanForm.get('planStartDate')?.touched}">
-                <p-datepicker class="primary-p-datepicker form-control" id="planStartDate" formControlName="planStartDate" [minDate]="currentDate" placeholder="dd-mm-yyy" dateFormat="dd-MM-yy" appendTo="body"/>
-                <div class="form-validation-msg">
-                  <span>Required</span>
-                </div>
+        <!-- Plan Start Date for all payment plans -->
+        <div class="col-12">
+          <div class="pt-1">
+            <label class="form-label" for="planStartDate">Plan Start Date</label>
+            <div [ngClass]="{'form-validation-error': createPaymentPlanForm.get('planStartDate')?.invalid && createPaymentPlanForm.get('planStartDate')?.touched}">
+              <p-datepicker class="primary-p-datepicker form-control" id="planStartDate" formControlName="planStartDate" placeholder="dd-mm-yyy" dateFormat="dd-MM-yy" appendTo="body"/>
+              <div class="form-validation-msg">
+                <span>Required</span>
               </div>
             </div>
           </div>
+        </div>
+        <!-- End Date only for Custom Period -->
+        <ng-container *ngIf="createPaymentPlanForm.get('paymentPlanId')?.value == '4'">
           <div class="col-12">
             <div class="pt-1">
               <label class="form-label" for="planEndDate">Plan End Date</label>
               <div [ngClass]="{'form-validation-error': createPaymentPlanForm.get('planEndDate')?.invalid && createPaymentPlanForm.get('planEndDate')?.touched}">
-                <p-datepicker class="primary-p-datepicker form-control" id="planEndDate" formControlName="planEndDate" [minDate]="currentDate" placeholder="dd-mm-yyy" dateFormat="dd-MM-yy" appendTo="body"/>
+                <p-datepicker class="primary-p-datepicker form-control" 
+              id="planEndDate" 
+              formControlName="planEndDate" 
+              [minDate]="getMinEndDate()" 
+              placeholder="dd-mm-yyy" 
+              dateFormat="dd-MM-yy" 
+              appendTo="body"
+              [showIcon]="true"/>
                 <div class="form-validation-msg">
                   <span>Required</span>
                 </div>

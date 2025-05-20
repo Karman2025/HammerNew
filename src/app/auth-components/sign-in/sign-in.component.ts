@@ -3,21 +3,28 @@ import { Router } from '@angular/router';
 import { AuthComponentApiService } from '../auth-component-api-service';
 import { FormBuilder, FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { ButtonModule } from 'primeng/button';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-sign-in',
   templateUrl: './sign-in.component.html',
   styleUrls: ['./sign-in.component.css'],
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule]
+  imports: [ReactiveFormsModule, CommonModule, ProgressSpinnerModule, ButtonModule, ToastModule],
+  providers: [MessageService] // Add MessageService to providers
 })
 export class SignInComponent implements OnInit {
   signInForm: FormGroup;
-  
+  isLoading: boolean = false;
+
   constructor(
     private fb: FormBuilder,
     private router: Router,
-    private service: AuthComponentApiService
+    private service: AuthComponentApiService,
+    private messageService: MessageService // Inject MessageService
   ) {
     this.signInForm = this.fb.group({
       email: new FormControl('', [Validators.required, Validators.email]),
@@ -26,7 +33,6 @@ export class SignInComponent implements OnInit {
   }
 
   ngOnInit() {
-    // Check if user is already logged in
     if (localStorage.getItem('USER-JWT-TOKEN')) {
       this.router.navigate(['/home/welcome']);
     }
@@ -34,29 +40,50 @@ export class SignInComponent implements OnInit {
 
   onSignInSubmit() {
     if (this.signInForm.valid) {
+      this.isLoading = true; 
       const authBody = this.signInForm.value;
-      console.log('Form submitted:', authBody);
-      
+  
       this.service.signin(authBody).subscribe({
         next: (res: any) => {
+          this.isLoading = false; 
           if (res?.message === 'login success') {
-            console.log('Login successful:', res);
             localStorage.setItem('USER-JWT-TOKEN', res?.jwt);
             this.router.navigate(['/home/welcome']);
+          } else {
+            this.showError(res?.message || 'Unknown error occurred');
           }
         },
         error: (err: any) => {
+          this.isLoading = false;
+          // Handle different types of error responses
+          if (err.error?.message) {
+            this.showError(err.error.message);
+          } else if (err.status === 0) {
+            this.showError('Unable to connect to server. Please check your internet connection.');
+          } else if (err.status === 401) {
+            this.showError('Invalid email or password');
+          } else {
+            this.showError('An unexpected error occurred. Please try again.');
+          }
           console.error('Error during sign-in:', err);
-          // Here you could add error handling UI feedback
         }
       });
     } else {
-      // Mark all form controls as touched to trigger validation messages
       Object.keys(this.signInForm.controls).forEach(key => {
         const control = this.signInForm.get(key);
         control?.markAsTouched();
       });
+      this.showError('Please fill all required fields correctly');
     }
+  }
+
+  private showError(message: string) {
+    this.messageService.add({
+      severity: 'error',
+      summary: 'Error',
+      detail: message,
+      life: 5000 // Show for 5 seconds
+    });
   }
 
   signOut() {

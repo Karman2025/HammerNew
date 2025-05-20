@@ -1,53 +1,74 @@
-<div class="login-main d-flex">
-  <div class="login-left d-flex align-items-center justify-content-center">
-    <div class="login-box glass-effect p-4">
-      <h2 class="mb-4 text-center">Login</h2>
-      <form [formGroup]="signInForm" (ngSubmit)="onSignInSubmit()">
-        <div class="mb-3">
-          <label for="email" class="form-label">Email</label>
-          <input 
-            type="email" 
-            class="form-control" 
-            id="email" 
-            formControlName="email" 
-            placeholder="Enter your email">
-          <div *ngIf="signInForm.get('email')?.invalid && signInForm.get('email')?.touched" class="text-danger">
-            <small *ngIf="signInForm.get('email')?.errors?.['required']">Email is required</small>
-            <small *ngIf="signInForm.get('email')?.errors?.['email']">Please enter a valid email</small>
-          </div>
+<div class="login-main">
+  <p-toast position="top-right"></p-toast>
+  <div class="inner-login">
+    <div class="row w-100 h-100 g-0">
+
+      <div class="col-md-5 d-flex justify-content-center align-items-center">
+        <div class="text-div">
+          <img src="../../../assets/images/logo.png" alt="logo" width="150" />
+          <p style="margin-top: 1rem;" class="welcome-text">Welcome to Hammer Fitness</p>
         </div>
-        <div class="mb-3" style="margin-top:1rem;">
-          <label for="password" class="form-label">Password</label>
-          <input 
-            type="password" 
-            class="form-control" 
-            id="password" 
-            formControlName="password" 
-            placeholder="Enter your password">
-          <div *ngIf="signInForm.get('password')?.invalid && signInForm.get('password')?.touched" class="text-danger">
-            <small *ngIf="signInForm.get('password')?.errors?.['required']">Password is required</small>
-          </div>
-        </div>
-        <div class="d-grid gap-2 mt-3" style="margin-top:50px;">
-          <button 
-          style="margin-top: 2rem;"
-          type="submit" 
-          class="btn btn-secondary" 
-          [disabled]="signInForm.invalid">
-          Sign In
-        </button>
-        
-        </div>
-      </form>
-      <div class="mt-3 text-center">
-        <!-- <small>Don't have an account? <a href="#" class="text-light">Register here</a></small> -->
       </div>
-    </div>
-  </div>
-  <div class="login-right d-flex align-items-center justify-content-center">
-    <div class="text-white text-center">
-      <h1>Welcome to Hammer Fitness</h1>
-      <p class="lead">Your fitness journey starts here.</p>
+      
+ 
+      <div class="col-md-7 d-flex align-items-center justify-content-center" style="padding: 2.5rem;">
+        <div class="login-form-container">
+          <div>
+            <h2 class="login-title">Login</h2>
+            
+            <form [formGroup]="signInForm" (ngSubmit)="onSignInSubmit()">
+              <div class="form-group mb-3">
+                <label style="font-size: 15px;" for="email">Email address</label>
+                <input 
+                  type="email" 
+                  id="email" 
+                  class="form-control" 
+                  placeholder="Enter your email"
+                  formControlName="email"
+                  [ngClass]="{'is-invalid': signInForm.get('email')?.invalid && (signInForm.get('email')?.dirty || signInForm.get('email')?.touched)}">
+                <div *ngIf="signInForm.get('email')?.invalid && (signInForm.get('email')?.dirty || signInForm.get('email')?.touched)" class="invalid-feedback">
+                  <div *ngIf="signInForm.get('email')?.errors?.['required']">Email is required</div>
+                  <div *ngIf="signInForm.get('email')?.errors?.['email']">Please enter a valid email</div>
+                </div>
+              </div>
+              
+              <div class="form-group mb-3">
+                <label style="font-size: 15px;" for="password">Password</label>
+                <input 
+                  type="password" 
+                  id="password" 
+                  class="form-control" 
+                  placeholder="Enter your password"
+                  formControlName="password"
+                  [ngClass]="{'is-invalid': signInForm.get('password')?.invalid && (signInForm.get('password')?.dirty || signInForm.get('password')?.touched)}">
+                <div *ngIf="signInForm.get('password')?.invalid && (signInForm.get('password')?.dirty || signInForm.get('password')?.touched)" class="invalid-feedback">
+                  Password is required
+                </div>
+              </div>
+              
+              <div class="remember-me mb-3">
+                <input type="checkbox" id="rememberMe">
+                <label style="font-size: 14px;" for="rememberMe">Remember me</label>
+              </div>
+              
+              <div style="padding: 0rem 2rem;" class="mb-3">
+                <button type="submit" class="login-btn" [disabled]="isLoading">
+                  <span *ngIf="!isLoading">Login</span>
+                  <span *ngIf="isLoading" class="d-flex align-items-center justify-content-center">
+                    <p-progressSpinner [style]="{width: '20px', height: '20px'}" strokeWidth="5" animationDuration=".5s"></p-progressSpinner>
+                    <span class="ms-2">Processing...</span>
+                  </span>
+                </button>
+              </div>
+              
+              <div class="signup-link">
+                <span style="font-size: 14px;">Don't have an account? </span>
+                <a href="#">Sign up</a>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
