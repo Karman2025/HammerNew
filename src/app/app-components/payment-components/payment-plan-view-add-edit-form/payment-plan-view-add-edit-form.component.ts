@@ -7,7 +7,7 @@ import { DialogModule } from 'primeng/dialog';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TooltipModule } from 'primeng/tooltip';
 import { AppComponentsApiService } from '../../app-components-api-service';
-import { getOffsetHeightForModal } from '../../../shared/functions/calcHeightOffset';
+import { getOffsetHeightForModal, getOffsetHeightForPrimaryTable } from '../../../shared/functions/calcHeightOffset';
 import { DatePicker } from 'primeng/datepicker';
 import { dateObjToString, dateStringToObj } from '../../../shared/functions/date-string-to-obj';
 import { MessageService } from 'primeng/api';
@@ -22,8 +22,10 @@ import { MessageService } from 'primeng/api';
 export class PaymentPlanViewAddEditFormComponent implements OnInit {
 
   @Input() set CustomerPaymentPlan(value:any[]) {
-    this.formatCustomerPaymentPlanData(value);
-    this.customerPaymentPlan = value;
+    if(value){
+      this.customerPaymentPlan = value;
+      console.log(value)
+    }
   }
 
   @Input() set CustomerFormPaymentPlanData(value:any){
@@ -63,6 +65,7 @@ export class PaymentPlanViewAddEditFormComponent implements OnInit {
   showPaymentMethodValidation:boolean = false;
   payBalanceValidationMsg:string = "";
   isVisibleCreatePaymentPlanDialog:boolean = false;
+  isButtonLoading: boolean = false;
   paidAmountValidationMsg:string = 'Required';
   currentDate:Date = new Date();
 
@@ -114,18 +117,6 @@ export class PaymentPlanViewAddEditFormComponent implements OnInit {
     });
   }
 
-    formatCustomerPaymentPlanData(data:any){
-      data?.forEach((x:any)=>{
-        x.paymentPlan = this.paymentPlanOptions?.filter((y:any)=>y?._id == x?.paymentPlanId)?.[0];
-        x.balanceAmount = x?.payableAmount - x?.paidAmount;
-        x.status = x?.payableAmount > x?.paidAmount ? 'Pending' : 'Completed';
-        const today = new Date();
-        const endDate = new Date(x.planEndDate);
-        const timeDiff = endDate.getTime() - today.getTime();
-        x.planEndsIn = dateStringToObj(x?.planStartDate) > today ? '-- ' :  Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
-      })
-  }
-
   isCreateCustomerFormValid() {
     if (this.createPaymentPlanForm.valid) {
       return true;
@@ -158,6 +149,7 @@ export class PaymentPlanViewAddEditFormComponent implements OnInit {
 
     this.createPaymentPlanForm.markAllAsTouched();
     if(this.createPaymentPlanForm?.valid){
+      this.isButtonLoading = true;
       let customer = this.selectedPaymentPlan?.customer;
       let body = this.createPaymentPlanForm?.value;
       body.customerId = customer?._id;
@@ -166,18 +158,14 @@ export class PaymentPlanViewAddEditFormComponent implements OnInit {
         body.planEndDate = dateObjToString(body?.planEndDate);
       }
       this.service.createCustomerPaymentPlan(this.createPaymentPlanForm?.value).subscribe((res:any)=>{
-        // debugger
         console.log(res);
-
           if(res?.Results?.customerPaymentPlan){
             this.isVisibleCreatePaymentPlanDialog = false;
-            this.toasterMessage.add({ key: 'root-toast', severity: 'success', summary: 'Success', detail: 'Plan created successfully!' });
-
             if(this.IsCustomer){
-              let tempCustomerPaymentPlan = this.customerPaymentPlan?.filter((x:any)=>x?.customer?._id != customer?._id);
+              // let tempCustomerPaymentPlan = this.customerPaymentPlan?.filter((x:any)=>x?.customer?._id != customer?._id);
               res.Results.customerPaymentPlan.customer = customer;
-              tempCustomerPaymentPlan?.unshift(res?.Results?.customerPaymentPlan);
-              this.customerPaymentPlan = JSON.parse(JSON.stringify(tempCustomerPaymentPlan));
+              this.customerPaymentPlan?.unshift(res?.Results?.customerPaymentPlan);
+              // this.customerPaymentPlan = JSON.parse(JSON.stringify(tempCustomerPaymentPlan));
               const successMessage = 'Customer payment plan created successfully'
               this.toasterMessage.add({ key: 'root-toast', severity: 'success', summary: 'Success', detail: successMessage });
             } else {
@@ -188,10 +176,10 @@ export class PaymentPlanViewAddEditFormComponent implements OnInit {
               }
             }
             this.changeShowExtendPlan.emit(false);
-            this.formatCustomerPaymentPlanData(this.customerPaymentPlan);
           } else {
              this.toasterMessage.add({ key: 'root-toast', severity: 'error', summary: 'Error', detail: res?.Results?.error ?? 'Something went wrong please try again later' });
-          }
+          };
+          this.isButtonLoading = false;
         })
     }
   }
@@ -220,6 +208,7 @@ export class PaymentPlanViewAddEditFormComponent implements OnInit {
       this.showPaymentMethodValidation = true;
     }
     if(this.showPayBalanceValidation == false && this.showPaymentMethodValidation == false) {
+      this.isButtonLoading = true;
       let body = {
         customerId: this.selectedPaymentPlan?.customer?._id,
         payBalancePaymentMethod: this.selectedPaymentPlan?.payBalancePaymentMethod,
@@ -233,22 +222,28 @@ export class PaymentPlanViewAddEditFormComponent implements OnInit {
           this.customerPaymentPlan?.forEach((x:any)=>{
             if(x?._id == this.selectedPaymentPlan?._id){
               x.paidAmount = res?.Results?.customerPaymentPlan?.paidAmount;
+              x.balanceAmount = res?.Results?.customerPaymentPlan?.balanceAmount;
+              x.paymentStatus = res?.Results?.customerPaymentPlan?.paymentStatus;
               res.Results.customerPaymentPlan.newPayment.customerPaymentPlanId = x?._id;
                 x.payments?.push(res?.Results?.customerPaymentPlan?.newPayment);
             }
           })
-          this.formatCustomerPaymentPlanData(this.customerPaymentPlan);
-          if(this.customerPaymentPlan?.filter((x:any)=>x.status == 'Completed')?.length == this.customerPaymentPlan?.length){
+          if(this.customerPaymentPlan?.filter((x:any)=>x.paymentStatus == 'Completed')?.length == this.customerPaymentPlan?.length){
             this.changeShowExtendPlan.emit(true);
           }
         } else {
           this.toasterMessage.add({ key: 'root-toast', severity: 'error', summary: 'Error', detail: res?.Results?.error ?? 'Something went wrong please try again later' });
-        }
+        };
+        this.isButtonLoading = false;
       })
     }
   }
 
   getOffsetHeightForModal(extra: any = 0) {
     return getOffsetHeightForModal(extra);
+  }
+
+  getOffsetHeightForPrimaryTable(extra: any = 0) {
+      return getOffsetHeightForPrimaryTable(extra);
   }
 }

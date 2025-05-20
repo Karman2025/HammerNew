@@ -21,11 +21,14 @@
               <th>
                 <span>Name</span>
               </th>
-              <th>
+              <th *ngIf="loggedInUser?.role == '1'">
                 <span>Branch Code</span>
               </th>
-              <th>
+              <th *ngIf="loggedInUser?.role == '1'">
                 <span>Branch Name</span>
+              </th>
+              <th>
+                <span>Created Date</span>
               </th>
               <th>
                 <span>Mail</span>
@@ -37,6 +40,9 @@
                 <span>WhatsApp No</span>
               </th>
               <th>
+                <span>Plan Status</span>
+              </th>
+              <th pFrozenColumn alignFrozen="right">
                 <span>Action</span>
               </th>
             </tr>
@@ -53,14 +59,19 @@
                   <span>{{ customer?.ctr_Name }}</span>
                 </div>
               </td>
-              <td>
+              <td *ngIf="loggedInUser?.role == '1'">
                 <div>
                   <span>{{ customer?.branch?.bch_Code }}</span>
                 </div>
               </td>
-              <td>
+              <td *ngIf="loggedInUser?.role == '1'">
                 <div>
                   <span>{{ customer?.branch?.bch_Name }}</span>
+                </div>
+              </td>
+              <td>
+                <div>
+                  <span>{{ customer?.createdDate | date: "dd/MM/yyy" }}</span>
                 </div>
               </td>
               <td>
@@ -80,9 +91,26 @@
               </td>
               <td>
                 <div>
-                  <span class="c-pointer" (click)="viewCustomer(customer)"><i class="fa-regular fa-eye"></i></span>
+                  <span [ngClass]="{
+                    'badge-intermediate': customer?.paymentPlanStatus == 'No plan',
+                    'badge-danger': customer?.paymentPlanStatus == 'Payment Due',
+                    'badge-warning': customer?.paymentPlanStatus == 'Pending' || customer?.paymentPlanStatus == 'Expired',
+                    'badge-success': customer?.paymentPlanStatus == 'Completed'
+                  }">
+                    {{ customer?.paymentPlanStatus }}
+                  </span>
+
+                </div>
+              </td>
+              <td pFrozenColumn alignFrozen="right">
+                <div>
+                  <span class="c-pointer" pTooltip="View" tooltipPosition="top" (click)="viewCustomer(customer)">
+                    <i class="fa-regular fa-eye"></i>
+                  </span>
                   <!-- <span class="px-3 c-pointer" (click)="editCustomer(customer)"><i class="fa-regular fa-pen-to-square"></i></span> -->
-                  <span class="c-pointer px-3"><i class="fas fa-trash-alt"></i></span>
+                  <span class="c-pointer px-3" pTooltip="Delete" tooltipPosition="top">
+                    <i class="fas fa-trash-alt"></i>
+                  </span>
                 </div>
               </td>
             </tr>
@@ -109,16 +137,6 @@
       </div>
       <div class="d-flex justify-content-end" style="position: fixed; bottom: 70px; right: 18px; z-index: 1000;">
         <div class="filter-icon" (click)="op.toggle($event)"><i class="fa-solid fa-filter"></i></div>
-        <!-- <p-popover #op>
-            <div [ngStyle]="{ 'height': getOffsetHeightByCustomClass(175, containerOffSetHeightClasses), 'max-width': '30vw' }">
-              <app-filter-fields-container [FilterFields]="filterFields" [showFilterFields]="showFilterFields"></app-filter-fields-container>
-            </div>
-            <div class="d-flex justify-content-end pt-3">
-             <button class="mx-1 btn btn-warning">Cancel</button>
-             <button class="mx-1 btn btn-success">Apply</button>
-           </div>
-        </p-popover> -->
-
         <p-popover styleClass="primary-filter-popover" class="p-3" #op>
           <div>
               <div style="border-bottom: 1px solid #ccc;" class="d-flex align-items-center justify-content-between px-3 py-3">
@@ -134,7 +152,7 @@
               </div>
               <div style="border-top: 1px solid #ccc;" class="d-flex justify-content-end px-3 py-3">
                 <button  (click)="onFilterClear()" class="btn btn-warning mx-1 px-2 py-1">Clear</button>
-                <button (click)="getAllCustomers()" class="mx-1 btn btn-success mx-1 px-2 py-1">Apply</button>
+                <button (click)="getAllCustomers(true)" class="mx-1 btn btn-success mx-1 px-2 py-1">Apply</button>
               </div>
           </div>
         </p-popover>
@@ -160,7 +178,7 @@
   <div class="p-p-dialog-footer ofH_calc_modal_footer">
     <div>
       <button (click)="dialogCloseBtn()" class="btn btn-danger mx-2 px-3 py-1">{{formMode == 'view' ? 'Close' : 'Cancel'}}</button>
-      <button class="btn btn-success px-3 py-1" (click)="onCustomerCreate();">Save</button>
+      <button [disabled]="isButtonLoading" class="btn btn-success px-3 py-1" (click)="onCustomerCreate();">Save</button>
     </div>
   </div>
 </p-dialog>

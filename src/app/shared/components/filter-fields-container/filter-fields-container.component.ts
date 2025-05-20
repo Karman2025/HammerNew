@@ -3,7 +3,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormsModule } from '@angular/forms';
 import { DatePickerModule } from 'primeng/datepicker';
 import { SelectModule } from 'primeng/select';
-import { paymentTypeMaster, creditDebitOptions, paymentStatusOptions, attendanceStatusOptions, paymentPlanOptions } from '../../../shared/data/master-data';
+import { paymentTypeMaster, creditDebitOptions, paymentStatusOptions, attendanceStatusOptions, paymentPlanOptions, paymentPlanStatus } from '../../../shared/data/master-data';
 
 @Component({
   selector: 'app-filter-fields-container',
@@ -29,7 +29,8 @@ export class FilterFieldsContainerComponent implements OnInit {
   paymentStatus = paymentStatusOptions;
   attendanceStatus = attendanceStatusOptions
   creditStatus  = creditDebitOptions;
-  paymentPlanOptions = paymentPlanOptions
+  paymentPlanOptions = paymentPlanOptions;
+  paymentPlanStatus = paymentPlanStatus;
 
   constructor() {
   }

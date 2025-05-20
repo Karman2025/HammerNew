@@ -23,7 +23,7 @@
             <th>
               <span>Name</span>
             </th>
-            <th>
+            <th pFrozenColumn alignFrozen="right">
               <span>Action</span>
             </th>
           </tr>
@@ -45,11 +45,17 @@
                 <span>{{ branch?.bch_Name }}</span>
               </div>
             </td>
-            <td>
+            <td pFrozenColumn alignFrozen="right">
               <div>
-                <span class="c-pointer" (click)="onSelectViewBranch(branch)"><i class="fa-regular fa-eye"></i></span>
-                <span class="px-3 c-pointer" (click)="onSelectEditBranch(branch);"><i class="fa-regular fa-pen-to-square"></i></span>
-                <span class="c-pointer"><i class="fas fa-trash-alt"></i></span>
+                <span class="c-pointer" pTooltip="View" tooltipPosition="top" (click)="onSelectViewBranch(branch)">
+                  <i class="fa-regular fa-eye"></i>
+                </span>
+                <span class="px-3 c-pointer" pTooltip="Edit" tooltipPosition="top" (click)="onSelectEditBranch(branch);">
+                  <i class="fa-regular fa-pen-to-square"></i>
+                </span>
+                <span class="c-pointer" pTooltip="Delete" tooltipPosition="top">
+                  <i class="fas fa-trash-alt"></i>
+                </span>
               </div>
             </td>
           </tr>
@@ -92,7 +98,7 @@
             </div>
             <div style="border-top: 1px solid #ccc;" class="d-flex justify-content-end px-3 py-3">
               <button  (click)="onFilterClear()" class="btn btn-warning mx-1 px-2 py-1">Clear</button>
-              <button (click)="getAllBranches()" class="mx-1 btn btn-success mx-1 px-2 py-1">Apply</button>
+              <button (click)="getAllBranches(true)" class="mx-1 btn btn-success mx-1 px-2 py-1">Apply</button>
             </div>
         </div>
       </p-popover>
@@ -115,7 +121,7 @@
   <div class="p-p-dialog-footer ofH_calc_modal_footer">
     <div>
       <button (click)="dialogCloseBtn()" class="btn btn-danger mx-2 px-3 py-1">{{formMode == 'view' ? 'Close' : 'Cancel'}}</button>
-      <button class="btn btn-success px-3 py-1" (click)="onBranchDetailsSave()">Save</button>
+      <button [disabled]="isButtonLoading" class="btn btn-success px-3 py-1" (click)="onBranchDetailsSave()">Save</button>
     </div>
   </div>
 </p-dialog>

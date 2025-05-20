@@ -12,6 +12,8 @@ import { environment } from '../../../src/environments/environment';
 
 import { HTTPMethodType } from '../models/misc';
 import { ResponseObject } from '../models/response';
+import { HttpContext } from '@angular/common/http'; // add this
+import { SKIP_LOADER } from '../shared/tokens/loader-context.token'; // import this
 
 @Injectable({
     providedIn: 'root',
@@ -24,7 +26,8 @@ export class HttpApiService {
     private submitRequest<T>(
         methodType: HTTPMethodType,
         endPoint: string,
-        data: any = null
+        data: any = null,
+        context: HttpContext = new HttpContext()
     ): Observable<ResponseObject<T>> {
         const token = localStorage.getItem('USER-JWT-TOKEN'); // Retrieve token from storage or service
         const headers = new HttpHeaders({
@@ -35,6 +38,7 @@ export class HttpApiService {
             .request<T>(methodType, `${environment.baseAPIUrl}${endPoint}`, {
                 body: data,
                 headers: headers,
+                context,
                 reportProgress: true,
                 observe: 'response',
             })
@@ -76,20 +80,20 @@ export class HttpApiService {
             );
     }
 
-    public post<T>(endPoint: string, data: any) {
-        return this.submitRequest<T>('Post', endPoint, data);
+    public post<T>(endPoint: string, data: any, context?: HttpContext) {
+        return this.submitRequest<T>('Post', endPoint, data, context);
     }
 
-    public put<T>(endPoint: string, data: any) {
-        return this.submitRequest<T>('Put', endPoint, data);
+    public put<T>(endPoint: string, data: any, context?: HttpContext) {
+        return this.submitRequest<T>('Put', endPoint, data, context);
     }
 
-    public get<T>(endPoint: string) {
-        return this.submitRequest<T>('Get', endPoint, null);
+    public get<T>(endPoint: string, context?: HttpContext) {
+        return this.submitRequest<T>('Get', endPoint, null, context);
     }
 
-    public delete<T>(endPoint: string, data: any) {
-        return this.submitRequest<T>('Delete', endPoint, data);
+    public delete<T>(endPoint: string, data: any, context?: HttpContext) {
+        return this.submitRequest<T>('Delete', endPoint, data, context);
     }
 
     private handleError(error: Response) {

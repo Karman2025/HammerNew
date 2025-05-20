@@ -14,13 +14,14 @@ import { getOffsetHeightByCustomClass } from '../../../shared/functions/calcHeig
 import { FilterFieldsContainerComponent } from '../../../shared/components/filter-fields-container/filter-fields-container.component';
 import { PaginatorModule } from 'primeng/paginator';
 import { paginationRowsPerPageOptions } from '../../../shared/data/master-data';
+import { TooltipModule } from 'primeng/tooltip';
 
 
 @Component({
   selector: 'app-customers',
   templateUrl: './customers.component.html',
   styleUrls: ['./customers.component.css'],
-  imports: [CommonModule, TableModule, DialogModule, CustomerAddEditFormComponent,Popover, FilterFieldsContainerComponent,PaginatorModule],
+  imports: [CommonModule, TableModule, DialogModule, CustomerAddEditFormComponent,Popover, FilterFieldsContainerComponent,PaginatorModule, TooltipModule],
 })
 export class CustomersComponent implements OnInit {
 
@@ -28,12 +29,14 @@ export class CustomersComponent implements OnInit {
     customerAddEditFormComponent!: CustomerAddEditFormComponent;
 
   formMode: "view" | "edit" | "create" = "view";
+  toastErrorMessage: string = 'Something went wrong';
   customersList: any[] = [];
   isVisibleCustomerddEditDialog:boolean = false;
   selectedCustomer: any;
   getBranchOptions: {_id: string, bch_Name: string, bch_Code: string}[] = [];
   containerOffSetHeightClasses:any[] = ['ofH_calc_nav_bar', 'ofH_calc_body_header'];
   paginationRowsPerPage = paginationRowsPerPageOptions;
+  isButtonLoading: boolean = false;
 
   filterFields = {
     branchId: null,
@@ -42,7 +45,11 @@ export class CustomersComponent implements OnInit {
     ctr_Code: null,
     ctr_MobileNo: null,
     ctr_WhatsAppNo: null,
-    ctr_Email: null
+    ctr_Email: null,
+    createdDate: null,
+    createdDateFrom: '' as string | null,
+    createdDateTo: '' as string | null,
+    paymentPlanStatus: null
   };
   showFilterFields = {
     branchId: true,
@@ -51,7 +58,9 @@ export class CustomersComponent implements OnInit {
     ctr_Code: true,
     ctr_MobileNo: true,
     ctr_WhatsAppNo: true,
-    ctr_Email: true
+    ctr_Email: true,
+    createdDate: true,
+    paymentPlanStatus: true
   };
 
   xPagination: any = {
@@ -66,6 +75,7 @@ export class CustomersComponent implements OnInit {
   pageNo:number = 1;
   indexOfFirstRecord:number = 0;
   totalRecords:any;
+  loggedInUser:any;
 
   constructor(
     private service:AppComponentsApiService,
@@ -73,6 +83,8 @@ export class CustomersComponent implements OnInit {
     private toasterMessage: MessageService) {
     this.getAllCustomers();
     this.getAllBranchAutocompleteData();
+    this.loggedInUser = JSON.parse(localStorage.getItem('USER-INFO') ?? "{}");
+    if(this.loggedInUser?.role == "2") this.showFilterFields.branchId = false;
   }
 
   ngOnInit(): void {
@@ -95,21 +107,26 @@ export class CustomersComponent implements OnInit {
     });
   }
 
-  getAllCustomers(){
+  getAllCustomers(resetPage: boolean = false){
+    if (resetPage) this.pageNo = 1;
+
     let params:any = {
       pageSize : this.pageSize,
       pageNo : this.pageNo
-    };
+    }; 
+    this.filterFields.createdDateFrom = this.filterFields?.createdDate?.[0] ? dateObjToString(this.filterFields?.createdDate[0]) : null;
+    this.filterFields.createdDateTo = this.filterFields?.createdDate?.[1] ? dateObjToString(this.filterFields?.createdDate[1]) : null;
     params = {...params, ...this.filterFields}
     this.service.getAllCustomer(params).subscribe((res:any)=>{
-      if(res) {
-        console.log(res);
+      console.log(res);
+      if(res?.Results) {
         this.customersList = JSON.parse(JSON.stringify(res?.Results ?? []));
         this.xPagination = res?.XPagination;
         this.indexOfFirstRecord = (this.xPagination.currentPage - 1) * this.xPagination.pageSize;
         this.totalRecords = this.xPagination.totalCount;
       } else {
         console.warn('Unexpected response format:',res);
+        this.toasterMessage.add({ key: 'root-toast', severity: 'error', summary: 'Error', detail: this.toastErrorMessage });
       }
     })
   }
@@ -126,6 +143,7 @@ export class CustomersComponent implements OnInit {
       } else {
         console.warn('Unexpected response format:', res);
         this.getBranchOptions = [];
+        this.toasterMessage.add({ key: 'root-toast', severity: 'error', summary: 'Error', detail: this.toastErrorMessage });
       }
     });
   }
@@ -138,6 +156,7 @@ export class CustomersComponent implements OnInit {
     let formData:any = JSON.parse(JSON.stringify(this.selectedCustomer));
     let isCreateCustomerFormValid:any = this.customerAddEditFormComponent.isCreateCustomerFormValid();
     if(isCreateCustomerFormValid){
+      this.isButtonLoading = true;
       formData.ctr_Dob = dateObjToString(formData?.ctr_Dob);
         this.service.createCustomer(formData).subscribe((res:any) => {
           if (res?.Results && res?.Results?.error) {
@@ -151,7 +170,8 @@ export class CustomersComponent implements OnInit {
               queryParams: { customerId: res?.Results?._id }
             });
             this.toasterMessage.add({ key: 'root-toast', severity: 'success', summary: 'Success', detail: 'Customer created successfully!' });
-          }
+          };
+          this.isButtonLoading = false;
         })
     }
   }
@@ -190,7 +210,11 @@ export class CustomersComponent implements OnInit {
         ctr_Code: null,
         ctr_MobileNo: null,
         ctr_WhatsAppNo: null,
-        ctr_Email: null
+        ctr_Email: null,
+        createdDate: null,
+        createdDateFrom: null,
+        createdDateTo: null,
+        paymentPlanStatus: null
       };
       this.getAllCustomers();
     }

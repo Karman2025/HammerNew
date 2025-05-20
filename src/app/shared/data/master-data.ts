@@ -81,4 +81,27 @@ export const attendanceStatusOptions:any[] = [
   }
 ];
 
-export const paginationRowsPerPageOptions = [5, 10, 15, 20];
+export const paginationRowsPerPageOptions = [15, 25, 50, 100];
+
+export const paymentPlanStatus:any[] = [
+  {
+    _id: "1",
+    name: "No plan",
+  },
+  {
+    _id: "2",
+    name: "Payment Due",
+  },
+  {
+    _id: "3",
+    name: "Pending",
+  },
+  {
+    _id: "4",
+    name: "Expired",
+  },
+  {
+    _id: "5",
+    name: "Completed",
+  },
+]

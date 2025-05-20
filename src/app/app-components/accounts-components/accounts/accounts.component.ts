@@ -28,9 +28,11 @@ export class AccountsComponent implements OnInit {
   accountsList:any[] = [];
   formMode: "view" | "edit" | "create" = "view";
   isVisibleAccountsAddEditDialog:boolean = false;
+  toastErrorMessage: string = 'Something went wrong';
   selectedAccounts: any;
   containerOffSetHeightClasses:any[] = ['ofH_calc_nav_bar', 'ofH_calc_body_header'];
   paginationRowsPerPage = paginationRowsPerPageOptions;
+  isButtonLoading: boolean = false;
 
   filterFields = {
     actionDate: null,
@@ -72,7 +74,8 @@ export class AccountsComponent implements OnInit {
   ngOnInit() {
   }
 
-  getAllAccounts() {
+  getAllAccounts(resetPage: boolean = false) {
+    if (resetPage) this.pageNo = 1;
     let params:any = {
       pageSize : this.pageSize,
       pageNo : this.pageNo
@@ -84,12 +87,15 @@ export class AccountsComponent implements OnInit {
 
     this.service.getAllAccounts(params).subscribe((res:any)=>{
       console.log(res);
-
-      this.accountsList = JSON.parse(JSON.stringify(res?.Results ?? []));
-      this.xPagination = res?.XPagination;
-
-      this.indexOfFirstRecord = (this.xPagination.currentPage - 1) * this.xPagination.pageSize;
-      this.totalRecords = this.xPagination.totalCount;
+      if(res?.Results) {
+        this.accountsList = JSON.parse(JSON.stringify(res?.Results ?? []));
+        this.xPagination = res?.XPagination;
+  
+        this.indexOfFirstRecord = (this.xPagination.currentPage - 1) * this.xPagination.pageSize;
+        this.totalRecords = this.xPagination.totalCount;
+      } else {
+        this.toasterMessage.add({ key: 'root-toast', severity: 'error', summary: 'Error', detail: this.toastErrorMessage });
+      }  
     })
   }
 
@@ -104,6 +110,7 @@ export class AccountsComponent implements OnInit {
     let formData:any = JSON.parse(JSON.stringify(this.selectedAccounts));
     let isCreateCustomerFormValid:any = this.accountsAddEditFormComponent.isCreateAccountsFormValid();
     if(isCreateCustomerFormValid){
+      this.isButtonLoading = true;
       this.service.createAccountEntry(formData).subscribe((res:any)=>{
         console.log(res);   
         if(res?.Results?._id){
@@ -111,8 +118,10 @@ export class AccountsComponent implements OnInit {
           this.getAllAccounts();
           const successMessage = 'Account entry created successfully';
           this.toasterMessage.add({ key: 'root-toast', severity: 'success', summary: 'Success', detail: successMessage });
-          // this.toasterMessage.add({ key: 'root-toast', severity: 'error', summary: 'Error', detail: errorMessage });
-        }
+        } else {
+          this.toasterMessage.add({ key: 'root-toast', severity: 'error', summary: 'Error', detail: this.toastErrorMessage });
+        };
+        this.isButtonLoading = false;
       })
     }
   }

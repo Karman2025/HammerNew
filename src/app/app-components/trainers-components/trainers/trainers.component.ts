@@ -12,11 +12,12 @@ import { getOffsetHeightByCustomClass } from '../../../shared/functions/calcHeig
 import { FilterFieldsContainerComponent } from '../../../shared/components/filter-fields-container/filter-fields-container.component';
 import { PaginatorModule } from 'primeng/paginator';
 import { paginationRowsPerPageOptions } from '../../../shared/data/master-data';
+import { TooltipModule } from 'primeng/tooltip';
 
 
 @Component({
   selector: 'app-trainers',
-  imports: [CommonModule, TableModule, DialogModule, TrainerAddEditFormComponent, Popover, FilterFieldsContainerComponent, PaginatorModule],
+  imports: [CommonModule, TableModule, DialogModule, TrainerAddEditFormComponent, Popover, FilterFieldsContainerComponent, PaginatorModule, TooltipModule],
   templateUrl: './trainers.component.html',
   styleUrl: './trainers.component.css',
 })
@@ -28,10 +29,12 @@ export class TrainersComponent {
   trainersList:any[] = [];
   formMode: "view" | "edit" | "create" = "view";
   isVisibleTrainerAddEditDialog:boolean = false;
+  toastErrorMessage: string = 'Something went wrong';
   selectedTrainer: any;
   getBranchOptions: {_id: string, bch_Name: string, bch_Code: string}[] = [];
   containerOffSetHeightClasses:any[] = ['ofH_calc_nav_bar', 'ofH_calc_body_header'];
   paginationRowsPerPage = paginationRowsPerPageOptions;
+  isButtonLoading: boolean = false;
 
   filterFields = {
     branchId: null,
@@ -61,10 +64,13 @@ export class TrainersComponent {
   pageNo:number = 1;
   indexOfFirstRecord:number = 0;
   totalRecords:any;
+  loggedInUser:any;
 
   constructor(private service:AppComponentsApiService, private toasterMessage: MessageService) {
     this.getAllTrainers();
     this.getAllBranchOptions();
+    this.loggedInUser = JSON.parse(localStorage.getItem('USER-INFO') ?? "{}");
+    if(this.loggedInUser?.role == "2") this.showFilterFields.branchId = false;
   }
 
   setFormMode(mode: "view" | "edit" | "create"): void {
@@ -105,17 +111,8 @@ export class TrainersComponent {
     });
   }
 
-  getAllTrainers(){
-    // this.service.getAllTrainer().pipe(catchError((error) =>{
-    //   return of([]);
-    // })).subscribe((res:any)=>{
-    //   if(res && Array.isArray(res)) {
-    //     this.trainersList = JSON.parse(JSON.stringify(res));
-    //   } else {
-    //     console.warn('Unexpected response format:',res);
-    //   }
-    // })
-
+  getAllTrainers(resetPage: boolean = false){
+    if (resetPage) this.pageNo = 1;
     let param:any = {
       pageSize : this.pageSize,
       pageNo : this.pageNo
@@ -124,11 +121,16 @@ export class TrainersComponent {
 
     this.service.getAllTrainer(param).subscribe((res:any)=>{
       console.log(res)
-      this.trainersList = JSON.parse(JSON.stringify(res?.Results));
-      this.xPagination = res?.XPagination;
+      if(res?.Results) {
+        this.trainersList = JSON.parse(JSON.stringify(res?.Results));
+        this.xPagination = res?.XPagination;
 
-      this.indexOfFirstRecord = (this.xPagination.currentPage - 1) * this.xPagination.pageSize;
-      this.totalRecords = this.xPagination.totalCount;
+        this.indexOfFirstRecord = (this.xPagination.currentPage - 1) * this.xPagination.pageSize;
+        this.totalRecords = this.xPagination.totalCount;
+      } else {
+        console.warn('Unexpected response format:',res);
+        this.toasterMessage.add({ key: 'root-toast', severity: 'error', summary: 'Error', detail: this.toastErrorMessage });
+      }
     })
   }
 
@@ -139,6 +141,7 @@ export class TrainersComponent {
     let formData:any = JSON.parse(JSON.stringify(this.selectedTrainer));
     let isCreateTrainerFormValid:any = this.trainerAddEditComponent.isCreateTrainerFormValid();
     if(isCreateTrainerFormValid){
+      this.isButtonLoading = true;
       if (this.formMode === 'create'){
         this.service.createTrainer(formData).subscribe((res:any) => {
           console.log(res);
@@ -150,7 +153,8 @@ export class TrainersComponent {
             this.isVisibleTrainerAddEditDialog = false;
             this.getAllTrainers();
             this.toasterMessage.add({ key: 'root-toast', severity: 'success', summary: 'Success', detail: 'Trainer created successfully!' });
-          }
+          };
+          this.isButtonLoading = false;
         })
       } else if (this.formMode === 'edit') {
         this.service.updateTrainer(formData).subscribe((res: any)=> {
@@ -164,7 +168,8 @@ export class TrainersComponent {
               this.isVisibleTrainerAddEditDialog = false;
               this.getAllTrainers();
               this.toasterMessage.add({ key: 'root-toast', severity: 'success', summary: 'Success', detail: 'Trainer updated successfully!' });
-            }
+            };
+            this.isButtonLoading = false;
         })
       }
     }

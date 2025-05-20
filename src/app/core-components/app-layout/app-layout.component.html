@@ -4,7 +4,9 @@
   </div>
   <div [style]="{height: getOffsetHeightForCard(8)}">
     <div [style]="{height: getOffsetHeightForCard(23)}" class="mx-3 my-1" style="background: var(--secondary); overflow-x: hidden; border-radius: 15px;">
-      <router-outlet></router-outlet>
+      <app-loader>
+        <router-outlet></router-outlet>
+      </app-loader>   
     </div>
   </div>
 </div>

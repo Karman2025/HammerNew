@@ -45,7 +45,7 @@ export class TrainerAddEditFormComponent {
     tnr_Email: '',
     branch: null
   };
-
+  loggedInUser:any;
 
   constructor(private fb: FormBuilder) {
     this.inItFormControl();
@@ -58,6 +58,14 @@ export class TrainerAddEditFormComponent {
           }
         });
       }
+  }
+
+  ngOnInit() {
+    this.loggedInUser = JSON.parse(localStorage.getItem('USER-INFO') ?? "{}");
+    if (this.loggedInUser?.role == '2') {
+      this.createTrainerForm.patchValue({ branchId: this.loggedInUser._id });
+      this.createTrainerForm.get('branchId')?.disable();
+    }
   }
 
   inItFormControl(){

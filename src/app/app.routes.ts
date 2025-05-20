@@ -18,4 +18,8 @@ export const routes: Routes = [
     canActivate: [authCanActivateGuard],
     children: CoreRoutes
   },
+  {
+    path: 'unauthorised',
+    loadComponent: () => import('./auth-components/unauthorised-page/unauthorised-page.component').then(m => m.UnauthorisedPageComponent),
+  },
 ];

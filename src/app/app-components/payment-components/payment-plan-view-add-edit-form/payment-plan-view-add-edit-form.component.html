@@ -1,6 +1,10 @@
 <ng-container *ngIf="formMode == 'view'">
   <p-table
-  class="primary-p-table" [value]="customerPaymentPlan">
+  [scrollable]="true"
+  scrollHeight="{{getOffsetHeightForPrimaryTable(121)}}"
+  [tableStyle]="{'min-height': customerPaymentPlan.length == 0 ? getOffsetHeightForPrimaryTable(121) : 'unset'}"
+  class="primary-p-table"
+  [value]="customerPaymentPlan">
     <ng-template pTemplate="header">
       <tr>
         <ng-container *ngIf="!IsCustomer">
@@ -38,7 +42,7 @@
         <th>
           <span>Status</span>
         </th>
-        <th>
+        <th pFrozenColumn alignFrozen="right">
           <span>Action</span>
         </th>
       </tr>
@@ -99,19 +103,19 @@
         </td>
         <td>
           <div>
-            <span [ngClass]="plan?.status == 'Pending' ? 'badge-danger' : 'badge-success'">{{ plan?.status}}</span>
+            <span [ngClass]="plan?.paymentStatus == 'Pending' ? 'badge-danger' : 'badge-success'">{{ plan?.paymentStatus}}</span>
           </div>
         </td>
-        <td>
+        <td pFrozenColumn alignFrozen="right">
           <div>
             <span (click)="viewPaymentHistory(plan?.payments)" pTooltip="Payment History" tooltipPosition="top" class="c-pointer px-3">
               <i class="fa-solid fa-clock-rotate-left"></i>
             </span>
             <div style="width: 47px;">
-              <span *ngIf="plan?.status == 'Completed' && !IsCustomer" (click)="openPaymentPlanRenewModal(plan)" pTooltip="Renew Plan" tooltipPosition="top" class="c-pointer px-3">
+              <span *ngIf="plan?.paymentStatus == 'Completed' && !IsCustomer" (click)="openPaymentPlanRenewModal(plan)" pTooltip="Renew Plan" tooltipPosition="top" class="c-pointer px-3">
                 <i class="fa-solid fa-repeat"></i>
               </span>
-              <span *ngIf="plan?.status == 'Pending'" (click)="openPayBalanceAmountDialog(plan)" pTooltip="Pay Balance" tooltipPosition="top" class="c-pointer px-3">
+              <span *ngIf="plan?.paymentStatus == 'Pending'" (click)="openPayBalanceAmountDialog(plan)" pTooltip="Pay Balance" tooltipPosition="top" class="c-pointer px-3">
                 <i class="fa-solid fa-cash-register"></i>
               </span>
             </div>
@@ -225,7 +229,7 @@
   <div class="p-p-dialog-footer ofH_calc_modal_footer">
     <div>
       <button (click)="isVisibleCreatePaymentPlanDialog = false" class="btn btn-danger mx-2 px-3 py-1"> Cancel </button>
-      <button class="btn btn-success px-3 py-1" (click)="createCustomerPaymentPlan()">Save</button>
+      <button [disabled]="isButtonLoading" class="btn btn-success px-3 py-1" (click)="createCustomerPaymentPlan()">Save</button>
     </div>
   </div>
 </p-dialog>
@@ -337,7 +341,7 @@
   <div class="p-p-dialog-footer ofH_calc_modal_footer">
     <div>
       <button (click)="isVisiblePayBalanceDialog = false" class="btn btn-danger mx-2 px-3 py-1"> Cancel </button>
-      <button class="btn btn-success px-3 py-1" (click)="savePayBalanceAmount()">Save</button>
+      <button [disabled]="isButtonLoading" class="btn btn-success px-3 py-1" (click)="savePayBalanceAmount()">Save</button>
     </div>
   </div>
 </p-dialog>

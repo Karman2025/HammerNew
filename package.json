@@ -21,6 +21,7 @@
     "@popperjs/core": "^2.11.8",
     "@primeng/themes": "^19.0.10",
     "bootstrap": "^5.3.3",
+    "ngx-infinite-scroll": "^19.0.0",
     "primeng": "^19.0.10",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",

@@ -78,6 +78,7 @@
       </div>
     </div>
 
+    <!-- customer -->
     <div class="col-12" *ngIf="showFilterFields?.ctr_Name">
       <div class="pt-1">
         <label class="form-label" for="Customer_Name">Customer Name</label>
@@ -93,6 +94,27 @@
         <input type="text" class="form-control" id="Customer_Code"
           [(ngModel)]="filterFields.ctr_Code" name="ctr_Code"
           placeholder="ex: CTR000000000">
+      </div>
+    </div>
+
+    <div class="col-12" *ngIf="showFilterFields?.createdDate">
+      <div class="pt-1">
+        <label class="form-label" for="accounts-createdDate">Created Date</label>
+          <p-datepicker class="primary-date-picker" [(ngModel)]="filterFields.createdDate" name="createdDate" selectionMode="range" [readonlyInput]="true" dateFormat="dd/mm/yy" placeholder="dd/mm/yy" appendTo="body"/>
+      </div>
+    </div>
+
+    <div class="col-12" *ngIf="showFilterFields?.paymentPlanStatus">
+      <div class="pt-1">
+        <label class="form-label" for="trainer-name">Plan Status</label>
+        <p-select class="form-control primary-p-select"
+          [options]="paymentPlanStatus" dataKey="_id"
+          [(ngModel)]="filterFields.paymentPlanStatus"
+          name="branchId"
+          optionLabel="name" optionValue="name"
+          placeholder="Select a Status"
+          [appendTo]="'body'">
+        </p-select>
       </div>
     </div>
 

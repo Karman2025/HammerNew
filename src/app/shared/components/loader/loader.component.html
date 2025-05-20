@@ -1,0 +1,12 @@
+<div class="loader-container" *ngIf="isLoading(); else content">
+  <p-progressSpinner 
+  class="primary-spinner-style" 
+  strokeWidth="4" 
+  fill="transparent" 
+  animationDuration="2s">
+  </p-progressSpinner>
+</div>
+<ng-template #content>
+  <ng-content></ng-content>
+</ng-template>
+  

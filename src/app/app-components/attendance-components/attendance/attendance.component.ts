@@ -12,12 +12,13 @@ import { TooltipModule } from 'primeng/tooltip';
 import { FilterFieldsContainerComponent } from '../../../shared/components/filter-fields-container/filter-fields-container.component';
 import { catchError, of } from 'rxjs';
 import { MessageService } from 'primeng/api';
+import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
 
 @Component({
   selector: 'app-attendance',
   templateUrl: './attendance.component.html',
   styleUrls: ['./attendance.component.css'],
-   imports: [CommonModule, SlideButtonComponent, DatePicker, FormsModule, Popover, ButtonModule, TooltipModule, FilterFieldsContainerComponent]
+   imports: [CommonModule, SlideButtonComponent, DatePicker, FormsModule, Popover, ButtonModule, TooltipModule, FilterFieldsContainerComponent, InfiniteScrollDirective]
 })
 export class AttendanceComponent implements OnInit {
   attendanceList: any[] = [];
@@ -25,11 +26,10 @@ export class AttendanceComponent implements OnInit {
   attendanceDate: any;
   maxDate: Date = new Date;
   formattedDate: string = '';
+  toastErrorMessage: string = 'Something went wrong';
   isPastDay: boolean = false;
   containerOffSetHeightClasses:any[] = ['ofH_calc_nav_bar', 'ofH_calc_body_header'];
   getBranchOptions: {_id: string, bch_Name: string, bch_Code: string}[] = [];
-
-
   filterFields = {
     branchId: null,
     ctr_Name: null,
@@ -46,20 +46,33 @@ export class AttendanceComponent implements OnInit {
     ctr_WhatsAppNo: true,
     isPresent: true
   };
+  loggedInUser:any;
+  pageSize:number = 15;
+  pageNo:number = 1;
+    xPagination: any = {
+    currentPage: 1,
+    pageSize: 15,
+    totalPages: 1,
+    totalCount: 9,
+    hasNextPage: false,
+    hasPreviousPage: false
+  };
 
-  constructor(private service: AppComponentsApiService, private toasterMessage: MessageService) {
+  constructor(
+    private service: AppComponentsApiService,
+    private toasterMessage: MessageService) {
     this.attendanceDate = new Date();
-    console.log(this.attendanceDate);
     this.getAllAttendance();
     this.getAllBranchAutocompleteData();
-
+    this.loggedInUser = JSON.parse(localStorage.getItem('USER-INFO') ?? "{}");
+    if(this.loggedInUser?.role == "2") this.showFilterFields.branchId = false;
   }
 
   ngOnInit() {
   }
 
   getAllBranchAutocompleteData() {
-      this.service.getAllBranchAutocompleteData().pipe(
+      this.service.getAllBranchAutocompleteData(true).pipe(
         catchError((error) => {
           console.error('Error fetching branch options:', error);
           return of([]);
@@ -91,23 +104,30 @@ export class AttendanceComponent implements OnInit {
     this.checkInCustomer();
   }
 
-  getAllAttendance() {
+  getAllAttendance(resetPage: boolean = false, isSkipLoader: boolean = false) {
+    if (resetPage) this.pageNo = 1;
     const formattedDate = dateObjToString(this.attendanceDate)?.split('T')[0]!;
-    console.log(typeof formattedDate);
     const todaysDate  = newDateString();
     if (formattedDate < todaysDate) this.isPastDay = true; else this.isPastDay = false;
-    console.log(formattedDate);
 
-    let payload: any = {
-      // pageSize: 100,
-      // pageNo: 1,
-      attendanceDate: formattedDate 
-    }
-    payload = {...payload, ...this.filterFields}
-    
-    this.service.getAllAttendance(payload).subscribe((res: any) => {
-      this.attendanceList = [...res.Results];
-      console.log(this.attendanceList);
+    let param:any = {
+      pageSize : this.pageSize,
+      pageNo : this.pageNo,
+      attendanceDate: formattedDate,
+      isSkipLoader: isSkipLoader
+    };
+
+    param = {...param, ...this.filterFields}
+
+    this.service.getAllAttendance(param).subscribe((res: any) => {
+      if(res?.Results) {
+        this.attendanceList = [...this.attendanceList, ...res.Results];
+        console.log(this.attendanceList);
+        this.xPagination = res?.XPagination;
+      } else {
+        console.warn('Unexpected response format:',res);
+        this.toasterMessage.add({ key: 'root-toast', severity: 'error', summary: 'Error', detail: this.toastErrorMessage });
+      }
     });
   }
 
@@ -128,11 +148,16 @@ export class AttendanceComponent implements OnInit {
     }
     console.log(payload);
 
-    this.service.customerCheckIn(payload).subscribe((res: any) => {
+    this.service.customerCheckIn(payload, true).subscribe((res: any) => {
       console.log("CheckIn successfull", res);
-      this.getAllAttendance();
-      const successMessage = 'Check-in successful';
-      this.toasterMessage.add({ key: 'root-toast', severity: 'success', summary: 'Success', detail: successMessage });
+      if (res?.Results) {
+        this.getAllAttendance(false,true);
+        const successMessage = 'Check-in successful';
+        this.toasterMessage.add({ key: 'root-toast', severity: 'success', summary: 'Success', detail: successMessage });
+      } else {
+        console.warn('Unexpected response format:',res);
+        this.toasterMessage.add({ key: 'root-toast', severity: 'error', summary: 'Error', detail: this.toastErrorMessage });
+      }
     })
   }
 
@@ -149,7 +174,15 @@ export class AttendanceComponent implements OnInit {
       ctr_WhatsAppNo: null,
       isPresent: null
     };
-    this.getAllAttendance();
+    this.getAllAttendance(true, false);
   }
 
+  onScroll() {
+
+    if ( this.xPagination?.hasNextPage) {
+      this.pageNo++;
+
+      this.getAllAttendance(false, true);
+  }
+}
 }

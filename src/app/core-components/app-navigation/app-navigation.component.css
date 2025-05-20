@@ -55,3 +55,30 @@
     margin: 0px 15px;
     cursor: pointer;
 }
+
+.profile-popover {
+    display: flex;
+    flex-direction: column;
+    list-style: none; /* No bullet points */
+    padding: 0;
+    margin: 0;
+}
+
+.profile-popover-items {
+    padding: 4px 4px;
+    cursor: pointer;
+}
+
+.profile-popover-items a {
+    text-decoration: none;
+    /* position: relative; */
+    /* transition: transform 0.3s ease-in-out;
+    display: inline-block; */
+    color: #000;
+}
+.profile-popover.active a {
+    /* padding: 2px 6px; */
+    /* border-radius: 6px; */
+    background-color: var(--primary-color);
+    /* border-bottom: 2px solid var(--primary-color); */
+} 

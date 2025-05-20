@@ -1316,6 +1316,9 @@ body {
 .primary-p-table .p-datatable-thead{
   background: var(--primary);
   /* color: #fff; */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .primary-p-table .p-datatable-thead tr th {
   border-bottom: none;
@@ -1371,6 +1374,9 @@ body {
 }
 .primary-p-table .p-datatable-tbody tr:last-child td {
   border-bottom: 1px solid var(--primary);
+}
+.primary-p-table .p-datatable-scrollable td.p-datatable-frozen-column {
+  background-color: inherit;
 }
 body {
   font-family: Helvetica, Arial, sans-serif !important;
@@ -1430,6 +1436,7 @@ body {
 }
 .primary-form-control .form-control:disabled {
   background: #fff;
+  color: #64748b;
 }
 .primary-p-dialog .p-dialog-content {
   padding: 0;
@@ -1482,6 +1489,13 @@ body {
 .primary-p-select .p-select-label.p-placeholder {
   font-size: 13px;
 }
+.primary-p-datepicker .p-datepicker .p-inputtext {
+  padding: 0.3rem 0.7rem;
+  font-size: 0.9rem !important;
+}
+.primary-p-datepicker .p-inputtext:enabled:hover {
+  border-color: #dee2e6;
+}
 .primary-p-datepicker .p-datepicker .p-inputtext::placeholder,
 textarea.form-control::placeholder,
 input.form-control::placeholder {
@@ -1495,14 +1509,30 @@ input.form-control::placeholder {
 .badge-danger {
   background: rgba(var(--bs-danger-rgb));
   color: #fff !important;
-  padding: 0px 6px;
-  border-radius: 4px;
+  padding: 1px 7px;
+  border-radius: 10px;
+  font-size: 0.8rem;
+}
+.badge-intermediate {
+  background: #ff7600;
+  color: #fff !important;
+  padding: 1px 7px;
+  border-radius: 10px;
+  font-size: 0.8rem;
 }
 .badge-success {
   background: rgba(var(--bs-success-rgb));
   color: #fff !important;
-  padding: 0px 6px;
-  border-radius: 4px;
+  padding: 1px 7px;
+  border-radius: 10px;
+  font-size: 0.8rem;
+}
+.badge-warning {
+  background: #ffc107;
+  color: #fff !important;
+  padding: 1px 7px;
+  border-radius: 10px;
+  font-size: 0.8rem;
 }
 .text-overflow-ellipsis{
   box-sizing: border-box;

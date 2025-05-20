@@ -40,6 +40,7 @@ export class CustomerAddEditFormComponent implements OnInit {
   customerFieldData: any;
   defaultValues = {
     ctr_Name: '',
+    ctr_Code: '',
     ctr_Email: '',
     ctr_MobileNo: '',
     ctr_Addresses: '',
@@ -53,6 +54,7 @@ export class CustomerAddEditFormComponent implements OnInit {
     branchId: null
   };
   paymentPlanOptions:any[] = paymentPlanOptions;
+  loggedInUser:any;
   constructor(
     private fb: FormBuilder,
   ) {
@@ -69,11 +71,17 @@ export class CustomerAddEditFormComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.loggedInUser = JSON.parse(localStorage.getItem('USER-INFO') ?? "{}");
+    if (this.loggedInUser?.role == '2') {
+      this.createCustomerForm.patchValue({ branchId: this.loggedInUser._id });
+      this.createCustomerForm.get('branchId')?.disable();
+    }
   }
 
   inItFormControl(){
     this.createCustomerForm = this.fb.group({
       _id: new FormControl(''),
+      ctr_Code: new FormControl({ value: '', disabled: true }),
       ctr_Name: new FormControl('', Validators.required),
       ctr_Email: new FormControl('', [Validators.required, Validators.email]),
       ctr_MobileNo: new FormControl('', Validators.required),
@@ -91,6 +99,8 @@ export class CustomerAddEditFormComponent implements OnInit {
   loadCustomerFormData() {
     if(this.formMode === 'view' || this.formMode ==='edit') {
       if(this.customerFieldData) {
+        console.log(this.customerFieldData);
+        
         this.createCustomerForm.patchValue(this.customerFieldData);
       }
     } else if(this.formMode ==='create'){

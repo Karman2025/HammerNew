@@ -11,13 +11,14 @@ import { getOffsetHeightByCustomClass } from '../../../shared/functions/calcHeig
 import { FilterFieldsContainerComponent } from '../../../shared/components/filter-fields-container/filter-fields-container.component';
 import { PaginatorModule } from 'primeng/paginator';
 import { paginationRowsPerPageOptions } from '../../../shared/data/master-data';
+import { TooltipModule } from 'primeng/tooltip';
 
 
 @Component({
   selector: 'app-branches',
   templateUrl: './branches.component.html',
   styleUrls: ['./branches.component.css'],
-  imports: [CommonModule, BranchAddEditFormComponent, TableModule, DialogModule, Popover, FilterFieldsContainerComponent, PaginatorModule],
+  imports: [CommonModule, BranchAddEditFormComponent, TableModule, DialogModule, Popover, FilterFieldsContainerComponent, PaginatorModule, TooltipModule],
 })
 export class BranchesComponent implements OnInit {
 
@@ -28,9 +29,11 @@ export class BranchesComponent implements OnInit {
   selectedBranch: any;
   selectedBranchClone: any;
   formMode: "view" | "edit" | "create" = "view";
+  toastErrorMessage: string = 'Something went wrong';
   isVisibleBranchAddEditDialog:boolean = false;
   containerOffSetHeightClasses:any[] = ['ofH_calc_nav_bar', 'ofH_calc_body_header'];
   paginationRowsPerPage = paginationRowsPerPageOptions;
+  isButtonLoading: boolean = false;
 
   filterFields = {
     bch_Code: null,
@@ -91,20 +94,26 @@ export class BranchesComponent implements OnInit {
   }
 
 
-  getAllBranches(){
+  getAllBranches(resetPage: boolean = false){
+    if (resetPage) this.pageNo = 1;
+    
     let params:any = {
       pageSize : this.pageSize,
       pageNo : this.pageNo
     };
     params = {...params, ...this.filterFields}
     this.service.getAllBranch(params).subscribe((res:any)=>{
-      this.branchesList = JSON.parse(JSON.stringify(res?.Results ?? []));
-      this.xPagination = res?.XPagination;
-
-      this.indexOfFirstRecord = (this.xPagination.currentPage - 1) * this.xPagination.pageSize;
-      console.log(this.indexOfFirstRecord)
-      //  this.rows3 = this.xPagination.pageSize;
-      this.totalRecords = this.xPagination.totalCount;
+      console.log(res);
+      if(res?.Results) {
+        this.branchesList = JSON.parse(JSON.stringify(res?.Results ?? []));
+        this.xPagination = res?.XPagination;
+        this.indexOfFirstRecord = (this.xPagination.currentPage - 1) * this.xPagination.pageSize;
+        console.log(this.indexOfFirstRecord)
+        this.totalRecords = this.xPagination.totalCount;
+      } else {
+        this.toasterMessage.add({ key: 'root-toast', severity: 'error', summary: 'Error', detail: this.toastErrorMessage });
+      }
+      
     })
   }
 
@@ -116,27 +125,37 @@ export class BranchesComponent implements OnInit {
 
    let isCreateBranchFormValid:any = this.branchAddEditComponent.isCreateBranchFormValid();
    if(isCreateBranchFormValid) {
+     this.isButtonLoading = true;
      if (this.formMode === 'create'){
        this.service.createBranch(formData).subscribe((res:any) => {
+        console.log(res);
+        
         if (res?.Results && res?.Results?.error) {
           const errorMessage = res?.Results?.error;
           this.toasterMessage.add({ key: 'root-toast', severity: 'error', summary: 'Error', detail: errorMessage });
-        } else {
+        } else if (res?.Results && !res?.Results?.error) {
          this.isVisibleBranchAddEditDialog = false;
          this.getAllBranches();
          this.toasterMessage.add({ key: 'root-toast', severity: 'success', summary: 'Success', detail: 'Branch created successfully!' });
-        }
+        };
+        this.isButtonLoading = false;
       })
      } else if (this.formMode === 'edit') {
        this.service.updateBranch(formData).subscribe((res:any) => {
+        console.log(res);
+        
         if (res?.Results && res?.Results?.error) {
           const errorMessage = res?.Results?.error;
           this.toasterMessage.add({ key: 'root-toast', severity: 'error', summary: 'Error', detail: errorMessage });
-        } else {
+        } else if (res?.Results && res?.Results?.message === 'Branch updated successfully') {
            this.isVisibleBranchAddEditDialog = false;
            this.getAllBranches();
            this.toasterMessage.add({ key: 'root-toast', severity: 'success', summary: 'Success', detail: 'Branch updated successfully!' });
-        }
+        } else {
+          this.toasterMessage.add({ key: 'root-toast', severity: 'error', summary: 'Error', detail: this.toastErrorMessage });
+        };
+
+        this.isButtonLoading = false;
       })
      }
    }

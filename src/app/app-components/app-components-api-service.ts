@@ -3,6 +3,8 @@ import { Injectable } from '@angular/core';
 import { map, filter } from 'rxjs';
 import { HttpApiService } from '../server/http-api.service';
 import { environment } from '../../environments/environment';
+import { HttpContext } from '@angular/common/http';
+import { SKIP_LOADER } from '../shared/tokens/loader-context.token'; // import this
 
 @Injectable({
     providedIn: 'root'
@@ -47,8 +49,9 @@ export class AppComponentsApiService {
         return this.api.get<any[]>(`${this.getAllBranchEndPoint}${endPoint}`)
         .pipe(map((response) => response));
     }
-    getAllBranchAutocompleteData(){
-        return this.api.get<any[]>(`${this.getAllBranchAutocompleteEndPoint}`)
+    getAllBranchAutocompleteData(isSkipLoader: boolean = false){
+      const context = new HttpContext().set(SKIP_LOADER, isSkipLoader);
+        return this.api.get<any[]>(`${this.getAllBranchAutocompleteEndPoint}`, context)
         .pipe(map((response) => response?.Results ?? []));
     }
 
@@ -119,18 +122,23 @@ export class AppComponentsApiService {
     //     .pipe(map((response) => response));
     // }
     getAllAttendance(params: any) {
+      const isSkipLoader = params?.isSkipLoader ?? false;
+      delete params?.isSkipLoader;
+      
       let endPoint = '?';
         for (let key in params) {
             if (params.hasOwnProperty(key) && (params[key] || params[key] == true || params[key] == false)) {
                 endPoint += `${endPoint.length > 1 ? '&' : ''}${key}=${params[key]}`;
             }
         }
-      return this.api.get<any[]>(`${this.getAllAttendanceEndPoint}${endPoint}`)
+      const context = new HttpContext().set(SKIP_LOADER, isSkipLoader);
+      return this.api.get<any[]>(`${this.getAllAttendanceEndPoint}${endPoint}`, context)
       .pipe(map((response) => response));
   }
 
-    customerCheckIn(data: any){
-        return this.api.post<any[]>(this.checkInCustomerEndPoint,data)
+    customerCheckIn(data: any, isSkipLoader: boolean = false) {
+      const context = new HttpContext().set(SKIP_LOADER, isSkipLoader);
+        return this.api.post<any[]>(this.checkInCustomerEndPoint, data, context)
         .pipe(map((response) => response));
     }
 

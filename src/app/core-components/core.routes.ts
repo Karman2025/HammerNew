@@ -1,5 +1,6 @@
 import { CustomerDetailedViewComponent } from './../app-components/customer-components/customer-detailed-view/customer-detailed-view.component';
 import { Routes } from '@angular/router';
+import { authCanActivateGuard } from '../auth-components/auth-guard/auth-can-activate.guard';
 
 export const CoreRoutes: Routes = [
   {
@@ -13,6 +14,7 @@ export const CoreRoutes: Routes = [
   {
     path: 'branches',
     loadComponent: () => import('../app-components/branch-components/branches/branches.component').then(m => m.BranchesComponent),
+    canActivate: [authCanActivateGuard],
   },
   {
     path: 'customers',

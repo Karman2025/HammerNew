@@ -38,6 +38,8 @@ export class CustomerDetailedViewComponent implements OnInit {
   customerDetails:any = {};
   isVisibleCustomerEditDialog:boolean = false;
   isVisibleDietPlanDialog:boolean = false;
+  isButtonLoading: boolean = false;
+  toastErrorMessage: string = 'Something went wrong';
   customerData:any = {};
   customerDietPlan:any[] = [];
   customerId:any;
@@ -84,6 +86,7 @@ export class CustomerDetailedViewComponent implements OnInit {
     let formData:any = JSON.parse(JSON.stringify(this.customerData));
     let isCreateCustomerFormValid:any = this.customerAddEditFormComponent.isCreateCustomerFormValid();
     if(isCreateCustomerFormValid){
+      this.isButtonLoading =  true;
       formData.ctr_Dob = dateObjToString(formData?.ctr_Dob);
         this.service.updateCustomer(formData).subscribe((res:any) => {
           if (res?.Results && res?.Results?.error) {
@@ -94,7 +97,8 @@ export class CustomerDetailedViewComponent implements OnInit {
             this.getCustomerDetailsById(this.customerId);
             const successMessage = 'Customer updated successfully!'
             this.toasterMessage.add({ key: 'root-toast', severity: 'success', summary: 'Success', detail: successMessage });
-          }
+          };
+          this.isButtonLoading = false;
         })
     }
   }
@@ -122,6 +126,7 @@ export class CustomerDetailedViewComponent implements OnInit {
   onDietPlanSubmit() {
     let isValid = this.dietPlanAddEditFormComponent?.validateAllFormFields();
     if(isValid){
+      this.isButtonLoading = true;
       this.customerDietPlan.forEach((x:any)=>x.customerId = this.customerId);
       this.service.addUpdateDietPlans(this.customerDietPlan).subscribe((res:any)=>{
         if(res?.Results?.message == "Diet plan updated successfully"){
@@ -133,7 +138,8 @@ export class CustomerDetailedViewComponent implements OnInit {
           })
         } else {
           this.toasterMessage.add({ key: 'root-toast', severity: 'error', summary: 'Error', detail: res?.Results?.error ?? 'Something went wrong please try again later' });
-        }
+        };
+        this.isButtonLoading = false;
       })
     }
   }

@@ -11,6 +11,7 @@ import { PaginatorModule } from 'primeng/paginator';
 import { catchError, of } from 'rxjs';
 import { dateObjToString } from '../../../shared/functions/date-string-to-obj';
 import { paginationRowsPerPageOptions } from '../../../shared/data/master-data';
+import { MessageService } from 'primeng/api';
 
 
 interface Payments {
@@ -30,6 +31,7 @@ interface Payments {
 export class PaymentsComponent implements OnInit {
   customersPaymentPlan: Payments[] = [];
   containerOffSetHeightClasses:any[] = ['ofH_calc_nav_bar', 'ofH_calc_body_header'];
+  toastErrorMessage: string = 'Something went wrong';
   getBranchOptions: {_id: string, bch_Name: string, bch_Code: string}[] = [];
   paginationRowsPerPage = paginationRowsPerPageOptions;
 
@@ -77,7 +79,8 @@ export class PaymentsComponent implements OnInit {
   totalRecords:any;
 
   constructor(
-    private service: AppComponentsApiService
+    private service: AppComponentsApiService,
+    private toasterMessage: MessageService
   ) {
     this.getAllCustomerPaymentPlans();
     this.getAllBranchAutocompleteData();
@@ -87,7 +90,8 @@ export class PaymentsComponent implements OnInit {
 
   }
 
-  getAllCustomerPaymentPlans(){
+  getAllCustomerPaymentPlans(resetPage: boolean = false){
+    if (resetPage) this.pageNo = 1;
     let params:any = {
       pageSize : this.pageSize,
       pageNo : this.pageNo
@@ -98,11 +102,16 @@ export class PaymentsComponent implements OnInit {
     this.filterFields.planEndDateTo = this.filterFields?.planEndDate?.[1] ? dateObjToString(this.filterFields?.planEndDate[1]) : null;
     params = {...params, ...this.filterFields};
     this.service.getAllCustomerPaymentPlans(params).subscribe((res:any)=>{
-      this.customersPaymentPlan = [];
-      this.customersPaymentPlan = JSON.parse(JSON.stringify(res?.Results ?? []));
-      this.xPagination = res?.XPagination;
-      this.indexOfFirstRecord = (this.xPagination.currentPage - 1) * this.xPagination.pageSize;
-      this.totalRecords = this.xPagination.totalCount;
+      if(res?.Results) {
+        this.customersPaymentPlan = [];
+        this.customersPaymentPlan = JSON.parse(JSON.stringify(res?.Results ?? []));
+        this.xPagination = res?.XPagination;
+        this.indexOfFirstRecord = (this.xPagination.currentPage - 1) * this.xPagination.pageSize;
+        this.totalRecords = this.xPagination.totalCount;
+      } else {
+        this.toasterMessage.add({ key: 'root-toast', severity: 'error', summary: 'Error', detail: this.toastErrorMessage });
+      }
+      
     })
   }
 
