@@ -40,33 +40,27 @@ export class SignInComponent implements OnInit {
 
   onSignInSubmit() {
     if (this.signInForm.valid) {
-      this.isLoading = true; 
+      this.isLoading = true;
       const authBody = this.signInForm.value;
-  
-      this.service.signin(authBody).subscribe({
-        next: (res: any) => {
-          this.isLoading = false; 
-          if (res?.message === 'login success') {
-            localStorage.setItem('USER-JWT-TOKEN', res?.jwt);
+      this.service.signin(authBody).subscribe((res:any) => {
+        const message = res?.Results?.message;
+        this.isLoading = false;
+        switch (message) {
+          case 'login success':
+            localStorage.setItem('USER-JWT-TOKEN', res?.Results?.jwt);
+            localStorage.setItem('USER-INFO', JSON.stringify(res?.Results?.userInfo));
             this.router.navigate(['/home/welcome']);
-          } else {
-            this.showError(res?.message || 'Unknown error occurred');
-          }
-        },
-        error: (err: any) => {
-          this.isLoading = false;
-          // Handle different types of error responses
-          if (err.error?.message) {
-            this.showError(err.error.message);
-          } else if (err.status === 0) {
-            this.showError('Unable to connect to server. Please check your internet connection.');
-          } else if (err.status === 401) {
-            this.showError('Invalid email or password');
-          } else {
-            this.showError('An unexpected error occurred. Please try again.');
-          }
-          console.error('Error during sign-in:', err);
-        }
+            break;
+          case 'Invalid password':
+          case 'User not found with given Email':
+            this.showError(message);
+            break;
+          default:
+            if (res?.ErrorMessage === 'Server error') {
+              this.showError('Server error');
+            }
+            break;
+        };
       });
     } else {
       Object.keys(this.signInForm.controls).forEach(key => {

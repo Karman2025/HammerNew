@@ -185,39 +185,20 @@ onCustomerCreate() {
     this.isSaving = true; // Start loading
     formData.ctr_Dob = dateObjToString(formData?.ctr_Dob);
 
-    this.service.createCustomer(formData).subscribe({
-      next: (res:any) => {
-        if (res?.Results && res?.Results?.error) {
-          const errorMessage = res?.Results?.error;
-          this.toasterMessage.add({ key: 'root-toast', severity: 'error', summary: 'Error', detail: errorMessage });
-        } else {
+      this.service.createCustomer(formData).subscribe((res:any) => {
+        console.log(res);
+        if(res?.Results?._id){
           this.isVisibleCustomerddEditDialog = false;
           this.getAllCustomers();
           this.router.navigate(['/home/customers/customer-details'], {
             queryParams: { customerId: res?.Results?._id }
           });
-          this.toasterMessage.add({
-            key: 'root-toast',
-            severity: 'success',
-            summary: 'Success',
-            detail: 'Customer created successfully!'
-          });
+          this.toasterMessage.add({ key: 'root-toast', severity: 'success', summary: 'Success', detail: 'Customer created successfully!' });
+        } else {
+          this.toasterMessage.add({ key: 'root-toast', severity: 'error', summary: 'Error', detail: res?.Results?.error });
         }
-      },
-      error: (error) => {
-        this.toasterMessage.add({
-          key: 'root-toast',
-          severity: 'error',
-          summary: 'Error',
-          detail: 'Failed to create customer'
-        });
-      },
-      complete: () => {
-        this.isSaving = false; // End loading
-      }
-    });
-  } else {
-    this.isSaving = false;
+        this.isSaving = false;
+      })
   }
 }
 
