@@ -205,15 +205,14 @@ createCustomerPaymentPlan() {
 
       if (res?.Results?.customerPaymentPlan) {
         this.isVisibleCreatePaymentPlanDialog = false;
-        this.toasterMessage.add({ key: 'root-toast', severity: 'success', summary: 'Success', detail: 'Plan created successfully!' });
+        const successMessage = 'Customer payment plan created successfully'
+        this.toasterMessage.add({ key: 'root-toast', severity: 'success', summary: 'Success', detail: successMessage });
 
         if (this.IsCustomer) {
           let tempCustomerPaymentPlan = this.customerPaymentPlan?.filter((x: any) => x?.customer?._id != customer?._id);
           res.Results.customerPaymentPlan.customer = customer;
           tempCustomerPaymentPlan?.unshift(res?.Results?.customerPaymentPlan);
           this.customerPaymentPlan = JSON.parse(JSON.stringify(tempCustomerPaymentPlan));
-          const successMessage = 'Customer payment plan created successfully'
-          this.toasterMessage.add({ key: 'root-toast', severity: 'success', summary: 'Success', detail: successMessage });
         } else {
           res.Results.customerPaymentPlan.customer = customer;
           const index = this.customerPaymentPlan?.findIndex((x: any) => x?.customer?._id == customer?._id);
