@@ -7,20 +7,22 @@ import { Popover } from 'primeng/popover';
   selector: 'app-navigation',
   templateUrl: './app-navigation.component.html',
   styleUrls: ['./app-navigation.component.css'],
-  imports: [RouterModule, Popover, CommonModule]
+  imports: [RouterModule, Popover, CommonModule],
 })
 export class AppNavigationComponent implements OnInit {
-
-  loggedInUser:any;
+  menuOpen = false;
+  loggedInUser: any;
   constructor() {
-    this.loggedInUser = JSON.parse(localStorage.getItem('USER-INFO') ?? "{}");
+    this.loggedInUser = JSON.parse(localStorage.getItem('USER-INFO') ?? '{}');
   }
 
-  ngOnInit() {
+  ngOnInit() {}
+
+  toggleMenu() {
+    this.menuOpen = !this.menuOpen;
   }
 
   signOut() {
-    localStorage.removeItem('USER-JWT-TOKEN')
+    localStorage.removeItem('USER-JWT-TOKEN');
   }
-
 }
