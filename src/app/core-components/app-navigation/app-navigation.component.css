@@ -3,11 +3,13 @@
     justify-content: space-between;
     align-items: center;
     overflow: hidden;
+    width: 100%;
 }
 
 .menu-items {
     display: flex;
     align-items: center;
+    justify-content: space-evenly;
     list-style: none; /* No bullet points */
     padding: 0;
     margin: 0;
@@ -15,6 +17,7 @@
 
 
 .menu-items a {
+    display: block;
     text-decoration: none;
     /* color: #fff; */
     position: relative;
@@ -23,10 +26,11 @@
     color: #000;
 }
 .menu-item.active a {
-    padding: 2px 6px;
+    padding: 0px 2px;
     border-radius: 6px;
     background-color: var(--primary-color);
-    border-bottom: 2px solid var(--primary-color);
+    border: 2px solid var(--primary-color);
+    
 } 
 
 /* .menu-items a::before {
@@ -54,8 +58,9 @@
     /* display: flex; */
     /* flex-direction: column; */
     /* align-items: center;  */
-    padding: 10px 20px;
-    margin: 0px 15px;
+    
+    padding: 0px 2px;
+    /* margin: 0px 15px; */
     cursor: pointer;
 }
 
@@ -71,6 +76,10 @@
         padding: 10px 10px;
         margin: 0px 5px;
     }
+}
+
+::ng-deep .profile-popover-card {
+    width: 15dvw;
 }
 
 .profile-popover {

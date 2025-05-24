@@ -1,6 +1,6 @@
-<nav class="px-3 py-3">
+<nav class="px-3 py-3" style="width: 100dvw;">
   <div class="nav-container" style="background-color: var(--secondary); height: 65px; border-radius: 15px;">
-    <div class="nav-left-section">
+    <div class="nav-left-section" style="max-width: 140px;">
       <div class="d-flex align-items-center justify-content-center">
         <div style="    margin-left: 13px;">
           <span style="display: block; background: var(--primary); padding: 7px 15px; border-radius: 8px; font-size: 1.2rem; font-weight: 700;">H</span>
@@ -11,7 +11,7 @@
       </div>
     </div>
 
-    <div class="nav-center-section" [ngClass]="{ 'd-none': isMobileScreen }">
+    <div class="nav-center-section w-100 px-2" [ngClass]="{ 'd-none': isMobileScreen }">
       <ul class="menu-items">
         <ng-container *ngIf="loggedInUser?.role === '1'">
           <li class="menu-item" routerLinkActive="active">
@@ -39,7 +39,7 @@
       </ul>
     </div>
 
-    <div class="nav-right-section d-flex align-items-center justify-content-center px-2">
+    <div class="nav-right-section d-flex align-items-center justify-content-center px-2" style="max-width: 140px;">
    
       <button class="hamburger-button" *ngIf="isMobileScreen" (click)="visible = true">
         <i class="fa-solid fa-bars"></i>
@@ -51,7 +51,7 @@
           <i class="fa-regular fa-circle-user"></i>
         </span>
       </div>
-      <p-popover styleClass="" class="p-3" #op>
+      <p-popover styleClass="profile-popover-card" class="p-3" #op>
         <div class="d-flex align-items-center justify-content-center">
             <ul class="profile-popover">
               <li class="profile-popover-items">Usergmail.com</li>
