@@ -10,8 +10,7 @@
         </div>
       </div>
     </div>
-
-    <div class="nav-center-section w-100 px-2" [ngClass]="{ 'd-none': isMobileScreen }">
+    <div class="nav-right-section">
       <ul class="menu-items">
         <ng-container *ngIf="loggedInUser?.role === '1'">
           <li class="menu-item" routerLinkActive="active">
@@ -36,22 +35,21 @@
         <li class="menu-item" routerLinkActive="active">
           <a routerLink="/home/accounts">Accounts</a>
         </li>
+        <!-- <li class="menu-item">
+          <a routerLink="/signin" (click)="signOut()">Logout</a>
+        </li> -->
       </ul>
     </div>
-
-    <div class="nav-right-section d-flex align-items-center justify-content-center px-2" style="max-width: 140px;">
-   
-      <button class="hamburger-button" *ngIf="isMobileScreen" (click)="visible = true">
-        <i class="fa-solid fa-bars"></i>
-      </button> 
-
-      <ng-container *ngIf="!isMobileScreen">
-        <div style="margin-right: 13px;">
+    <div class="d-flex align-items-center justify-content-center">
+      <!-- <div>
+        <span class="px-2" style="font-size: 1.5rem;"><i class="fa-solid fa-bell"></i></span>
+      </div> -->
+      <div style="margin-right: 13px;">
         <span (click)="op.toggle($event)" class="px-2" style="font-size: 1.5rem; cursor: pointer;">
           <i class="fa-regular fa-circle-user"></i>
         </span>
       </div>
-      <p-popover styleClass="profile-popover-card" class="p-3" #op>
+      <p-popover styleClass="primary-filter-popover" class="p-3" #op>
         <div class="d-flex align-items-center justify-content-center">
             <ul class="profile-popover">
               <li class="profile-popover-items">Usergmail.com</li>
@@ -61,48 +59,6 @@
             </ul>
         </div>
       </p-popover>
-      </ng-container>
-      
     </div>
   </div>
-
-
-  <p-drawer #drawerRef [(visible)]="visible" [modal]="true" position="right">
-    <ng-template #headless>
-      <div class="d-flex align-items-center justify-content-end">
-        <button (click)="closeCallback($event)" class="d-flex justify-content-center align-items-center" type="button" style="border: none; border-radius: 50%; height: 30px; width: 30px;">
-          <i class="fa-solid fa-xmark"></i>
-        </button>
-      </div>
-        <ul class="mobile-menu-items">
-          <ng-container *ngIf="loggedInUser?.role === '1'">
-            <li class="mobile-menu-item" routerLinkActive="active">
-              <a routerLink="/home/branches" (click)="visible = false;">Branches</a>
-            </li>
-          </ng-container>
-          <li class="mobile-menu-item" routerLinkActive="active">
-        <a routerLink="/home/customers" (click)="visible = false">Customers</a>
-      </li>
-      <li class="mobile-menu-item" routerLinkActive="active">
-        <a routerLink="/home/trainers" (click)="visible = false">Trainers</a>
-      </li>
-      <li class="mobile-menu-item" routerLinkActive="active">
-        <a routerLink="/home/payments" (click)="visible = false">Payments</a>
-      </li>
-      <li class="mobile-menu-item" routerLinkActive="active">
-        <a routerLink="/home/reorts" (click)="visible = false">Reports</a>
-      </li>
-      <li class="mobile-menu-item" routerLinkActive="active">
-        <a routerLink="/home/attendance" (click)="visible = false">Attendance</a>
-      </li>
-      <li class="mobile-menu-item" routerLinkActive="active">
-        <a routerLink="/home/accounts" (click)="visible = false">Accounts</a>
-      </li>
-      <li class="mobile-menu-item" routerLinkActive="active">
-        <a routerLink="/signin" (click)="signOut(); visible = false;">Logout</a>
-      </li>    
-        </ul>
-    </ng-template>
-</p-drawer>
-
 </nav>
