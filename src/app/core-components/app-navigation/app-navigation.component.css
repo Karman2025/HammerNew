@@ -84,3 +84,27 @@
     background-color: var(--primary-color);
     /* border-bottom: 2px solid var(--primary-color); */
 }
+
+.mobile-dropdown-menu {
+  position: absolute;
+  top: 65px;
+  left: 0;
+  right: 10;
+  width: 100%;
+  background-color: var(--secondary);
+  z-index: 999;
+  border-radius: 0 0 15px 15px;
+  margin: 1rem;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.dropdown-item {
+  display: block;
+  padding: 0.5rem 1rem;
+  color: #000;
+  text-decoration: none;
+}
+
+.dropdown-item:hover {
+  background-color: rgba(0,0,0,0.05);
+}
