@@ -12,7 +12,6 @@
 }
 
 .menu-items a {
-    display: block;
     text-decoration: none;
     /* color: #fff; */
     position: relative;
@@ -21,7 +20,7 @@
     color: #000;
 }
 .menu-item.active a {
-    padding: 0px 2px;
+    padding: 2px 6px;
     border-radius: 6px;
     background-color: var(--primary-color);
     border: 2px solid var(--primary-color);
