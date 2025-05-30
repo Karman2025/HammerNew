@@ -55,27 +55,31 @@ export class HttpApiService {
                     } as ResponseObject<T>;
                 }),
                 catchError((error) => {
-                    if (error.status === 401) {
-                        return of({
-                            ErrorMessage: 'Server error',
-                            Results: {} as T,
-                            SuccessMessage: '',
-                        } as ResponseObject<T>);
-                    }
-
-                    if (error.status === 409) {
-                        return of({
-                            ErrorMessage: error?.error,
-                            Results: {} as T,
-                            SuccessMessage: '',
-                        } as ResponseObject<T>);
-                    }
-                    this.handleError(error);
-                    return of({
-                        ErrorMessage: 'Server error',
-                        Results: {} as T,
-                        SuccessMessage: '',
-                    } as ResponseObject<T>);
+                  if(error.error.error == "jwt expired") {
+                    localStorage.removeItem('USER-INFO');
+                    localStorage.removeItem('USER-JWT-TOKEN');
+                    this.router.navigate(['signin']);
+                  }
+                  if (error.status === 401) {
+                      return of({
+                          ErrorMessage: 'Server error',
+                          Results: {} as T,
+                          SuccessMessage: '',
+                      } as ResponseObject<T>);
+                  }
+                  if (error.status === 409) {
+                      return of({
+                          ErrorMessage: error?.error,
+                          Results: {} as T,
+                          SuccessMessage: '',
+                      } as ResponseObject<T>);
+                  }
+                  this.handleError(error);
+                  return of({
+                      ErrorMessage: 'Server error',
+                      Results: {} as T,
+                      SuccessMessage: '',
+                  } as ResponseObject<T>);
                 })
             );
     }
