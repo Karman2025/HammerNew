@@ -151,7 +151,16 @@ export class AttendanceComponent implements OnInit {
     this.service.customerCheckIn(payload, true).subscribe((res: any) => {
       console.log("CheckIn successfull", res);
       if (res?.Results) {
-        this.getAllAttendance(false,true);
+        // this.getAllAttendance(false,true);
+        this.attendanceList.forEach((x:any)=>{
+          if(x.customerId == res?.Results?.customerId){debugger
+            x.attendanceId = res?.Results?._id;
+            x._id = res?.Results?._id;
+            x.attendanceDate = res?.Results?.attendanceDate;
+            x.checkinTime = res?.Results?.checkinTime;
+            x.isPresent = true;
+          }
+        })
         const successMessage = 'Check-in successful';
         this.toasterMessage.add({ key: 'root-toast', severity: 'success', summary: 'Success', detail: successMessage });
       } else {
