@@ -12,6 +12,7 @@ import { PaginatorModule } from 'primeng/paginator';
 import { dateObjToString } from '../../../shared/functions/date-string-to-obj';
 import { MessageService } from 'primeng/api';
 import { paginationRowsPerPageOptions } from '../../../shared/data/master-data';
+import { getPopupWidth } from '../../../shared/functions/responsiveFunction';
 
 
 @Component({
@@ -33,6 +34,7 @@ export class AccountsComponent implements OnInit {
   containerOffSetHeightClasses:any[] = ['ofH_calc_nav_bar', 'ofH_calc_body_header'];
   paginationRowsPerPage = paginationRowsPerPageOptions;
   isButtonLoading: boolean = false;
+  popupWidth = getPopupWidth();
 
   filterFields = {
     actionDate: null,

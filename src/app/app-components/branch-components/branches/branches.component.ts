@@ -12,6 +12,7 @@ import { FilterFieldsContainerComponent } from '../../../shared/components/filte
 import { PaginatorModule } from 'primeng/paginator';
 import { paginationRowsPerPageOptions } from '../../../shared/data/master-data';
 import { TooltipModule } from 'primeng/tooltip';
+import { getPopupWidth } from '../../../shared/functions/responsiveFunction';
 
 
 @Component({
@@ -34,6 +35,7 @@ export class BranchesComponent implements OnInit {
   containerOffSetHeightClasses:any[] = ['ofH_calc_nav_bar', 'ofH_calc_body_header'];
   paginationRowsPerPage = paginationRowsPerPageOptions;
   isButtonLoading: boolean = false;
+  popupWidth =  getPopupWidth();
 
   filterFields = {
     bch_Code: null,
@@ -205,14 +207,14 @@ export class BranchesComponent implements OnInit {
     this.getAllBranches();
   }
 
-  get dialogWidth(): string {
-    console.log(window.innerWidth);
+//   get dialogWidth(): string {
+//     console.log(window.innerWidth);
     
-  if (window.innerWidth < 576) return '95vw';       // extra small screens
-  if (window.innerWidth < 768) return '80vw';       // small devices
-  if (window.innerWidth < 992) return '60vw';       // tablets
-  return '30vw';                                     // desktop default
-}
+//   if (window.innerWidth < 576) return '95vw';
+//   if (window.innerWidth < 768) return '80vw';
+//   if (window.innerWidth < 992) return '60vw';
+//   return '30vw'; 
+// }
 
 
 }

@@ -13,6 +13,7 @@ import { FilterFieldsContainerComponent } from '../../../shared/components/filte
 import { catchError, of } from 'rxjs';
 import { MessageService } from 'primeng/api';
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
+import { getPopupWidth } from '../../../shared/functions/responsiveFunction';
 
 @Component({
   selector: 'app-attendance',
@@ -30,6 +31,8 @@ export class AttendanceComponent implements OnInit {
   isPastDay: boolean = false;
   containerOffSetHeightClasses:any[] = ['ofH_calc_nav_bar', 'ofH_calc_body_header'];
   getBranchOptions: {_id: string, bch_Name: string, bch_Code: string}[] = [];
+  popupWidth = getPopupWidth();
+
   filterFields = {
     branchId: null,
     ctr_Name: null,

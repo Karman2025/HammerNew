@@ -12,6 +12,7 @@ import { catchError, of } from 'rxjs';
 import { dateObjToString } from '../../../shared/functions/date-string-to-obj';
 import { paginationRowsPerPageOptions } from '../../../shared/data/master-data';
 import { MessageService } from 'primeng/api';
+import { getPopupWidth } from '../../../shared/functions/responsiveFunction';
 
 
 interface Payments {
@@ -34,6 +35,8 @@ export class PaymentsComponent implements OnInit {
   toastErrorMessage: string = 'Something went wrong';
   getBranchOptions: {_id: string, bch_Name: string, bch_Code: string}[] = [];
   paginationRowsPerPage = paginationRowsPerPageOptions;
+  popupWidth = getPopupWidth();
+  
 
 
   filterFields = {

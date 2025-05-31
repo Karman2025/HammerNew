@@ -13,6 +13,7 @@ import { FilterFieldsContainerComponent } from '../../../shared/components/filte
 import { PaginatorModule } from 'primeng/paginator';
 import { paginationRowsPerPageOptions } from '../../../shared/data/master-data';
 import { TooltipModule } from 'primeng/tooltip';
+import { getPopupWidth } from '../../../shared/functions/responsiveFunction';
 
 
 @Component({
@@ -35,6 +36,8 @@ export class TrainersComponent {
   containerOffSetHeightClasses:any[] = ['ofH_calc_nav_bar', 'ofH_calc_body_header'];
   paginationRowsPerPage = paginationRowsPerPageOptions;
   isButtonLoading: boolean = false;
+  popupWidth = getPopupWidth();
+  
 
   filterFields = {
     branchId: null,

@@ -125,7 +125,7 @@
                   <span (click)="op.hide()"><i class="fa-solid fa-circle-xmark"></i></span>
                 </div>
               </div>
-              <div class="px-3 py-3" [ngStyle]="{ 'height': getOffsetHeightByCustomClass(175, containerOffSetHeightClasses), 'max-width': '30vw' }" style="overflow-x: hidden;">
+              <div class="px-3 py-3" [ngStyle]="{ 'height': getOffsetHeightByCustomClass(175, containerOffSetHeightClasses), 'max-width': popupWidth }" style="overflow-x: hidden;">
                 <app-filter-fields-container [branchOptions]="getBranchOptions" [FilterFields]="filterFields" [showFilterFields]="showFilterFields"></app-filter-fields-container>
               </div>
               <div style="border-top: 1px solid #ccc;" class="d-flex justify-content-end px-3 py-3">
@@ -138,7 +138,7 @@
     </div>
   </div>
 
-  <p-dialog [draggable]="false" [showHeader]="false" class="primary-p-dialog" [modal]="true" [position]="'right'" [(visible)]="isVisibleTrainerAddEditDialog" [style]="{ width: '25vw' }">
+  <p-dialog [draggable]="false" [showHeader]="false" class="primary-p-dialog" [modal]="true" [position]="'right'" [(visible)]="isVisibleTrainerAddEditDialog" [style]="{ width: popupWidth }">
     <div class="p-p-dialog-header ofH_calc_modal_header">
       <div>
         <span class="p-p-dialog-header-label">{{(formMode == 'view' ? 'View' : formMode == 'create' ? 'Create' : 'Edit')}} Trainer</span>

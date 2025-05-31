@@ -12,6 +12,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { TableModule } from 'primeng/table';
 import { paymentPlanOptions } from '../../../shared/data/master-data';
 import { PaymentPlanViewAddEditFormComponent } from '../../payment-components/payment-plan-view-add-edit-form/payment-plan-view-add-edit-form.component';
+import { getPopupWidth } from '../../../shared/functions/responsiveFunction';
 
 @Component({
   selector: 'app-customer-detailed-view',
@@ -47,6 +48,8 @@ export class CustomerDetailedViewComponent implements OnInit {
   containerOffSetHeightClasses:any[] = ['ofH_calc_nav_bar', 'ofH_calc_body_header'];
   paymentPlanOptions:any[] = paymentPlanOptions;
   customerFormPaymentPlanData:any = {};
+  popupWidth = getPopupWidth();
+  
 
   constructor(
     private service: AppComponentsApiService,

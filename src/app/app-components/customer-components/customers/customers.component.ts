@@ -11,6 +11,7 @@ import { MessageService } from 'primeng/api';
 import { Router } from '@angular/router';
 import { Popover } from 'primeng/popover';
 import { getOffsetHeightByCustomClass } from '../../../shared/functions/calcHeightOffset';
+import { getPopupWidth } from '../../../shared/functions/responsiveFunction'
 import { FilterFieldsContainerComponent } from '../../../shared/components/filter-fields-container/filter-fields-container.component';
 import { PaginatorModule } from 'primeng/paginator';
 import { paginationRowsPerPageOptions } from '../../../shared/data/master-data';
@@ -38,6 +39,7 @@ export class CustomersComponent implements OnInit {
   containerOffSetHeightClasses:any[] = ['ofH_calc_nav_bar', 'ofH_calc_body_header'];
   paginationRowsPerPage = paginationRowsPerPageOptions;
   isButtonLoading: boolean = false;
+  popupWidth = getPopupWidth();
 
   filterFields = {
     branchId: null,

@@ -87,7 +87,7 @@
 </div>
 
 
-<p-dialog [draggable]="false" [showHeader]="false" class="primary-p-dialog" [modal]="true" [position]="'right'" [(visible)]="isVisibleCustomerEditDialog" [style]="{ width: '25vw' }">
+<p-dialog [draggable]="false" [showHeader]="false" class="primary-p-dialog" [modal]="true" [position]="'right'" [(visible)]="isVisibleCustomerEditDialog" [style]="{ width: popupWidth }">
   <div class="p-p-dialog-header ofH_calc_modal_header">
     <div>
       <span class="p-p-dialog-header-label">{{(formMode == 'view' ? 'View' : formMode == 'create' ? 'Create' : 'Edit')}} Customer</span>
@@ -113,7 +113,7 @@
 </p-dialog>
 
 
-<p-dialog [draggable]="false" [showHeader]="false" class="primary-p-dialog" [modal]="true" [position]="'right'" [(visible)]="isVisibleDietPlanDialog" [style]="{ width: '35vw' }">
+<p-dialog [draggable]="false" [showHeader]="false" class="primary-p-dialog" [modal]="true" [position]="'right'" [(visible)]="isVisibleDietPlanDialog" [style]="{ width: popupWidth }">
   <div class="p-p-dialog-header ofH_calc_modal_header">
     <div>
       <span class="p-p-dialog-header-label">{{(dietPlanFormMode == 'view' ? 'View' : dietPlanFormMode == 'create' ? 'Create' : 'Edit')}} Diet Plan</span>

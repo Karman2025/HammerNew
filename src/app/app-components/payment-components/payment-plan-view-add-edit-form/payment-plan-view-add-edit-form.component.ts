@@ -11,6 +11,7 @@ import { getOffsetHeightForModal, getOffsetHeightForPrimaryTable } from '../../.
 import { DatePicker } from 'primeng/datepicker';
 import { dateObjToString, dateStringToObj } from '../../../shared/functions/date-string-to-obj';
 import { MessageService } from 'primeng/api';
+import { getPopupWidth } from '../../../shared/functions/responsiveFunction';
 
 @Component({
   selector: 'app-payment-plan-view-add-edit-form',
@@ -68,6 +69,7 @@ export class PaymentPlanViewAddEditFormComponent implements OnInit {
   isButtonLoading: boolean = false;
   paidAmountValidationMsg:string = 'Required';
   currentDate:Date = new Date();
+  popupWidth = getPopupWidth();
 
   constructor(
     private fb: FormBuilder,

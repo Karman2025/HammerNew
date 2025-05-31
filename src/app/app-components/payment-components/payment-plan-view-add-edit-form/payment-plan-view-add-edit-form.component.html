@@ -137,7 +137,7 @@
 </ng-container>
 
 <!-- Payment Plan -->
-<p-dialog [draggable]="false" [showHeader]="false" class="primary-p-dialog" [modal]="true" [position]="'center'" [(visible)]="isVisibleCreatePaymentPlanDialog" [style]="{ width: '35vw' }">
+<p-dialog [draggable]="false" [showHeader]="false" class="primary-p-dialog" [modal]="true" [position]="'center'" [(visible)]="isVisibleCreatePaymentPlanDialog" [style]="{ width: popupWidth }">
   <div class="p-p-dialog-header ofH_calc_modal_header">
     <div>
       <span class="p-p-dialog-header-label">Add Payment Plan</span>
@@ -238,7 +238,7 @@
 
 
 <!-- Payment History -->
-<p-dialog [draggable]="false" [showHeader]="false" class="primary-p-dialog" [modal]="true" [position]="'center'" [(visible)]="isVisiblePaymentHistoryDialog" [style]="{ width: '35vw' }">
+<p-dialog [draggable]="false" [showHeader]="false" class="primary-p-dialog" [modal]="true" [position]="'center'" [(visible)]="isVisiblePaymentHistoryDialog" [style]="{ width: popupWidth }">
   <div class="p-p-dialog-header ofH_calc_modal_header">
     <div>
       <span class="p-p-dialog-header-label">Payment History</span>
@@ -300,7 +300,7 @@
 </p-dialog>
 
 <!-- Pay Balance -->
-<p-dialog [draggable]="false" [showHeader]="false" class="primary-p-dialog" [modal]="true" [position]="'center'" [(visible)]="isVisiblePayBalanceDialog" [style]="{ width: '35vw' }">
+<p-dialog [draggable]="false" [showHeader]="false" class="primary-p-dialog" [modal]="true" [position]="'center'" [(visible)]="isVisiblePayBalanceDialog" [style]="{ width: popupWidth }">
   <div class="p-p-dialog-header ofH_calc_modal_header">
     <div>
       <span class="p-p-dialog-header-label">Payment</span>
