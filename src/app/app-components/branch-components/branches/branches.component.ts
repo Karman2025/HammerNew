@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AppComponentsApiService } from '../../app-components-api-service';
 import { BranchAddEditFormComponent } from '../branch-add-edit-form/branch-add-edit-form.component';
@@ -69,6 +69,11 @@ export class BranchesComponent implements OnInit {
   setFormMode(mode: "view" | "edit" | "create"): void {
     this.formMode = mode;
 
+  }
+
+  @HostListener('window:resize')
+  onResize() {
+    console.log('Window resized, triggering change detection');
   }
 
 
@@ -199,5 +204,15 @@ export class BranchesComponent implements OnInit {
     };
     this.getAllBranches();
   }
+
+  get dialogWidth(): string {
+    console.log(window.innerWidth);
+    
+  if (window.innerWidth < 576) return '95vw';       // extra small screens
+  if (window.innerWidth < 768) return '80vw';       // small devices
+  if (window.innerWidth < 992) return '60vw';       // tablets
+  return '30vw';                                     // desktop default
+}
+
 
 }
