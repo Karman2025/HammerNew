@@ -8,7 +8,7 @@
       <div class="row" infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollUpDistance]="1.5" [fromRoot]="true"
         [infiniteScrollThrottle]="50" (scrolled)="onScroll()" [infiniteScrollContainer]="'.attendance_scroll_container'">
         <ng-container *ngFor="let item of attendanceList">
-          <div class="col-xl-3 col-lg-4 col-md-4 col-sm-6 col-12">
+          <div class="col-xl-3 col-lg-4 col-md-6 col-12">
             <div class="card card-custom-shadow mb-3" style="padding: 10px; background-color: var(--primary-color);">
               <div class="d-flex">
                 <div class="pt-2 px-2">
@@ -19,19 +19,19 @@
                   />
                 </div>
                 <div class="pt-2">
-                  <div class="d-grid" style="font-size: 15px; font-weight: 600;">
+                  <div class="d-grid" style="font-size: 0.875rem; font-weight: 600;">
                     <!-- <label>Name : </label> -->
                     <div pTooltip="{{item?.ctr_Name}}" tooltipPosition="top" class="px-1 text-overflow-ellipsis c-default">{{item?.ctr_Name}}</div>
                   </div>
-                  <div class="d-flex " style="font-size: 15px;">
+                  <div class="d-flex " style="font-size: 0.875rem;">
                     <!-- <label>Code : </label> -->
                     <div class="px-1">#{{item?.ctr_Code}}</div>
                   </div>
-                  <div class="d-flex " style="font-size: 15px;">
+                  <div class="d-flex " style="font-size: 0.875rem;">
                     <!-- <label>Time : </label> -->
                     <div class="px-1">{{item?.checkinTime ? (item?.checkinTime | date:'HH:mm') : '-- : --'}}</div>
                   </div>
-                  <div class="d-flex " style="font-size: 15px;">
+                  <div class="d-flex " style="font-size: 0.875rem;">
                     <!-- <label>Mobile : </label> -->
                     <div class="px-1">{{item?.ctr_MobileNo}}</div>
                   </div>
