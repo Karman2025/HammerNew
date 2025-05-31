@@ -1,20 +1,25 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, computed, signal } from '@angular/core';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LoaderService {
 
-  private _isLoading = signal(false);
-  readonly isLoading = this._isLoading.asReadonly();
-  
+  private _requestCount = signal(0);
+  readonly requestCount = this._requestCount.asReadonly();
+
+  // _isLoading is computed based on _requestCount
+  readonly isLoading = computed(() => {
+    return this._requestCount() > 0;
+  });
+
   constructor() { }
-  
-  show() {
-    this._isLoading.set(true);
+
+  addRequestCount() {
+    this._requestCount.set(this._requestCount() + 1);
   }
 
-  hide() {
-    this._isLoading.set(false);
+  reduceRequestCount() {
+    this._requestCount.set(this._requestCount() - 1);
   }
 }

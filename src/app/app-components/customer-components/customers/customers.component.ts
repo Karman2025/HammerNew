@@ -122,7 +122,7 @@ export class CustomersComponent implements OnInit {
     params = {...params, ...this.filterFields}
     this.service.getAllCustomer(params).subscribe((res:any)=>{
       console.log(res);
-      if(res?.Results) {
+      if(res?.Results?.length >= 0) {
         this.customersList = JSON.parse(JSON.stringify(res?.Results ?? []));
         this.xPagination = res?.XPagination;
         this.indexOfFirstRecord = (this.xPagination.currentPage - 1) * this.xPagination.pageSize;

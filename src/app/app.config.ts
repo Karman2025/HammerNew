@@ -6,13 +6,12 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { providePrimeNG } from 'primeng/config';
 import { MessageService } from 'primeng/api'; // ✅ Import this
 import Aura from '@primeng/themes/aura';
-import { loaderInterceptor } from './shared/Interceptors/loader.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
-    provideHttpClient(withInterceptors([loaderInterceptor])),
+    provideHttpClient(),
     provideAnimationsAsync(),
     providePrimeNG({
       theme: {

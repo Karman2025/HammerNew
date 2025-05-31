@@ -6,14 +6,14 @@ import {
     HttpHeaders,
 } from '@angular/common/http';
 import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
-import { map, catchError, filter, first, tap } from 'rxjs/operators';
+import { map, catchError, filter, first, tap, finalize } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { environment } from '../../../src/environments/environment';
 
 import { HTTPMethodType } from '../models/misc';
 import { ResponseObject } from '../models/response';
 import { HttpContext } from '@angular/common/http'; // add this
-import { SKIP_LOADER } from '../shared/tokens/loader-context.token'; // import this
+import { LoaderService } from '../shared/services/loader.service';
 
 @Injectable({
     providedIn: 'root',
@@ -21,12 +21,13 @@ import { SKIP_LOADER } from '../shared/tokens/loader-context.token'; // import t
 export class HttpApiService {
     private static requestHistory = new Map<string, Object>();
 
-    constructor(private httpClient: HttpClient, private router: Router) {}
+    constructor(private httpClient: HttpClient, private router: Router, private loaderService: LoaderService) {}
 
     private submitRequest<T>(
         methodType: HTTPMethodType,
         endPoint: string,
         data: any = null,
+        showLoader: boolean,
         context: HttpContext = new HttpContext()
     ): Observable<ResponseObject<T>> {
         const token = localStorage.getItem('USER-JWT-TOKEN'); // Retrieve token from storage or service
@@ -34,6 +35,9 @@ export class HttpApiService {
           'Content-Type': 'application/json',
           'Authorization': token ? `Bearer ${token}` : '', // Add Bearer token
         });
+        if(showLoader){
+          this.loaderService.addRequestCount();
+        }
         return this.httpClient
             .request<T>(methodType, `${environment.baseAPIUrl}${endPoint}`, {
                 body: data,
@@ -80,24 +84,29 @@ export class HttpApiService {
                       Results: {} as T,
                       SuccessMessage: '',
                   } as ResponseObject<T>);
+                }),
+                finalize(()=>{
+                  if(showLoader){
+                    this.loaderService.reduceRequestCount();
+                  }
                 })
             );
     }
 
-    public post<T>(endPoint: string, data: any, context?: HttpContext) {
-        return this.submitRequest<T>('Post', endPoint, data, context);
+    public post<T>(endPoint: string, data: any, showLoader:boolean = true, context?: HttpContext) {
+        return this.submitRequest<T>('Post', endPoint, data, showLoader, context);
     }
 
-    public put<T>(endPoint: string, data: any, context?: HttpContext) {
-        return this.submitRequest<T>('Put', endPoint, data, context);
+    public put<T>(endPoint: string, data: any, showLoader:boolean = true, context?: HttpContext) {
+        return this.submitRequest<T>('Put', endPoint, data, showLoader, context);
     }
 
-    public get<T>(endPoint: string, context?: HttpContext) {
-        return this.submitRequest<T>('Get', endPoint, null, context);
+    public get<T>(endPoint: string, showLoader:boolean = true, context?: HttpContext) {
+        return this.submitRequest<T>('Get', endPoint, null, showLoader, context);
     }
 
-    public delete<T>(endPoint: string, data: any, context?: HttpContext) {
-        return this.submitRequest<T>('Delete', endPoint, data, context);
+    public delete<T>(endPoint: string, data: any, showLoader:boolean = true, context?: HttpContext) {
+        return this.submitRequest<T>('Delete', endPoint, data, showLoader, context);
     }
 
     private handleError(error: Response) {

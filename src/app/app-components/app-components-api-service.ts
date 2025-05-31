@@ -4,14 +4,15 @@ import { map, filter } from 'rxjs';
 import { HttpApiService } from '../server/http-api.service';
 import { environment } from '../../environments/environment';
 import { HttpContext } from '@angular/common/http';
-import { SKIP_LOADER } from '../shared/tokens/loader-context.token'; // import this
 
 @Injectable({
     providedIn: 'root'
 })
 export class AppComponentsApiService {
 
-    constructor(private api: HttpApiService) { }
+    constructor(
+      private api: HttpApiService,
+    ) { }
     private readonly getAllBranchEndPoint = 'branch/getAllBranch';
     private readonly createBranchEndPoint = 'branch/createBranch';
     private readonly updateBranchEndPoint = 'branch//updateBranch';
@@ -49,10 +50,10 @@ export class AppComponentsApiService {
         return this.api.get<any[]>(`${this.getAllBranchEndPoint}${endPoint}`)
         .pipe(map((response) => response));
     }
-    getAllBranchAutocompleteData(isSkipLoader: boolean = false){
-      const context = new HttpContext().set(SKIP_LOADER, isSkipLoader);
-        return this.api.get<any[]>(`${this.getAllBranchAutocompleteEndPoint}`, context)
-        .pipe(map((response) => response?.Results ?? []));
+
+    getAllBranchAutocompleteData(showLoader: boolean = true){
+      return this.api.get<any[]>(`${this.getAllBranchAutocompleteEndPoint}`, showLoader)
+      .pipe(map((response) => response?.Results ?? []));
     }
 
     createBranch(data: any){
@@ -117,28 +118,19 @@ export class AppComponentsApiService {
       .pipe(map((response) => response));
     }
 
-    // getAllAttendance(data: any) {
-    //     return this.api.get<any[]>(this.getAllAttendanceEndPoint+'?attendanceDate='+data)
-    //     .pipe(map((response) => response));
-    // }
-    getAllAttendance(params: any) {
-      const isSkipLoader = params?.isSkipLoader ?? false;
-      delete params?.isSkipLoader;
-      
+    getAllAttendance(params: any, showLoader:boolean = true) {
       let endPoint = '?';
         for (let key in params) {
             if (params.hasOwnProperty(key) && (params[key] || params[key] == true || params[key] == false)) {
                 endPoint += `${endPoint.length > 1 ? '&' : ''}${key}=${params[key]}`;
             }
         }
-      const context = new HttpContext().set(SKIP_LOADER, isSkipLoader);
-      return this.api.get<any[]>(`${this.getAllAttendanceEndPoint}${endPoint}`, context)
+      return this.api.get<any[]>(`${this.getAllAttendanceEndPoint}${endPoint}`, showLoader)
       .pipe(map((response) => response));
   }
 
-    customerCheckIn(data: any, isSkipLoader: boolean = false) {
-      const context = new HttpContext().set(SKIP_LOADER, isSkipLoader);
-        return this.api.post<any[]>(this.checkInCustomerEndPoint, data, context)
+    customerCheckIn(data: any, showLoader: boolean = true) {
+        return this.api.post<any[]>(this.checkInCustomerEndPoint, data, showLoader)
         .pipe(map((response) => response));
     }
 
@@ -183,16 +175,4 @@ export class AppComponentsApiService {
       return this.api.put<any[]>(this.updateAccountEntryEndPoint,data)
       .pipe(map((response) => response));
     }
-
-    // getConversations(filter:any,params:any) {
-    //     let endPoint = '?';
-    //     for (let key in params) {
-    //         if (params.hasOwnProperty(key) && (params[key] || params[key] == true || params[key] == false)) {
-    //             endPoint += `${endPoint.length > 1 ? '&' : ''}${key}=${params[key]}`;
-    //         }
-    //     }
-    //     return this.api
-    //         .post<any[]>(`${this.getConversationsEP}${endPoint.length > 1 ? endPoint : ''}`,filter)
-    //         .pipe(map((response) => response ));
-    // }
 }

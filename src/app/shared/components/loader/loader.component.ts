@@ -11,8 +11,11 @@ import { getOffsetHeightForCard } from '../../functions/calcHeightOffset';
   styleUrl: './loader.component.css'
 })
 export class LoaderComponent {
+
   loaderService = inject(LoaderService);
+
   isLoading = this.loaderService.isLoading;
+
   getOffsetHeightForCard(extra: any = 0) {
     return getOffsetHeightForCard(extra);
   }

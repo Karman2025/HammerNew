@@ -75,7 +75,7 @@ export class AttendanceComponent implements OnInit {
   }
 
   getAllBranchAutocompleteData() {
-      this.service.getAllBranchAutocompleteData(true).pipe(
+      this.service.getAllBranchAutocompleteData(false).pipe(
         catchError((error) => {
           console.error('Error fetching branch options:', error);
           return of([]);
@@ -107,7 +107,7 @@ export class AttendanceComponent implements OnInit {
     this.checkInCustomer();
   }
 
-  getAllAttendance(resetPage: boolean = false, isSkipLoader: boolean = false) {
+  getAllAttendance(resetPage: boolean = false, showLoader: boolean = true) {
     if (resetPage) this.pageNo = 1;
     const formattedDate = dateObjToString(this.attendanceDate)?.split('T')[0]!;
     const todaysDate  = newDateString();
@@ -117,12 +117,11 @@ export class AttendanceComponent implements OnInit {
       pageSize : this.pageSize,
       pageNo : this.pageNo,
       attendanceDate: formattedDate,
-      isSkipLoader: isSkipLoader
     };
 
     param = {...param, ...this.filterFields}
 
-    this.service.getAllAttendance(param).subscribe((res: any) => {
+    this.service.getAllAttendance(param, showLoader).subscribe((res: any) => {
       if(res?.Results) {
         this.attendanceList = [...this.attendanceList, ...res.Results];
         console.log(this.attendanceList);
@@ -151,7 +150,7 @@ export class AttendanceComponent implements OnInit {
     }
     console.log(payload);
 
-    this.service.customerCheckIn(payload, true).subscribe((res: any) => {
+    this.service.customerCheckIn(payload, false).subscribe((res: any) => {
       console.log("CheckIn successfull", res);
       if (res?.Results) {
         // this.getAllAttendance(false,true);
@@ -186,7 +185,7 @@ export class AttendanceComponent implements OnInit {
       ctr_WhatsAppNo: null,
       isPresent: null
     };
-    this.getAllAttendance(true, false);
+    this.getAllAttendance(true, true);
   }
 
   onScroll() {
@@ -194,7 +193,7 @@ export class AttendanceComponent implements OnInit {
     if ( this.xPagination?.hasNextPage) {
       this.pageNo++;
 
-      this.getAllAttendance(false, true);
+      this.getAllAttendance(false, false);
   }
 }
 }
