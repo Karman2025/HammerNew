@@ -69,7 +69,12 @@ export class BranchAddEditFormComponent implements OnInit {
       bch_Location: new FormControl('', Validators.required),
       bch_Addresses: new FormControl('', Validators.required),
       bch_Email: new FormControl('', [Validators.required, Validators.email]),
-      bch_Password: new FormControl('', [Validators.required, Validators.minLength(6)]),
+      // bch_Password: new FormControl('', [Validators.required, Validators.minLength(6)]),
+      bch_Password: new FormControl('', [
+        Validators.required,
+        Validators.minLength(8),
+        Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+[\]{};':"\\|,.<>/?]).{8,}$/)
+      ])
     });
   }
 
