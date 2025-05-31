@@ -10,8 +10,8 @@
       <div class="px-5 pt-5">
         <p-table
         [scrollable]="true"
-        scrollHeight="{{getOffsetHeightForPrimaryTable(121)}}"
-        [tableStyle]="{'min-height': customersList.length == 0 ? getOffsetHeightForPrimaryTable(121) : 'unset'}"
+        scrollHeight="{{getOffsetHeightForPrimaryTable(73)}}"
+        [tableStyle]="{'min-height': customersList.length == 0 ? getOffsetHeightForPrimaryTable(73) : 'unset'}"
         class="primary-p-table" [value]="customersList">
           <ng-template pTemplate="header">
             <tr>
@@ -122,7 +122,7 @@
           </ng-template>
         </p-table>
       </div>
-      <div class="px-5 d-flex justify-content-center" style="width: 100%;">
+      <div class="px-5 d-flex justify-content-center ofH_calc_pagin" style="width: 100%;">
         <p-paginator
           class="standard-paginator"
           (onPageChange)="onPageChange($event)"
