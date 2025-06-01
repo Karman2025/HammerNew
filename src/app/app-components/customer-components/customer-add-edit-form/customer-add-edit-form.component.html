@@ -44,7 +44,7 @@
         <input type="text" class="form-control" id="customer-code" formControlName="ctr_Code" [readOnly]="true" placeholder="CTR000000000">
       </div>
     </div>
-    
+
     <div [ngClass]="{'col-xl-3 col-lg-4 col-sm-6 col-12': formMode == 'view', 'col-12': formMode != 'view'}">
       <div class="pt-1">
         <label class="form-label" for="customer-name">Name</label>
@@ -78,7 +78,7 @@
         </div>
       </div>
     </div>
-    <div [ngClass]="{'col-xl-3 col-lg-4 col-sm-6 col-12': formMode == 'view', 'col-12': formMode != 'view'}">
+    <!-- <div [ngClass]="{'col-xl-3 col-lg-4 col-sm-6 col-12': formMode == 'view', 'col-12': formMode != 'view'}">
       <div class="pt-1">
         <label class="form-label" for="customer-Height">Height</label>
         <div [ngClass]="{'form-validation-error': createCustomerForm.get('ctr_Height')?.invalid && createCustomerForm.get('ctr_Height')?.touched}">
@@ -88,7 +88,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
     <div [ngClass]="{'col-xl-3 col-lg-4 col-sm-6 col-12': formMode == 'view', 'col-12': formMode != 'view'}">
       <div class="pt-1">
         <label class="form-label" for="customer-Weight">Weight</label>
