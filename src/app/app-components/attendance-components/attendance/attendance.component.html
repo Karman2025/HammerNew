@@ -4,7 +4,7 @@
     <p-datepicker [(ngModel)]="attendanceDate" placeholder="Select date" showIcon="true" [dateFormat]="'yy/mm/dd'" [maxDate]="maxDate" (onSelect)="attendanceDateSelect($event)"/>
   </div>
   <div>
-    <div class="attendance_scroll_container p-4" [ngStyle]="{ 'max-height': getOffsetHeightByCustomClass(25, containerOffSetHeightClasses), 'overflow-x': 'hidden' }">
+    <div class="attendance_scroll_container p-4" [ngStyle]="{ 'max-height': getOffsetHeightByCustomClass(61, containerOffSetHeightClasses), 'overflow-x': 'hidden' }">
       <div class="row" infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollUpDistance]="1.5" [fromRoot]="true"
         [infiniteScrollThrottle]="50" (scrolled)="onScroll()" [infiniteScrollContainer]="'.attendance_scroll_container'">
         <ng-container *ngFor="let item of attendanceList">
@@ -13,9 +13,9 @@
               <div class="d-flex">
                 <div class="pt-2 px-2">
                   <img
-                    src="images/pexels-pixabay-414974.jpg"
-                    class="profilepicture"
-                    alt="..."
+                    src="{{item?.profileImage || '/assets/images/default-profile.png'}}"
+                    class="profile-picture"
+                    alt="Profile Picture"
                   />
                 </div>
                 <div class="pt-2">
@@ -45,27 +45,33 @@
          </ng-container>
       </div>
     </div>
-     <div class="d-flex justify-content-end" style="position: fixed; bottom: 70px; right: 10px; z-index: 1000;">
+
+     <div class="d-flex justify-content-end primary-filter-icon-container">
        <div class="filter-icon" (click)="op.toggle($event)"><i class="fa-solid fa-filter"></i></div>
-       <p-popover styleClass="primary-filter-popover" class="p-3" #op>
-        <div>
-            <div style="border-bottom: 1px solid #ccc;" class="d-flex align-items-center justify-content-between px-3 py-3">
-              <div>
-                <span style="font-weight: 700; font-size: 1.1rem;">Filter</span>
-              </div>
-              <div style="line-height: 1rem;">
-                <span (click)="op.hide()"><i class="fa-solid fa-circle-xmark"></i></span>
-              </div>
-            </div>
-            <div class="px-3 py-3" [ngStyle]="{ 'height': getOffsetHeightByCustomClass(175, containerOffSetHeightClasses), 'max-width': popupWidth }" style="overflow-x: hidden;">
-              <app-filter-fields-container [branchOptions]="getBranchOptions" [FilterFields]="filterFields" [showFilterFields]="showFilterFields"></app-filter-fields-container>
-            </div>
-            <div style="border-top: 1px solid #ccc;" class="d-flex justify-content-end px-3 py-3">
-              <button  (click)="onFilterClear()" class="btn btn-warning mx-1 px-2 py-1">Clear</button>
-              <button (click)="getAllAttendance(true)" class="mx-1 btn btn-success mx-1 px-2 py-1">Apply</button>
-            </div>
-        </div>
-      </p-popover>
      </div>
+
+    <p-popover styleClass="primary-filter-popover" class="p-3" #op>
+      <div>
+        <div style="border-bottom: 1px solid #ccc;" class="d-flex align-items-center justify-content-between px-3 py-3">
+          <div>
+            <span style="font-weight: 700; font-size: 1.1rem;">Filter</span>
+          </div>
+          <div style="line-height: 1rem;">
+            <span (click)="op.hide()"><i class="fa-solid fa-circle-xmark"></i></span>
+          </div>
+        </div>
+        <div class="px-3 py-3"
+          [ngStyle]="{ 'height': getOffsetHeightByCustomClass(175, containerOffSetHeightClasses), 'max-width': popupWidth }"
+          style="overflow-x: hidden;">
+          <app-filter-fields-container [branchOptions]="getBranchOptions" [FilterFields]="filterFields"
+            [showFilterFields]="showFilterFields"></app-filter-fields-container>
+        </div>
+        <div style="border-top: 1px solid #ccc;" class="d-flex justify-content-end px-3 py-3">
+          <button (click)="onFilterClear()" class="btn btn-warning mx-1 px-2 py-1">Clear</button>
+          <button (click)="getAllAttendance(true)" class="mx-1 btn btn-success mx-1 px-2 py-1">Apply</button>
+        </div>
+      </div>
+    </p-popover>
+
   </div>
 </div>
