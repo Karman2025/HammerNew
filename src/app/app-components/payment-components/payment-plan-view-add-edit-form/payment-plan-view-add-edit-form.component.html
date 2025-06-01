@@ -108,6 +108,9 @@
         </td>
         <td pFrozenColumn alignFrozen="right">
           <div>
+            <span *ngIf="IsCustomer" (click)="editPaymentPlan(plan)" pTooltip="Edit" tooltipPosition="top" class="c-pointer px-3">
+              <i class="fa-solid fa-pen-to-square"></i>
+            </span>
             <span (click)="viewPaymentHistory(plan?.payments)" pTooltip="Payment History" tooltipPosition="top" class="c-pointer px-3">
               <i class="fa-solid fa-clock-rotate-left"></i>
             </span>
@@ -137,13 +140,13 @@
 </ng-container>
 
 <!-- Payment Plan -->
-<p-dialog [draggable]="false" [showHeader]="false" class="primary-p-dialog" [modal]="true" [position]="'center'" [(visible)]="isVisibleCreatePaymentPlanDialog" [style]="{ width: popupWidth }">
+<p-dialog [draggable]="false" [showHeader]="false" class="primary-p-dialog" [modal]="true" [position]="'center'" [(visible)]="isVisibleAddUpdatePaymentPlanDialog" [style]="{ width: popupWidth }">
   <div class="p-p-dialog-header ofH_calc_modal_header">
     <div>
-      <span class="p-p-dialog-header-label">Add Payment Plan</span>
+      <span class="p-p-dialog-header-label">{{createPaymentPlanForm.get('_id')?.value ? 'Edit Payment Plan' : 'Add Payment Plan'}}</span>
     </div>
     <div>
-      <button class="p-p-dialog-header-button" (click)="isVisibleCreatePaymentPlanDialog = false" ><i class="fa-solid fa-xmark"></i></button>
+      <button class="p-p-dialog-header-button" (click)="isVisibleAddUpdatePaymentPlanDialog = false" ><i class="fa-solid fa-xmark"></i></button>
     </div>
   </div>
   <div class="p-p-dialog-body" [ngStyle]="{ 'max-height': getOffsetHeightForModal(93), 'overflow-x': 'hidden' }">
@@ -155,7 +158,7 @@
             <div [ngClass]="{'form-validation-error': createPaymentPlanForm.get('paymentPlanId')?.invalid && createPaymentPlanForm.get('paymentPlanId')?.touched}">
               <p-select class="form-control primary-p-select"
               [options]="paymentPlanOptions" dataKey="_id"
-              formControlName="paymentPlanId"
+              formControlName="paymentPlanId" (onChange)="onPaymentPlanChange()"
               optionLabel="name" optionValue="_id"
               placeholder="Select a plan"/>
               <div class="form-validation-msg">
@@ -166,9 +169,9 @@
         </div>
         <div class="col-12">
           <div class="pt-1">
-            <label class="form-label" for="customer-Height">Payable Amount</label>
-            <div [ngClass]="{'form-validation-error': createPaymentPlanForm.get('payableAmount')?.invalid && createPaymentPlanForm.get('payableAmount')?.touched}">
-              <input type="number" id="customer-Height" class="form-control" formControlName="payableAmount" placeholder="ex: 300 AED">
+            <label class="form-label" for="receipt-number">Receipt Number</label>
+            <div [ngClass]="{'form-validation-error': createPaymentPlanForm.get('receiptNumber')?.invalid && createPaymentPlanForm.get('receiptNumber')?.touched}">
+              <input type="text" id="receipt-number" class="form-control" formControlName="receiptNumber" placeholder="ex: RECP0225">
               <div class="form-validation-msg">
                 <span>Required</span>
               </div>
@@ -177,9 +180,20 @@
         </div>
         <div class="col-12">
           <div class="pt-1">
-            <label class="form-label" for="customer-Height">Paid Amount</label>
+            <label class="form-label" for="payable-amount">Payable Amount</label>
+            <div [ngClass]="{'form-validation-error': createPaymentPlanForm.get('payableAmount')?.invalid && createPaymentPlanForm.get('payableAmount')?.touched}">
+              <input type="number" id="payable-amount" class="form-control" formControlName="payableAmount" placeholder="ex: 300 AED">
+              <div class="form-validation-msg">
+                <span>Required</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-12">
+          <div class="pt-1">
+            <label class="form-label" for="paid-amount">Paid Amount</label>
             <div [ngClass]="{'form-validation-error': createPaymentPlanForm.get('paidAmount')?.invalid && createPaymentPlanForm.get('paidAmount')?.touched}">
-              <input type="number" id="customer-Height" class="form-control" formControlName="paidAmount" placeholder="ex: 300 AED">
+              <input type="number" id="paid-amount" class="form-control" formControlName="paidAmount" placeholder="ex: 300 AED">
               <div class="form-validation-msg">
                 <span>{{paidAmountValidationMsg}}</span>
               </div>
@@ -230,8 +244,8 @@
   </div>
   <div class="p-p-dialog-footer ofH_calc_modal_footer">
     <div>
-      <button (click)="isVisibleCreatePaymentPlanDialog = false" class="btn btn-danger mx-2 px-3 py-1"> Cancel </button>
-      <button [disabled]="isButtonLoading" class="btn btn-success px-3 py-1" (click)="createCustomerPaymentPlan()">Save</button>
+      <button (click)="isVisibleAddUpdatePaymentPlanDialog = false" class="btn btn-danger mx-2 px-3 py-1"> Cancel </button>
+      <button [disabled]="isPaymentPlanButtonLoading" class="btn btn-success px-3 py-1" (click)="addUpdateCustomerPaymentPlan()">Save</button>
     </div>
   </div>
 </p-dialog>
@@ -264,6 +278,9 @@
           <th>
             <span>Payment Method</span>
           </th>
+          <th>
+            <span>Receipt Number</span>
+          </th>
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-payment>
@@ -281,6 +298,11 @@
           <td>
             <div>
               <span>{{ payment?.paymentMethod }}</span>
+            </div>
+          </td>
+          <td>
+            <div>
+              <span>{{ payment?.receiptNumber }}</span>
             </div>
           </td>
         </tr>
@@ -328,9 +350,9 @@
       </div>
       <div class="col-12">
         <div class="pt-1">
-          <label class="form-label" for="customer-Height">Pay Balance Amount</label>
+          <label class="form-label" for="pay-balance-amount">Pay Balance Amount</label>
           <div [ngClass]="{'form-validation-error': showPayBalanceValidation}">
-            <input type="number" id="customer-Height" class="form-control"  placeholder="ex: 300 AED"
+            <input type="number" id="pay-balance-amount" class="form-control"  placeholder="ex: 300 AED"
             [max]="selectedPaymentPlan?.balanceAmount" [(ngModel)]="selectedPaymentPlan.payBalanceAmount">
             <div class="form-validation-msg">
               <span>{{payBalanceValidationMsg}}</span>
@@ -338,6 +360,18 @@
           </div>
         </div>
       </div>
+      <div class="col-12">
+          <div class="pt-1">
+            <label class="form-label" for="receipt-number">Receipt Number</label>
+            <div [ngClass]="{'form-validation-error': showPayBalanceValidation}">
+              <input type="text" id="receipt-number" class="form-control" placeholder="ex: RECP0225"
+               [(ngModel)]="selectedPaymentPlan.receiptNumber">
+              <div class="form-validation-msg">
+                <span>Required</span>
+              </div>
+            </div>
+          </div>
+        </div>
     </div>
   </div>
   <div class="p-p-dialog-footer ofH_calc_modal_footer">

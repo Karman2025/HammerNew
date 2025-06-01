@@ -25,7 +25,6 @@ export class PaymentPlanViewAddEditFormComponent implements OnInit {
   @Input() set CustomerPaymentPlan(value:any[]) {
     if(value){
       this.customerPaymentPlan = value;
-      console.log(value)
     }
   }
 
@@ -56,6 +55,7 @@ export class PaymentPlanViewAddEditFormComponent implements OnInit {
     payableAmount: '',
     paidAmount: '',
     paymentMethod: '',
+    receiptNumber: '',
     planStartDate: '',
     planEndDate: '',
     _id:''
@@ -63,10 +63,12 @@ export class PaymentPlanViewAddEditFormComponent implements OnInit {
   selectedPaymentPlan:any = {};
   isVisiblePayBalanceDialog:boolean = false;
   showPayBalanceValidation:boolean = false;
+  showReceiptNumberValidation:boolean = false;
   showPaymentMethodValidation:boolean = false;
   payBalanceValidationMsg:string = "";
-  isVisibleCreatePaymentPlanDialog:boolean = false;
+  isVisibleAddUpdatePaymentPlanDialog:boolean = false;
   isButtonLoading: boolean = false;
+  isPaymentPlanButtonLoading: boolean = false;
   paidAmountValidationMsg:string = 'Required';
   currentDate:Date = new Date();
   popupWidth = getPopupWidth();
@@ -98,6 +100,7 @@ export class PaymentPlanViewAddEditFormComponent implements OnInit {
       payableAmount: new FormControl('', Validators.required),
       paidAmount: new FormControl('', Validators.required),
       paymentMethod: new FormControl('', Validators.required),
+      receiptNumber: new FormControl('', Validators.required),
       planStartDate: ['', Validators.required],
       planEndDate: new FormControl(''),
     });
@@ -123,6 +126,11 @@ export class PaymentPlanViewAddEditFormComponent implements OnInit {
     }
   }
 
+  onPaymentPlanChange(){
+    this.createPaymentPlanForm.get('planStartDate')?.setValue('');
+    this.createPaymentPlanForm.get('planEndDate')?.setValue('');
+  }
+
   viewPaymentHistory(paymentHistory:any[]) {
     this.selectedPlanPaymentHistory = JSON.parse(JSON.stringify(paymentHistory));
     this.isVisiblePaymentHistoryDialog = true;
@@ -131,126 +139,111 @@ export class PaymentPlanViewAddEditFormComponent implements OnInit {
   openPaymentPlanRenewModal(plan:any) {
     this.createPaymentPlanForm.reset(this.defaultValues);
     this.selectedPaymentPlan = JSON.parse(JSON.stringify(plan));
-    this.isVisibleCreatePaymentPlanDialog = true;
+    this.isVisibleAddUpdatePaymentPlanDialog = true;
   }
 
-
-
-  // createCustomerPaymentPlan(){
-  //   // this.createPaymentPlanForm.get('paidAmount')?.setErrors(null);
-  //   this.paidAmountValidationMsg = 'Required';
-  //   if(this.createPaymentPlanForm?.value?.paidAmount > this.createPaymentPlanForm?.value?.payableAmount){
-  //     this.paidAmountValidationMsg = 'Amount cannot exceed the payable amount';
-  //     this.createPaymentPlanForm.get('paidAmount')?.setErrors({ customError: true });
-  //   }
-
-  //   this.createPaymentPlanForm.markAllAsTouched();
-  //   if(this.createPaymentPlanForm?.valid){
-  //     this.isButtonLoading = true;
-  //     let customer = this.selectedPaymentPlan?.customer;
-  //     let body = this.createPaymentPlanForm?.value;
-  //     body.customerId = customer?._id;
-  //     if(body?.paymentPlanId == '4'){
-  //       body.planStartDate = dateObjToString(body?.planStartDate);
-  //       body.planEndDate = dateObjToString(body?.planEndDate);
-  //     }
-  //     this.service.createCustomerPaymentPlan(this.createPaymentPlanForm?.value).subscribe((res:any)=>{
-  //       console.log(res);
-  //         if(res?.Results?.customerPaymentPlan){
-  //           this.isVisibleCreatePaymentPlanDialog = false;
-  //           if(this.IsCustomer){
-  //             // let tempCustomerPaymentPlan = this.customerPaymentPlan?.filter((x:any)=>x?.customer?._id != customer?._id);
-  //             res.Results.customerPaymentPlan.customer = customer;
-  //             this.customerPaymentPlan?.unshift(res?.Results?.customerPaymentPlan);
-  //             // this.customerPaymentPlan = JSON.parse(JSON.stringify(tempCustomerPaymentPlan));
-  //             const successMessage = 'Customer payment plan created successfully'
-  //             this.toasterMessage.add({ key: 'root-toast', severity: 'success', summary: 'Success', detail: successMessage });
-  //           } else {
-  //             res.Results.customerPaymentPlan.customer = customer;
-  //             const index = this.customerPaymentPlan?.findIndex((x: any) => x?.customer?._id == customer?._id);
-  //             if (index !== -1 && index != null) {
-  //               this.customerPaymentPlan[index] = JSON.parse(JSON.stringify(res.Results.customerPaymentPlan));
-  //             }
-  //           }
-  //           this.changeShowExtendPlan.emit(false);
-  //         } else {
-  //            this.toasterMessage.add({ key: 'root-toast', severity: 'error', summary: 'Error', detail: res?.Results?.error ?? 'Something went wrong please try again later' });
-  //         };
-  //         this.isButtonLoading = false;
-  //       })
-  //   }
-  // }
-
-createCustomerPaymentPlan() {
-  this.paidAmountValidationMsg = 'Required';
-  if (this.createPaymentPlanForm?.value?.paidAmount > this.createPaymentPlanForm?.value?.payableAmount) {
-    this.paidAmountValidationMsg = 'Amount cannot exceed the payable amount';
-    this.createPaymentPlanForm.get('paidAmount')?.setErrors({ customError: true });
+  editPaymentPlan(plan:any) {
+    plan.planStartDate = dateStringToObj(plan?.planStartDate);
+    plan.planEndDate = dateStringToObj(plan?.planEndDate);
+    plan.paymentMethod = plan?.payments[plan?.payments?.length - 1]?.paymentMethod;
+    this.createPaymentPlanForm.reset(plan);
+    this.selectedPaymentPlan = JSON.parse(JSON.stringify(plan));
+    this.isVisibleAddUpdatePaymentPlanDialog = true;
+    this.createPaymentPlanForm.get('payableAmount')?.disable();
+    this.createPaymentPlanForm.get('paidAmount')?.disable();
+    this.createPaymentPlanForm.get('paymentMethod')?.disable();
   }
 
-  this.createPaymentPlanForm.markAllAsTouched();
-  if (this.createPaymentPlanForm?.valid) {
-    let customer = this.selectedPaymentPlan?.customer;
-    let body = this.createPaymentPlanForm?.value;
-    body.customerId = customer?._id;
-
-
-    if (body?.planStartDate) {
-      body.planStartDate = dateObjToString(body?.planStartDate);
+  addUpdateCustomerPaymentPlan() {
+    this.paidAmountValidationMsg = 'Required';
+    if (this.createPaymentPlanForm?.value?.paidAmount > this.createPaymentPlanForm?.value?.payableAmount) {
+      this.paidAmountValidationMsg = 'Amount cannot exceed the payable amount';
+      this.createPaymentPlanForm.get('paidAmount')?.setErrors({ customError: true });
     }
 
-    if (body?.paymentPlanId == '4') {
-      body.planEndDate = dateObjToString(body?.planEndDate);
-    }
+    this.createPaymentPlanForm.markAllAsTouched();
+    if (this.createPaymentPlanForm?.valid) {
+      let customer = this.selectedPaymentPlan?.customer;
+      let body = this.createPaymentPlanForm?.getRawValue();
+      body.customerId = customer?._id;
 
-    this.service.createCustomerPaymentPlan(this.createPaymentPlanForm?.value).subscribe((res: any) => {
 
-      if (res?.Results?.customerPaymentPlan) {
-        this.isVisibleCreatePaymentPlanDialog = false;
-        const successMessage = 'Customer payment plan created successfully'
-        this.toasterMessage.add({ key: 'root-toast', severity: 'success', summary: 'Success', detail: successMessage });
-
-        if (this.IsCustomer) {
-          let tempCustomerPaymentPlan = this.customerPaymentPlan?.filter((x: any) => x?.customer?._id != customer?._id);
-          res.Results.customerPaymentPlan.customer = customer;
-          tempCustomerPaymentPlan?.unshift(res?.Results?.customerPaymentPlan);
-          this.customerPaymentPlan = JSON.parse(JSON.stringify(tempCustomerPaymentPlan));
-        } else {
-          res.Results.customerPaymentPlan.customer = customer;
-          const index = this.customerPaymentPlan?.findIndex((x: any) => x?.customer?._id == customer?._id);
-          if (index !== -1 && index != null) {
-            this.customerPaymentPlan[index] = JSON.parse(JSON.stringify(res.Results.customerPaymentPlan));
-          }
-        }
-        this.changeShowExtendPlan.emit(false);
-        // this.formatCustomerPaymentPlanData(this.customerPaymentPlan);
-      } else {
-        this.toasterMessage.add({ key: 'root-toast', severity: 'error', summary: 'Error', detail: res?.Results?.error ?? 'Something went wrong please try again later' });
+      if (body?.planStartDate) {
+        body.planStartDate = dateObjToString(body?.planStartDate);
       }
-    });
-  }
-}
 
-getMinEndDate() {
-  const startDate = this.createPaymentPlanForm.get('planStartDate')?.value;
-  if (startDate instanceof Date) {
-    return startDate;
-  } else if (typeof startDate === 'string') {
-    return new Date(startDate);
+      if (body?.paymentPlanId == '4') {
+        body.planEndDate = dateObjToString(body?.planEndDate);
+      }
+
+      this.isPaymentPlanButtonLoading = true;
+      if(!body?._id || body?._id == '' || body?._id == null || body?._id == undefined) {
+        this.service.createCustomerPaymentPlan(body).subscribe((res: any) => {
+          this.isPaymentPlanButtonLoading = false;
+          if (res?.Results?.customerPaymentPlan) {
+            this.isVisibleAddUpdatePaymentPlanDialog = false;
+            const successMessage = 'Customer payment plan created successfully'
+            this.toasterMessage.add({ key: 'root-toast', severity: 'success', summary: 'Success', detail: successMessage });
+            if (this.IsCustomer) {
+              let tempCustomerPaymentPlan = this.customerPaymentPlan?.filter((x: any) => x?.customer?._id == customer?._id);
+              res.Results.customerPaymentPlan.customer = customer;
+              tempCustomerPaymentPlan?.unshift(res?.Results?.customerPaymentPlan);
+              this.customerPaymentPlan = JSON.parse(JSON.stringify(tempCustomerPaymentPlan));
+            } else {
+              res.Results.customerPaymentPlan.customer = customer;
+              const index = this.customerPaymentPlan?.findIndex((x: any) => x?.customer?._id == customer?._id);
+              if (index !== -1 && index != null) {
+                this.customerPaymentPlan[index] = JSON.parse(JSON.stringify(res?.Results?.customerPaymentPlan));
+              }
+            }
+            this.changeShowExtendPlan.emit(false);
+          } else {
+            this.toasterMessage.add({ key: 'root-toast', severity: 'error', summary: 'Error', detail: res?.Results?.error ?? 'Something went wrong please try again later' });
+          }
+        });
+      } else {
+        this.service.updateCustomerPaymentPlan(body).subscribe((res: any) => {
+          this.isPaymentPlanButtonLoading = false;
+          if (res?.Results?.customerPaymentPlan) {
+            this.isVisibleAddUpdatePaymentPlanDialog = false;
+            let tempCustomerPaymentPlanId = this.customerPaymentPlan?.findIndex((x:any)=> x._id == res?.Results?.customerPaymentPlan?._id);
+            this.customerPaymentPlan[tempCustomerPaymentPlanId] = res?.Results?.customerPaymentPlan;
+            const successMessage = 'Customer payment plan updated successfully'
+            this.toasterMessage.add({ key: 'root-toast', severity: 'success', summary: 'Success', detail: successMessage });
+            this.createPaymentPlanForm.get('payableAmount')?.enable();
+            this.createPaymentPlanForm.get('paidAmount')?.enable();
+            this.createPaymentPlanForm.get('paymentMethod')?.enable();
+            this.changeShowExtendPlan.emit(false);
+          } else {
+            this.toasterMessage.add({ key: 'root-toast', severity: 'error', summary: 'Error', detail: res?.Results?.error ?? 'Something went wrong please try again later' });
+          }
+        });
+      }
+    }
   }
-  return new Date(); // fallback to current date
-}
+
+  getMinEndDate() {
+    const startDate = this.createPaymentPlanForm.get('planStartDate')?.value;
+    if (startDate instanceof Date) {
+      return startDate;
+    } else if (typeof startDate === 'string') {
+      return new Date(startDate);
+    }
+    return new Date(); // fallback to current date
+  }
 
   openPayBalanceAmountDialog(plan:any){
     this.selectedPaymentPlan = JSON.parse(JSON.stringify(plan));
     this.isVisiblePayBalanceDialog = true;
 
     this.showPayBalanceValidation = false;
+    this.showReceiptNumberValidation = false;
     this.showPaymentMethodValidation = false;
   }
 
   savePayBalanceAmount() {
     this.showPayBalanceValidation = false;
+    this.showReceiptNumberValidation = false;
     this.showPaymentMethodValidation = false;
 
     if(this.selectedPaymentPlan?.payBalanceAmount == undefined || this.selectedPaymentPlan?.payBalanceAmount == null || this.selectedPaymentPlan?.payBalanceAmount == 0 || !this.selectedPaymentPlan?.payBalanceAmount){
@@ -264,15 +257,19 @@ getMinEndDate() {
     if(this.selectedPaymentPlan?.payBalancePaymentMethod == undefined || this.selectedPaymentPlan?.payBalancePaymentMethod == null || this.selectedPaymentPlan?.payBalancePaymentMethod == 0 || !this.selectedPaymentPlan?.payBalancePaymentMethod){
       this.showPaymentMethodValidation = true;
     }
-    if(this.showPayBalanceValidation == false && this.showPaymentMethodValidation == false) {
+    if(this.selectedPaymentPlan?.receiptNumber == undefined || this.selectedPaymentPlan?.receiptNumber == null || this.selectedPaymentPlan?.receiptNumber == 0 || !this.selectedPaymentPlan?.receiptNumber){
+      this.showReceiptNumberValidation = true;
+    }
+    if(this.showPayBalanceValidation == false && this.showPaymentMethodValidation == false && this.showReceiptNumberValidation == false) {
       this.isButtonLoading = true;
       let body = {
         customerId: this.selectedPaymentPlan?.customer?._id,
         payBalancePaymentMethod: this.selectedPaymentPlan?.payBalancePaymentMethod,
         payBalanceAmount: this.selectedPaymentPlan?.payBalanceAmount,
+        receiptNumber: this.selectedPaymentPlan?.receiptNumber,
         _id: this.selectedPaymentPlan?._id
       }
-      this.service.updateCustomerPaymentPlan(body).subscribe((res:any)=>{
+      this.service.payCustomerBalancePaymentPlan(body).subscribe((res:any)=>{
         if(res?.Results?.message == 'Customer payment plan updated successfully'){
             this.toasterMessage.add({ key: 'root-toast', severity: 'success', summary: 'Success', detail: 'Payment completed successfully' });
           this.isVisiblePayBalanceDialog = false;

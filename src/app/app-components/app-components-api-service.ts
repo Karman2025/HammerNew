@@ -35,6 +35,7 @@ export class AppComponentsApiService {
     private readonly getAllCustomerPaymentPlansEndPoint = 'payment/getAllCustomerPaymentPlans';
     private readonly createCustomerPaymentPlanEndPoint = 'payment/createCustomerPaymentPlan';
     private readonly updateCustomerPaymentPlanEndPoint = 'payment/updateCustomerPaymentPlan';
+    private readonly payCustomerBalancePaymentPlanEndPoint = 'payment/payCustomerBalancePaymentPlan';
 
     private readonly getAllAccountsEndPoint = 'accounts/getAllAccounts';
     private readonly createAccountEntryEndPoint = 'accounts/createAccountEntry';
@@ -145,13 +146,18 @@ export class AppComponentsApiService {
       .pipe(map((response) => response));
     }
 
+    createCustomerPaymentPlan(data: any){
+      return this.api.post<any[]>(this.createCustomerPaymentPlanEndPoint,data)
+      .pipe(map((response) => response));
+    }
+
     updateCustomerPaymentPlan(data: any){
       return this.api.put<any[]>(this.updateCustomerPaymentPlanEndPoint+'?customerPaymentPlanId='+data?._id,data)
       .pipe(map((response) => response));
     }
 
-    createCustomerPaymentPlan(data: any){
-      return this.api.post<any[]>(this.createCustomerPaymentPlanEndPoint,data)
+    payCustomerBalancePaymentPlan(data: any){
+      return this.api.put<any[]>(this.payCustomerBalancePaymentPlanEndPoint+'?customerPaymentPlanId='+data?._id,data)
       .pipe(map((response) => response));
     }
 
