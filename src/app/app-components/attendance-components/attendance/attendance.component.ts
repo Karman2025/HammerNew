@@ -14,12 +14,13 @@ import { catchError, of } from 'rxjs';
 import { MessageService } from 'primeng/api';
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
 import { getPopupWidth } from '../../../shared/functions/responsiveFunction';
+import { SkeletonModule } from 'primeng/skeleton';
 
 @Component({
   selector: 'app-attendance',
   templateUrl: './attendance.component.html',
   styleUrls: ['./attendance.component.css'],
-   imports: [CommonModule, SlideButtonComponent, DatePicker, FormsModule, Popover, ButtonModule, TooltipModule, FilterFieldsContainerComponent, InfiniteScrollDirective]
+   imports: [CommonModule, SlideButtonComponent, DatePicker, FormsModule, Popover, ButtonModule, TooltipModule, FilterFieldsContainerComponent, InfiniteScrollDirective, SkeletonModule]
 })
 export class AttendanceComponent implements OnInit {
   attendanceList: any[] = [];
@@ -32,6 +33,7 @@ export class AttendanceComponent implements OnInit {
   containerOffSetHeightClasses:any[] = ['ofH_calc_nav_bar', 'ofH_calc_body_header'];
   getBranchOptions: {_id: string, bch_Name: string, bch_Code: string}[] = [];
   popupWidth = getPopupWidth();
+  showLoader:boolean = false;
 
   filterFields = {
     branchId: null,
@@ -119,9 +121,10 @@ export class AttendanceComponent implements OnInit {
       attendanceDate: formattedDate,
     };
 
-    param = {...param, ...this.filterFields}
-
+    param = {...param, ...this.filterFields};
+    this.showLoader = true;
     this.service.getAllAttendance(param, showLoader).subscribe((res: any) => {
+      this.showLoader = false;
       if(res?.Results) {
         this.attendanceList = [...this.attendanceList, ...res.Results];
         console.log(this.attendanceList);

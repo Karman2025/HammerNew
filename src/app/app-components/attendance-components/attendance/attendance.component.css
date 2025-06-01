@@ -12,3 +12,8 @@
     border-radius: 8px;
 }
 
+::ng-deep .attendance-skeleton .p-skeleton.p-component {
+    height: 100% !important;
+    width: 100% !important;
+    min-height: 200px;
+}
