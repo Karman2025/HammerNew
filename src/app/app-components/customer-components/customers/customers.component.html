@@ -50,8 +50,18 @@
           <ng-template pTemplate="body" let-customer>
             <tr>
               <td>
-                <div>
-                  <span>{{ customer?.ctr_Code }}</span>
+                <div class="d-flex p-0">
+                  <div>
+                    <img class="c-pointer" (mouseover)="profilePreview.toggle($event)" (mouseout)="profilePreview.hide()" [src]="customer?.profileImage  || '/assets/images/default-profile.png'" style="width: 40px; height: 40px; border-radius: 4px;"/>
+                      <p-popover styleClass="primary-filter-popover" class="p-3" #profilePreview>
+                        <div>
+                          <img [src]="customer?.profileImage  || '/assets/images/default-profile.png'" style="width: 250px; height: 250px; border-radius: 4px;"/>
+                        </div>
+                      </p-popover>
+                  </div>
+                  <div>
+                    <span>{{ customer?.ctr_Code }}</span>
+                  </div>
                 </div>
               </td>
               <td>
