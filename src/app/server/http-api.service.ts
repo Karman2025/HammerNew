@@ -12,7 +12,6 @@ import { environment } from '../../../src/environments/environment';
 
 import { HTTPMethodType } from '../models/misc';
 import { ResponseObject } from '../models/response';
-import { HttpContext } from '@angular/common/http'; // add this
 import { LoaderService } from '../shared/services/loader.service';
 
 @Injectable({
@@ -27,8 +26,7 @@ export class HttpApiService {
         methodType: HTTPMethodType,
         endPoint: string,
         data: any = null,
-        showLoader: boolean,
-        context: HttpContext = new HttpContext()
+        showLoader: boolean
     ): Observable<ResponseObject<T>> {
         const token = localStorage.getItem('USER-JWT-TOKEN'); // Retrieve token from storage or service
         const headers = new HttpHeaders({
@@ -42,7 +40,6 @@ export class HttpApiService {
             .request<T>(methodType, `${environment.baseAPIUrl}${endPoint}`, {
                 body: data,
                 headers: headers,
-                context,
                 reportProgress: true,
                 observe: 'response',
             })
@@ -93,20 +90,20 @@ export class HttpApiService {
             );
     }
 
-    public post<T>(endPoint: string, data: any, showLoader:boolean = true, context?: HttpContext) {
-        return this.submitRequest<T>('Post', endPoint, data, showLoader, context);
+    public post<T>(endPoint: string, data: any, showLoader:boolean = true) {
+        return this.submitRequest<T>('Post', endPoint, data, showLoader);
     }
 
-    public put<T>(endPoint: string, data: any, showLoader:boolean = true, context?: HttpContext) {
-        return this.submitRequest<T>('Put', endPoint, data, showLoader, context);
+    public put<T>(endPoint: string, data: any, showLoader:boolean = true) {
+        return this.submitRequest<T>('Put', endPoint, data, showLoader);
     }
 
-    public get<T>(endPoint: string, showLoader:boolean = true, context?: HttpContext) {
-        return this.submitRequest<T>('Get', endPoint, null, showLoader, context);
+    public get<T>(endPoint: string, showLoader:boolean = true) {
+        return this.submitRequest<T>('Get', endPoint, null, showLoader);
     }
 
-    public delete<T>(endPoint: string, data: any, showLoader:boolean = true, context?: HttpContext) {
-        return this.submitRequest<T>('Delete', endPoint, data, showLoader, context);
+    public delete<T>(endPoint: string, data: any, showLoader:boolean = true) {
+        return this.submitRequest<T>('Delete', endPoint, data, showLoader);
     }
 
     private handleError(error: Response) {
