@@ -33,7 +33,7 @@ export class AttendanceComponent implements OnInit {
   containerOffSetHeightClasses:any[] = ['ofH_calc_nav_bar', 'ofH_calc_body_header'];
   getBranchOptions: {_id: string, bch_Name: string, bch_Code: string}[] = [];
   popupWidth = getPopupWidth();
-  showLoader:boolean = false;
+  showSkeletonLoader:boolean = false;
 
   filterFields = {
     branchId: null,
@@ -122,9 +122,9 @@ export class AttendanceComponent implements OnInit {
     };
 
     param = {...param, ...this.filterFields};
-    this.showLoader = true;
+    this.showSkeletonLoader = true;
     this.service.getAllAttendance(param, showLoader).subscribe((res: any) => {
-      this.showLoader = false;
+      this.showSkeletonLoader = false;
       if(res?.Results) {
         this.attendanceList = [...this.attendanceList, ...res.Results];
         console.log(this.attendanceList);
