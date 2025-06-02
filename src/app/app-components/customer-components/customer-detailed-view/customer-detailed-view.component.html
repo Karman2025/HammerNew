@@ -34,7 +34,7 @@
             <div>
               <ng-container *ngIf="customerData?.showExtendPlan">
                 <button (click)="addPaymentPlan()" style="font-size: 0.9rem;" class="custom-primary-outerline-btn py-1">
-                  <span><i class="fa-solid fa-pen-to-square"></i></span>
+                  <span><i class="fa-solid fa-plus"></i></span>
                   <span class="px-1"></span>
                   <span>Add Plan</span>
                 </button>
@@ -73,7 +73,7 @@
             <ng-container *ngIf="!customerDetails?.customerDietPlan?.length">
               <div class="d-flex align-items-center justify-content-center" style="min-height: 100px;">
                 <button (click)="addDietPlan()" style="font-size: 0.9rem;" class="custom-primary-outerline-btn py-1">
-                  <span><i class="fa-solid fa-pen-to-square"></i></span>
+                  <span><i class="fa-solid fa-plus"></i></span>
                   <span class="px-1"></span>
                   <span>Create Diet Plan</span>
                 </button>
