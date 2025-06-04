@@ -32,10 +32,10 @@ export const CoreRoutes: Routes = [
     path: 'payments',
     loadComponent: () => import('../app-components/payment-components/payments/payments.component').then(m => m.PaymentsComponent),
   },
-  {
-    path: 'reports',
-    loadComponent: () => import('../app-components/reports-component/reports-component.component').then(m => m.ReportsComponentComponent),
-  },
+  // {
+  //   path: 'reports',
+  //   loadComponent: () => import('../app-components/reports-component/reports-component.component').then(m => m.ReportsComponentComponent),
+  // },
   {
     path: 'attendance',
     loadComponent: () => import('../app-components/attendance-components/attendance/attendance.component').then(m => m.AttendanceComponent)

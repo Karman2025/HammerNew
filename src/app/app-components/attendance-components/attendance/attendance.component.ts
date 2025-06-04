@@ -109,7 +109,7 @@ export class AttendanceComponent implements OnInit {
     this.checkInCustomer();
   }
 
-  getAllAttendance(resetPage: boolean = false, showLoader: boolean = true) {
+  getAllAttendance(resetPage: boolean = false, showLoader: boolean = true, isScroll: boolean = false) {
     if (resetPage) this.pageNo = 1;
     const formattedDate = dateObjToString(this.attendanceDate)?.split('T')[0]!;
     const todaysDate  = newDateString();
@@ -122,7 +122,7 @@ export class AttendanceComponent implements OnInit {
     };
 
     param = {...param, ...this.filterFields};
-    this.showSkeletonLoader = true;
+    this.showSkeletonLoader = isScroll;
     this.service.getAllAttendance(param, showLoader).subscribe((res: any) => {
       this.showSkeletonLoader = false;
       if(res?.Results) {
@@ -196,7 +196,7 @@ export class AttendanceComponent implements OnInit {
     if ( this.xPagination?.hasNextPage) {
       this.pageNo++;
 
-      this.getAllAttendance(false, false);
+      this.getAllAttendance(false, false, true);
   }
 }
 }
