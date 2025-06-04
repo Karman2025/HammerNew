@@ -13,33 +13,33 @@ export class AppComponentsApiService {
     constructor(
       private api: HttpApiService,
     ) { }
-    private readonly getAllBranchEndPoint = 'branch/getAllBranch';
-    private readonly createBranchEndPoint = 'branch/createBranch';
-    private readonly updateBranchEndPoint = 'branch//updateBranch';
-    private readonly getAllBranchAutocompleteEndPoint = 'branch/getAllBranchAutocomplete';
+    private readonly getAllBranchEndPoint = '/admin/branch/getAllBranch';
+    private readonly createBranchEndPoint = '/admin/branch/createBranch';
+    private readonly updateBranchEndPoint = '/admin/branch//updateBranch';
+    private readonly getAllBranchAutocompleteEndPoint = '/admin/branch/getAllBranchAutocomplete';
 
-    private readonly getAllTrainerEndPoint = 'trainer/getAllTrainer';
-    private readonly createTrainerEndPoint = 'trainer/createTrainer';
-    private readonly updateTrainerEndPoint = 'trainer/updateTrainer';
+    private readonly getAllTrainerEndPoint = '/admin/trainer/getAllTrainer';
+    private readonly createTrainerEndPoint = '/admin/trainer/createTrainer';
+    private readonly updateTrainerEndPoint = '/admin/trainer/updateTrainer';
 
-    private readonly getCustomerDetailsByIdEndPoint = 'customer/getCustomerDetailsById';
-    private readonly getAllCustomerEndPoint = 'customer/getAllCustomer';
-    private readonly createCustomerEndPoint = 'customer/createCustomer';
-    private readonly updateCustomerEndPoint = 'customer/updateCustomer';
+    private readonly getCustomerDetailsByIdEndPoint = '/admin/customer/getCustomerDetailsById';
+    private readonly getAllCustomerEndPoint = '/admin/customer/getAllCustomer';
+    private readonly createCustomerEndPoint = '/admin/customer/createCustomer';
+    private readonly updateCustomerEndPoint = '/admin/customer/updateCustomer';
 
-    private readonly addUpdateDietPlansEndPoint = 'diet/addUpdateDietPlans';
+    private readonly addUpdateDietPlansEndPoint = '/admin/diet/addUpdateDietPlans';
 
-    private readonly getAllAttendanceEndPoint = 'attendence/getAllAttendance';
-    private readonly checkInCustomerEndPoint = 'attendence/checkIn';
+    private readonly getAllAttendanceEndPoint = '/admin/attendence/getAllAttendance';
+    private readonly checkInCustomerEndPoint = '/admin/attendence/checkIn';
 
-    private readonly getAllCustomerPaymentPlansEndPoint = 'payment/getAllCustomerPaymentPlans';
-    private readonly createCustomerPaymentPlanEndPoint = 'payment/createCustomerPaymentPlan';
-    private readonly updateCustomerPaymentPlanEndPoint = 'payment/updateCustomerPaymentPlan';
-    private readonly payCustomerBalancePaymentPlanEndPoint = 'payment/payCustomerBalancePaymentPlan';
+    private readonly getAllCustomerPaymentPlansEndPoint = '/admin/payment/getAllCustomerPaymentPlans';
+    private readonly createCustomerPaymentPlanEndPoint = '/admin/payment/createCustomerPaymentPlan';
+    private readonly updateCustomerPaymentPlanEndPoint = '/admin/payment/updateCustomerPaymentPlan';
+    private readonly payCustomerBalancePaymentPlanEndPoint = '/admin/payment/payCustomerBalancePaymentPlan';
 
-    private readonly getAllAccountsEndPoint = 'accounts/getAllAccounts';
-    private readonly createAccountEntryEndPoint = 'accounts/createAccountEntry';
-    private readonly updateAccountEntryEndPoint = 'accounts/updateAccountEntry';
+    private readonly getAllAccountsEndPoint = '/admin/accounts/getAllAccounts';
+    private readonly createAccountEntryEndPoint = '/admin/accounts/createAccountEntry';
+    private readonly updateAccountEntryEndPoint = '/admin/accounts/updateAccountEntry';
 
     getAllBranch(params:any){
         let endPoint = '?';

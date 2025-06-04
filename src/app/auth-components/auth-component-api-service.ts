@@ -10,7 +10,7 @@ import { environment } from '../../environments/environment';
 export class AuthComponentApiService {
 
     constructor(private api: HttpApiService) { }
-    private readonly signinEndPoint = 'auth/signin';
+    private readonly signinEndPoint = '/auth/signin';
 
     signin(data: any){
         return this.api.post<any[]>(this.signinEndPoint,data)
