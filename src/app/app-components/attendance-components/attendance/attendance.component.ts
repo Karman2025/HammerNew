@@ -25,7 +25,7 @@ import { SkeletonModule } from 'primeng/skeleton';
 export class AttendanceComponent implements OnInit {
   attendanceList: any[] = [];
   selectedCustomer: any;
-  attendanceDate: any;
+  attendanceDate: Date = new Date();
   maxDate: Date = new Date;
   formattedDate: string = '';
   toastErrorMessage: string = 'Something went wrong';
@@ -66,7 +66,7 @@ export class AttendanceComponent implements OnInit {
   constructor(
     private service: AppComponentsApiService,
     private toasterMessage: MessageService) {
-    this.attendanceDate = new Date();
+    // this.attendanceDate = new Date();
     this.getAllAttendance();
     this.getAllBranchAutocompleteData();
     this.loggedInUser = JSON.parse(localStorage.getItem('USER-INFO') ?? "{}");
@@ -98,7 +98,7 @@ export class AttendanceComponent implements OnInit {
     this.attendanceDate = event; // stays as Date
     const formatted = dateObjToString(event)?.split('T')[0];
     console.log("Formatted: ", formatted);
-    this.getAllAttendance();
+    this.getAllAttendance(true);
   }
 
 
@@ -111,14 +111,19 @@ export class AttendanceComponent implements OnInit {
 
   getAllAttendance(resetPage: boolean = false, showLoader: boolean = true, isScroll: boolean = false) {
     if (resetPage) this.pageNo = 1;
-    const formattedDate = dateObjToString(this.attendanceDate)?.split('T')[0]!;
-    const todaysDate  = newDateString();
-    if (formattedDate < todaysDate) this.isPastDay = true; else this.isPastDay = false;
+    // const formattedDate = dateObjToString(this.attendanceDate)?.split('T')[0]!;
+    const selectedDate = new Date(this.attendanceDate);
+    selectedDate.setHours(0, 0, 0, 0);
+    const todaysDate  = new Date();
+    todaysDate.setHours(0, 0, 0, 0);
+
+    // const todaysDate  = newDateString();
+    if (selectedDate < todaysDate) this.isPastDay = true; else this.isPastDay = false;
 
     let param:any = {
       pageSize : this.pageSize,
       pageNo : this.pageNo,
-      attendanceDate: formattedDate,
+      attendanceDate: dateObjToString(selectedDate),
     };
 
     param = {...param, ...this.filterFields};
@@ -126,7 +131,11 @@ export class AttendanceComponent implements OnInit {
     this.service.getAllAttendance(param, showLoader).subscribe((res: any) => {
       this.showSkeletonLoader = false;
       if(res?.Results) {
-        this.attendanceList = [...this.attendanceList, ...res.Results];
+        if(this.pageNo == 1){
+          this.attendanceList = res.Results;
+        } else {
+          this.attendanceList = [...this.attendanceList, ...res.Results];
+        }
         console.log(this.attendanceList);
         this.xPagination = res?.XPagination;
       } else {
@@ -138,18 +147,23 @@ export class AttendanceComponent implements OnInit {
 
 
   checkInCustomer() {
-    const todaysDate  = newDateString();
-    const selectedDate = this.attendanceDate?.toISOString().split('T')[0];
+    // const todaysDate  = newDateString();
+    // const selectedDate = this.attendanceDate?.toISOString().split('T')[0];
+    const todaysDate  = new Date();
+    const selectedDate = new Date(this.attendanceDate);
+    selectedDate.setHours(0, 0, 0, 0);
+    todaysDate.setHours(0, 0, 0, 0);
 
-    if (selectedDate !== todaysDate) {
+    if (selectedDate < todaysDate) {
       console.log("Check-in blocked: Selected date is not today.");
       this.isPastDay = true;
       return;
     }
+    const currentTime = new Date();
     const payload = {
       "customerId": this.selectedCustomer.customerId,
-      "checkinTime": new Date().toISOString(),
-      "attendanceDate": todaysDate
+      "checkinTime": dateObjToString(currentTime),
+      "attendanceDate": dateObjToString(todaysDate)
     }
     console.log(payload);
 
