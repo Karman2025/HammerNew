@@ -26,6 +26,7 @@ export class AppComponentsApiService {
     private readonly getAllCustomerEndPoint = '/admin/customer/getAllCustomer';
     private readonly createCustomerEndPoint = '/admin/customer/createCustomer';
     private readonly updateCustomerEndPoint = '/admin/customer/updateCustomer';
+    private readonly deleteCustomerEndPoint = '/admin/customer/deleteCustomer';
 
     private readonly addUpdateDietPlansEndPoint = '/admin/diet/addUpdateDietPlans';
 
@@ -128,7 +129,7 @@ export class AppComponentsApiService {
         }
       return this.api.get<any[]>(`${this.getAllAttendanceEndPoint}${endPoint}`, showLoader)
       .pipe(map((response) => response));
-  }
+    }
 
     customerCheckIn(data: any, showLoader: boolean = true) {
         return this.api.post<any[]>(this.checkInCustomerEndPoint, data, showLoader)
@@ -179,6 +180,11 @@ export class AppComponentsApiService {
 
     updateAccountEntry(data: any){
       return this.api.put<any[]>(this.updateAccountEntryEndPoint,data)
+      .pipe(map((response) => response));
+    }
+
+    deleteCustomer(customerId: any){
+      return this.api.put<any[]>(this.deleteCustomerEndPoint + "?customerId=" + customerId,null)
       .pipe(map((response) => response));
     }
 }
