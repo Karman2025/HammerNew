@@ -4,13 +4,37 @@
     align-items: center;
     overflow: hidden;
     width: 100%;
+    background-color: var(--secondary);
+    height: 65px;
+    border-radius: 15px;
+}
+
+.nav-left-section {
+    max-width: 140px;
+}
+
+.website-logo {
+    display: block;
+    background: var(--primary);
+    padding: 7px 15px;
+    border-radius: 8px;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #ffff;
+}
+
+.website-label {
+    font-size: 1.1rem; 
+    font-weight: 500; 
+    padding-left: 0.7rem; 
+    color: var(--primary-text-color);
 }
 
 .menu-items {
     display: flex;
     align-items: center;
     justify-content: space-evenly;
-    list-style: none; /* No bullet points */
+    list-style: none;
     padding: 0;
     margin: 0;
 }
@@ -18,48 +42,27 @@
 .menu-items a {
     display: block;
     text-decoration: none;
-    /* color: #fff; */
     position: relative;
-    transition: transform 0.3s ease-in-out; /* Smooth zoom effect */
-    display: inline-block; /* Fix for zoom effect */
-    color: #000;
+    transition: transform 0.3s ease-in-out;
+    display: inline-block;
+    color: var(--primary-text-color) ;
 }
 .menu-item.active a {
     padding: 2px 6px;
     border-radius: 6px;
     background-color: var(--primary-color);
     border: 2px solid var(--primary-color);
+    color: #3a91dd;
 
 }
-
-/* .menu-items a::before {
-    content: "";
-    position: absolute;
-    left: 50%;
-    bottom: -3px;
-    width: 0;
-    height: 2px;
-    background-color: #f1f1f1;
-    transition: width 0.3s ease-in-out, left 0.3s ease-in-out;
+.menu-item a:hover {
+    color: #107cda;
+    
 }
 
-
-.menu-items a:hover {
-    transform: scale(1.1);
-}
-
-.menu-items a:hover::before {
-    width: 100%;
-    left: 0;
-} */
 
 .menu-item {
-    /* display: flex; */
-    /* flex-direction: column; */
-    /* align-items: center;  */
-
     padding: 0px 2px;
-    /* margin: 0px 15px; */
     cursor: pointer;
 }
 
@@ -84,7 +87,7 @@
 .profile-popover {
     display: flex;
     flex-direction: column;
-    list-style: none; /* No bullet points */
+    list-style: none;
     padding: 0;
     margin: 0;
 }
@@ -96,16 +99,10 @@
 
 .profile-popover-items a {
     text-decoration: none;
-    /* position: relative; */
-    /* transition: transform 0.3s ease-in-out;
-    display: inline-block; */
     color: #000;
 }
 .profile-popover.active a {
-    /* padding: 2px 6px; */
-    /* border-radius: 6px; */
     background-color: var(--primary-color);
-    /* border-bottom: 2px solid var(--primary-color); */
 }
 
 .d-none {
@@ -117,18 +114,56 @@
   border-radius: 10px;
   margin-top: 10px;
 }
+
+.mobile-panel-section {
+    background-color: var(--primary);
+    height: 100dvh;
+}
+.mobile-panel-close-btn {
+    border: none;
+    border-radius: 50%;
+    height: 30px;
+    width: 30px;
+    background-color: var(--primary);
+}
+
+.mobile-panel-header {
+    background-color: var(--secondary);
+    border-radius: 15px;
+    height: 60px;
+    width: 100%;
+}
+
+.mobile-panel-body {
+    background-color: var(--secondary);
+    border-radius: 15px;
+    width: 100%;
+}
+
+.mobile-panel-footer {
+    background-color: var(--secondary);
+    border-radius: 15px;
+    width: 100%;
+}
+
+.mobile-menu-item {
+    width: 100%;
+    text-align: center;
+    border-radius: 4px;
+}
+
 .mobile-menu-item.active { 
     background-color: var(--primary-color);
-    /* border-bottom: 2px solid var(--primary-color); */
 }
 .mobile-menu-items {
-    list-style: none; /* No bullet points */
+    list-style: none;
     padding: 0;
     margin: 0;
     display: flex;
     flex-direction: column;
-    /* align-items: flex-start; */
+    align-items: center;
     row-gap: 10px;
+    width: 80%;
 }
 .mobile-menu-items a {
    text-decoration: none;
@@ -139,3 +174,25 @@
     border: none; 
     background-color: inherit;
 }
+
+
+.mobile-menu-user-block {
+    list-style: none; 
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    row-gap: 10px;
+    width: 100%;
+}
+.mobile-menu-user-list {
+    padding: 4px 4px;
+    cursor: pointer;
+    text-align: center;
+    width: 80%;
+    border-radius: 4px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+
+}
+

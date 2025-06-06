@@ -1,32 +1,13 @@
 <nav class="px-3 py-3" style="width: 100dvw">
-  <div
-    class="nav-container"
-    style="
-      background-color: var(--secondary);
-      height: 65px;
-      border-radius: 15px;
-    "
-  >
-    <div class="nav-left-section" style="max-width: 140px">
+  <div class="nav-container">
+    <div class="nav-left-section">
       <div class="d-flex align-items-center justify-content-center">
         <div style="margin-left: 13px">
-          <span
-            style="
-              display: block;
-              background: var(--primary);
-              padding: 7px 15px;
-              border-radius: 8px;
-              font-size: 1.2rem;
-              font-weight: 700;
-            "
-            >H</span
-          >
+          <span class="website-logo">H</span>
         </div>
         <div>
           <span
-            style="font-size: 1.1rem; font-weight: 500; padding-left: 0.7rem"
-            >Hammer</span
-          >
+            class="website-label">Hammer</span>
         </div>
       </div>
     </div>
@@ -81,7 +62,7 @@
           <span
             (click)="op.toggle($event)"
             class="px-2"
-            style="font-size: 1.5rem; cursor: pointer"
+            style="font-size: 1.5rem; cursor: pointer; color: var(--primary-text-color);"
           >
             <i class="fa-regular fa-circle-user"></i>
           </span>
@@ -102,52 +83,56 @@
 
   <p-drawer #drawerRef [(visible)]="visible" [modal]="true" position="right">
     <ng-template #headless>
-      <div class="d-flex align-items-center justify-content-end">
-        <button
-          (click)="closeCallback($event)"
-          class="d-flex justify-content-center align-items-center"
-          type="button"
-          style="border: none; border-radius: 50%; height: 30px; width: 30px"
-        >
-          <i class="fa-solid fa-xmark"></i>
-        </button>
+      <div class="mobile-panel-section d-flex flex-column justify-content-between px-3 py-3">
+        <div>
+          <div class="mobile-panel-header d-flex align-items-center justify-content-between px-2">
+            <div>
+              <span class="website-logo">H</span>
+            </div>
+            <button (click)="closeCallback($event)" class="mobile-panel-close-btn d-flex justify-content-center align-items-center" type="button">
+              <i class="fa-solid fa-xmark"></i>
+            </button>
+          </div>
+
+          <div class="mobile-panel-body mt-3 py-3 d-flex justify-content-center align-items-center">
+            <ul class="mobile-menu-items">
+              <ng-container *ngIf="loggedInUser?.role === '1'">
+                <li class="mobile-menu-item" routerLinkActive="active">
+                  <a routerLink="/home/branches" (click)="visible = false">Branches</a>
+                </li>
+              </ng-container>
+              <li class="mobile-menu-item" routerLinkActive="active">
+                <a routerLink="/home/customers" (click)="visible = false">Customers</a>
+              </li>
+              <li class="mobile-menu-item" routerLinkActive="active">
+                <a routerLink="/home/trainers" (click)="visible = false">Trainers</a>
+              </li>
+              <li class="mobile-menu-item" routerLinkActive="active">
+                <a routerLink="/home/payments" (click)="visible = false">Payments</a>
+              </li>
+              <!-- <li class="mobile-menu-item" routerLinkActive="active">
+                    <a routerLink="/home/reports" (click)="visible = false">Reports</a>
+                  </li> -->
+              <li class="mobile-menu-item" routerLinkActive="active">
+                <a routerLink="/home/attendance" (click)="visible = false">Attendance</a>
+              </li>
+              <li class="mobile-menu-item" routerLinkActive="active">
+                <a routerLink="/home/accounts" (click)="visible = false">Accounts</a>
+              </li>
+            </ul>
+          </div>
+
+        </div>
+        <div class="mobile-panel-footer d-flex flex-column align-items-center py-3 mt-3">
+          <ul class="mobile-menu-user-block">
+            <li class="mobile-menu-user-list">Usergmail.com</li>
+            <li class="mobile-menu-user-list">
+              <a routerLink="/signin" style="text-decoration: none;" (click)="signOut()">Logout</a>
+            </li>
+          </ul>
+        </div>
       </div>
-      <ul class="mobile-menu-items">
-        <ng-container *ngIf="loggedInUser?.role === '1'">
-          <li class="mobile-menu-item" routerLinkActive="active">
-            <a routerLink="/home/branches" (click)="visible = false"
-              >Branches</a
-            >
-          </li>
-        </ng-container>
-        <li class="mobile-menu-item" routerLinkActive="active">
-          <a routerLink="/home/customers" (click)="visible = false"
-            >Customers</a
-          >
-        </li>
-        <li class="mobile-menu-item" routerLinkActive="active">
-          <a routerLink="/home/trainers" (click)="visible = false">Trainers</a>
-        </li>
-        <li class="mobile-menu-item" routerLinkActive="active">
-          <a routerLink="/home/payments" (click)="visible = false">Payments</a>
-        </li>
-        <li class="mobile-menu-item" routerLinkActive="active">
-          <a routerLink="/home/reorts" (click)="visible = false">Reports</a>
-        </li>
-        <li class="mobile-menu-item" routerLinkActive="active">
-          <a routerLink="/home/attendance" (click)="visible = false"
-            >Attendance</a
-          >
-        </li>
-        <li class="mobile-menu-item" routerLinkActive="active">
-          <a routerLink="/home/accounts" (click)="visible = false">Accounts</a>
-        </li>
-        <li class="mobile-menu-item" routerLinkActive="active">
-          <a routerLink="/signin" (click)="signOut(); visible = false"
-            >Logout</a
-          >
-        </li>
-      </ul>
+      
     </ng-template>
   </p-drawer>
 </nav>
