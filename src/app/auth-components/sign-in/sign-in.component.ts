@@ -49,7 +49,11 @@ export class SignInComponent implements OnInit {
           case 'login success':
             localStorage.setItem('USER-JWT-TOKEN', res?.Results?.jwt);
             localStorage.setItem('USER-INFO', JSON.stringify(res?.Results?.userInfo));
-            this.router.navigate(['/home/welcome']);
+            if(res?.Results?.userInfo?.role != "3"){
+              this.router.navigate(['/home/welcome']);
+            } else if(res?.Results?.userInfo?.role == "3") {
+              this.router.navigate(['/home/trainer/customers']);
+            }
             break;
           case 'Invalid password':
           case 'User not found with given Email':

@@ -44,4 +44,8 @@ export const CoreRoutes: Routes = [
     path: 'accounts',
     loadComponent: () => import('../app-components/accounts-components/accounts/accounts.component').then(m => m.AccountsComponent)
   },
+  {
+    path: 'trainer/customers',
+    loadComponent: () => import('../app-components/customer-components/customers/customers.component').then(m => m.CustomersComponent),
+  },
 ];

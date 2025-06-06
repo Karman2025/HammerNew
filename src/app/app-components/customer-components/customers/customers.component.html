@@ -30,19 +30,19 @@
               <th>
                 <span>Created Date</span>
               </th>
-              <th>
+              <th *ngIf="loggedInUser?.role != '3'">
                 <span>Mail</span>
               </th>
               <th>
                 <span>Mobile No</span>
               </th>
-              <th>
+              <th *ngIf="loggedInUser?.role != '3'">
                 <span>WhatsApp No</span>
               </th>
-              <th>
+              <th *ngIf="loggedInUser?.role != '3'">
                 <span>Plan Status</span>
               </th>
-              <th pFrozenColumn alignFrozen="right">
+              <th *ngIf="loggedInUser?.role != '3'" pFrozenColumn alignFrozen="right">
                 <span>Action</span>
               </th>
             </tr>
@@ -84,7 +84,7 @@
                   <span>{{ customer?.createdDate | date: "dd/MM/yyy" }}</span>
                 </div>
               </td>
-              <td>
+              <td *ngIf="loggedInUser?.role != '3'">
                 <div>
                   <span>{{ customer?.ctr_Email }}</span>
                 </div>
@@ -94,12 +94,12 @@
                   <span>{{ customer?.ctr_MobileNo }}</span>
                 </div>
               </td>
-              <td>
+              <td *ngIf="loggedInUser?.role != '3'">
                 <div>
                   <span>{{ customer?.ctr_WhatsAppNo }}</span>
                 </div>
               </td>
-              <td>
+              <td *ngIf="loggedInUser?.role != '3'">
                 <div>
                   <span [ngClass]="{
                     'badge-intermediate': customer?.paymentPlanStatus == 'No plan',
@@ -112,7 +112,7 @@
 
                 </div>
               </td>
-              <td pFrozenColumn alignFrozen="right">
+              <td  *ngIf="loggedInUser?.role != '3'" pFrozenColumn alignFrozen="right">
                 <div>
                   <span class="c-pointer" pTooltip="View" tooltipPosition="top" (click)="viewCustomer(customer)">
                     <i class="fa-regular fa-eye"></i>

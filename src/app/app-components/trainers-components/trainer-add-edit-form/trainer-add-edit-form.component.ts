@@ -43,6 +43,7 @@ export class TrainerAddEditFormComponent {
     tnr_MobileNo: '',
     tnr_Addresses: '',
     tnr_Email: '',
+    bch_Password: '',
     branch: null
   };
   loggedInUser:any;
@@ -76,6 +77,11 @@ export class TrainerAddEditFormComponent {
       tnr_Addresses: new FormControl('', Validators.required),
       tnr_Email: new FormControl('', [Validators.required, Validators.email]),
       branchId: new FormControl(null, Validators.required),
+      tnr_password: new FormControl('', [
+        Validators.required,
+        Validators.minLength(8),
+        Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+[\]{};':"\\|,.<>/?]).{8,}$/)
+      ])
     });
   }
 

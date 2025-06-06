@@ -90,6 +90,14 @@ export class CustomerAddEditFormComponent implements OnInit {
     if (this.loggedInUser?.role == '2') {
       this.createCustomerForm.patchValue({ branchId: this.loggedInUser._id });
       this.createCustomerForm.get('branchId')?.disable();
+    } else if(this.loggedInUser?.role == '3'){
+        this.createCustomerForm.patchValue({ branchId: this.loggedInUser.branchId });
+        this.createCustomerForm.get('branchId')?.disable();
+        this.createCustomerForm.get('ctr_Addresses')?.clearValidators();
+        this.createCustomerForm.get('ctr_Dob')?.clearValidators();
+        this.createCustomerForm.get('ctr_Email')?.clearValidators();
+        this.createCustomerForm.get('ctr_WhatsAppNo')?.clearValidators();
+        this.createCustomerForm.get('ctr_Weight')?.clearValidators();
     }
   }
 

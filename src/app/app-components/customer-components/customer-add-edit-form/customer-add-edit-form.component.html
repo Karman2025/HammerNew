@@ -67,7 +67,7 @@
         </div>
       </div>
     </div>
-    <div [ngClass]="{'col-xl-3 col-lg-4 col-sm-6 col-12': formMode == 'view', 'col-12': formMode != 'view'}">
+    <div *ngIf="loggedInUser?.role != '3'" [ngClass]="{'col-xl-3 col-lg-4 col-sm-6 col-12': formMode == 'view', 'col-12': formMode != 'view'}">
       <div class="pt-1">
         <label class="form-label" for="customer-whatsapp-no">WhatsApp No</label>
         <div [ngClass]="{'form-validation-error': createCustomerForm.get('ctr_WhatsAppNo')?.invalid && createCustomerForm.get('ctr_WhatsAppNo')?.touched}">
@@ -89,7 +89,7 @@
         </div>
       </div>
     </div> -->
-    <div [ngClass]="{'col-xl-3 col-lg-4 col-sm-6 col-12': formMode == 'view', 'col-12': formMode != 'view'}">
+    <div *ngIf="loggedInUser?.role != '3'" [ngClass]="{'col-xl-3 col-lg-4 col-sm-6 col-12': formMode == 'view', 'col-12': formMode != 'view'}">
       <div class="pt-1">
         <label class="form-label" for="customer-Weight">Weight</label>
         <div [ngClass]="{'form-validation-error': createCustomerForm.get('ctr_Weight')?.invalid && createCustomerForm.get('ctr_Weight')?.touched}">
@@ -100,7 +100,7 @@
         </div>
       </div>
     </div>
-    <div [ngClass]="{'col-xl-3 col-lg-4 col-sm-6 col-12': formMode == 'view', 'col-12': formMode != 'view'}">
+    <div *ngIf="loggedInUser?.role != '3'" [ngClass]="{'col-xl-3 col-lg-4 col-sm-6 col-12': formMode == 'view', 'col-12': formMode != 'view'}">
       <div class="pt-1">
         <label class="form-label" for="customer-email">Email</label>
         <div [ngClass]="{'form-validation-error': createCustomerForm.get('ctr_Email')?.invalid && createCustomerForm.get('ctr_Email')?.touched}">
@@ -111,7 +111,7 @@
         </div>
       </div>
     </div>
-    <div [ngClass]="{'col-xl-3 col-lg-4 col-sm-6 col-12': formMode == 'view', 'col-12': formMode != 'view'}">
+    <div *ngIf="loggedInUser?.role != '3'" [ngClass]="{'col-xl-3 col-lg-4 col-sm-6 col-12': formMode == 'view', 'col-12': formMode != 'view'}">
       <div class="pt-1">
         <label class="form-label" for="customer-dob">DOB</label>
         <div [ngClass]="{'form-validation-error': createCustomerForm.get('ctr_Dob')?.invalid && createCustomerForm.get('ctr_Dob')?.touched}">
@@ -122,7 +122,7 @@
         </div>
       </div>
     </div>
-    <div [ngClass]="{'col-xl-3 col-lg-4 col-sm-6 col-12': formMode == 'view', 'col-12': formMode != 'view'}">
+    <div *ngIf="loggedInUser?.role != '3'" [ngClass]="{'col-xl-3 col-lg-4 col-sm-6 col-12': formMode == 'view', 'col-12': formMode != 'view'}">
       <div class="pt-1">
         <label class="form-label" for="customer-address">Address</label>
         <div [ngClass]="{'form-validation-error': createCustomerForm.get('ctr_Addresses')?.invalid && createCustomerForm.get('ctr_Addresses')?.touched}">

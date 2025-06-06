@@ -90,6 +90,19 @@ export class CustomersComponent implements OnInit {
     this.getAllBranchAutocompleteData();
     this.loggedInUser = JSON.parse(localStorage.getItem('USER-INFO') ?? "{}");
     if(this.loggedInUser?.role == "2") this.showFilterFields.branchId = false;
+
+    if(this.loggedInUser?.role == "3"){
+      this.showFilterFields = {
+        branchId: false,
+        ctr_Name: true,
+        ctr_Code: true,
+        ctr_MobileNo: true,
+        ctr_WhatsAppNo: false,
+        ctr_Email: false,
+        createdDate: true,
+        paymentPlanStatus: false
+      };
+    }
   }
 
   ngOnInit(): void {
@@ -189,9 +202,11 @@ onCustomerCreate() {
         if(res?.Results?._id){
           this.isVisibleCustomerddEditDialog = false;
           this.getAllCustomers();
-          this.router.navigate(['/home/customers/customer-details'], {
-            queryParams: { customerId: res?.Results?._id }
-          });
+          if(this.loggedInUser?.role != "3"){
+            this.router.navigate(['/home/customers/customer-details'], {
+              queryParams: { customerId: res?.Results?._id }
+            });
+          }
           this.toasterMessage.add({ key: 'root-toast', severity: 'success', summary: 'Success', detail: 'Customer created successfully!' });
         } else {
           this.toasterMessage.add({ key: 'root-toast', severity: 'error', summary: 'Error', detail: res?.Results?.error });

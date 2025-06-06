@@ -80,6 +80,7 @@ p {
   border-radius: 30px;
   text-decoration: none;
   transition: background 0.3s ease;
+  border: none;
 }
 
 .home-btn:hover {

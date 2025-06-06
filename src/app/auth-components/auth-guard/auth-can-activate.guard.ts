@@ -30,6 +30,12 @@ export const authCanActivateGuard: CanActivateFn = (route, state) => {
       return router.parseUrl('/unauthorised');
     }
     return true;
+  } else if(role === "3") {
+    let notAllowedRoutes:any[] = ['/home/branches', '/home/customers', '/home/customer-details', '/home/trainers', '/home/payments', '/home/attendance', '/home/accounts', '/home/welcome'];
+    if(notAllowedRoutes.includes(currentUrl)){
+      return router.parseUrl('/unauthorised');
+    }
+    return true;
   } else {
     return router.parseUrl('/unauthorised');
   }
