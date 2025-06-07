@@ -8,12 +8,15 @@
   --secondary: #F4F7FA;
   --ternary: #EEEEEE; */
 
-  --primary: #c6dff5;
-  --secondary: #ffffff;
-  --ternary: #ffff;
-  --primary-color: #D3E7F7;
+  --primary: #12131a;
+  --secondary: #2e202a;
+  --ternary: #b01352;
+  --quaternary: #302c3c;
+  /* --primary-color: #D3E7F7; */
   --primary-color-text: #fff;
-  --primary-text-color: #549bd8
+  /* --primary-text-color: #549bd8; */
+  --primary-gradient-color: linear-gradient(to bottom, #2e202a, #1d1c2b);
+  --secondary-gradient-color: linear-gradient(to bottom, #b01c55, #5b1832);
 
 }
 
@@ -1290,22 +1293,23 @@ body {
   margin: 0 auto;
   padding: 10px 10px 10px 10px;
   box-sizing: border-box;
-  background-color: var(--secondary);
+  /* background-color: var(--primary); */
 }
 
 .primary-header-container {
-  border-bottom: 2px solid var(--primary);
+  border-bottom: 2px solid var(--secondary);
 }
 
 .primary-header-label {
   margin-bottom: 0;
-  color: var(--primary-text-color);
+  color: #fff;
+  font-weight: 600;
 }
 
 /* Custom scrollbar for Webkit browsers */
 ::-webkit-scrollbar {
-  width: 8px; /* Width of the scrollbar */
-  height: 8px;
+  width: 5px; /* Width of the scrollbar */
+  height: 5px;
 }
 
 ::-webkit-scrollbar-track {
@@ -1314,7 +1318,7 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--primary); /* Thumb color */
+  background: var(--quaternary);
   border-radius: 10px; /* Rounded corners */
 }
 
@@ -1331,11 +1335,12 @@ body {
 }
 .primary-p-table .p-datatable-thead tr th {
   border-bottom: none;
-  background: var(--primary);
+  background: var(--quaternary);
   padding: 0px;
 }
 .primary-p-table .p-datatable-thead tr th:first-child {
   border-top-left-radius: 8px; /* Adjust the radius as needed */
+  border-color: var(--primary);
 }
 
 .primary-p-table .p-datatable-thead tr th:last-child {
@@ -1344,6 +1349,7 @@ body {
 
 .primary-p-table .p-datatable-tbody tr:last-child td:first-child {
   border-bottom-left-radius: 8px; /* Adjust as needed */
+  border-color: var(--primary);
 }
 
 .primary-p-table .p-datatable-tbody tr:last-child td:last-child {
@@ -1356,14 +1362,16 @@ body {
     padding: 10px 10px;
     font-size: 0.9rem;
     font-weight: 700;
+    color: #fff;
 }
 .primary-p-table .p-datatable-tbody tr td {
   border-bottom: none;
   padding: 0px;
+  border-bottom: 1px solid var(--primary);
 }
-.primary-p-table .p-datatable-tbody tr:nth-child(even) {
+/* .primary-p-table .p-datatable-tbody tr:nth-child(even) {
   background-color: var(--primary);
-}
+} */
 .primary-p-table .p-datatable-tbody tr td div {
   padding: 10px 10px;
   display: flex;
@@ -1371,6 +1379,7 @@ body {
   align-items: center;
   font-size: 0.9rem;
   font-weight: 500;
+  color: #fff;
 }
 .primary-p-table .p-datatable-tbody tr:last-child td:last-child {
   border-bottom-right-radius: 8px;
@@ -1386,6 +1395,14 @@ body {
 }
 .primary-p-table .p-datatable-scrollable td.p-datatable-frozen-column {
   background-color: inherit;
+}
+.primary-p-table .p-datatable-scrollable .p-datatable-table-container {
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  border-color: var(--primary);
+}
+.primary-p-table .p-datatable-thead {
+  background: none !important;
 }
 body {
   font-family: Helvetica, Arial, sans-serif !important;
@@ -1430,18 +1447,18 @@ body {
   outline: none;
 }
 .custom-primary-outerline-btn {
-  border: 1px solid var(--primary-color);
+  border: none;
   border-radius: 8px;
-  background: var(--primary-color);
-  color: #3a91dd;
+  color: #ffff;
   font-weight: 600;
   padding: 6px 12px;
+  background: linear-gradient(to bottom, #b01c55, #5b1832);
 }
 .custom-primary-outerline-btn:hover{
-  border: 1px solid #36acff !important;
+  border: none;
   font-weight: 600;
-  background: #36acff;
   color: #fff;
+  background: linear-gradient(to bottom, #b1114f, #5c122e);
 }
 .primary-form-control .form-control:disabled {
   background: #fff;
@@ -1543,6 +1560,13 @@ input.form-control::placeholder {
   border-radius: 10px;
   font-size: 0.8rem;
 }
+.badge-inactive {
+  background: #9f9f9f;
+  color: #fff !important;
+  padding: 1px 7px;
+  border-radius: 10px;
+  font-size: 0.8rem;
+}
 .text-overflow-ellipsis{
   box-sizing: border-box;
   overflow: hidden;
@@ -1639,4 +1663,14 @@ input.form-control::placeholder {
 .primary-date-picker .p-component .p-inputtext:enabled:focus,
 .primary-date-picker .p-component .p-inputtext:enabled:hover {
   border-color: #dee2e6;
+}
+.primary-p-table-container {
+  margin: 1rem;
+  /* background: linear-gradient(rgb(18, 19, 27), rgb(46, 31, 41)); */
+  background: var(--primary-gradient-color);
+  border-radius: 10px;
+  border-color: var(--primary);
+}
+.primary-p-table .p-datatable-tbody tr {
+  background: unset;
 }

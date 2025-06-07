@@ -4,7 +4,8 @@
     align-items: center;
     overflow: hidden;
     width: 100%;
-    background-color: var(--secondary);
+    /* background-color: var(--secondary); */
+    background-color: var(--primary);
     height: 65px;
     border-radius: 15px;
 }
@@ -15,27 +16,29 @@
 
 .website-logo {
     display: block;
-    background: var(--primary);
+    /* background: var(--primary); */
     padding: 7px 15px;
     border-radius: 8px;
     font-size: 1.2rem;
     font-weight: 700;
     color: #ffff;
+    background: var(--secondary-gradient-color);
 }
 
 .website-label {
-    font-size: 1.1rem; 
-    font-weight: 500; 
-    padding-left: 0.7rem; 
-    color: var(--primary-text-color);
+    font-size: 1.1rem;
+    font-weight: 500;
+    padding-left: 0.7rem;
+    /* color: var(--primary-text-color); */
+    color: #ffff;
 }
 
 .menu-items {
     display: flex;
     align-items: center;
-    justify-content: space-evenly;
+    justify-content: center;
     list-style: none;
-    padding: 0;
+    padding: 0px 20px;
     margin: 0;
 }
 
@@ -43,26 +46,26 @@
     display: block;
     text-decoration: none;
     position: relative;
-    transition: transform 0.3s ease-in-out;
+    /* transition: transform 0.3s ease-in-out; */
     display: inline-block;
-    color: var(--primary-text-color) ;
+    color: #fff;
+    transition: color 0.2s ease;
 }
 .menu-item.active a {
-    padding: 2px 6px;
+    padding: 4px 12px;
     border-radius: 6px;
-    background-color: var(--primary-color);
-    border: 2px solid var(--primary-color);
-    color: #3a91dd;
+    background-color: #2e202a;
+    /* border: 2px solid var(--primary-color); */
+    color: var(--ternary);
 
 }
 .menu-item a:hover {
-    color: #107cda;
-    
+    color: var(--ternary);
 }
 
 
 .menu-item {
-    padding: 0px 2px;
+    padding: 0px 20px;
     cursor: pointer;
 }
 
@@ -152,7 +155,7 @@
     border-radius: 4px;
 }
 
-.mobile-menu-item.active { 
+.mobile-menu-item.active {
     background-color: var(--primary-color);
 }
 .mobile-menu-items {
@@ -171,13 +174,13 @@
 }
 
 .hamburger-button {
-    border: none; 
+    border: none;
     background-color: inherit;
 }
 
 
 .mobile-menu-user-block {
-    list-style: none; 
+    list-style: none;
     padding: 0;
     margin: 0;
     display: flex;
@@ -195,4 +198,8 @@
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
 
 }
-
+.nav-user-icon {
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--ternary);
+}

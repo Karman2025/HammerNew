@@ -7,7 +7,7 @@
       </button>
     </div>
     <div>
-      <div class="px-5 pt-5">
+      <div class="primary-p-table-container">
         <p-table
         [scrollable]="true"
         scrollHeight="{{getOffsetHeightForPrimaryTable(109)}}"
@@ -105,7 +105,8 @@
                     'badge-intermediate': customer?.paymentPlanStatus == 'No plan',
                     'badge-danger': customer?.paymentPlanStatus == 'Payment Due' || customer?.paymentPlanStatus == 'Expired',
                     'badge-warning': customer?.paymentPlanStatus == 'Pending',
-                    'badge-success': customer?.paymentPlanStatus == 'Completed'
+                    'badge-success': customer?.paymentPlanStatus == 'Completed',
+                    'badge-inactive': customer?.paymentPlanStatus =='In Active'
                   }">
                     {{ customer?.paymentPlanStatus }}
                   </span>

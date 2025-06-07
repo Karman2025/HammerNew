@@ -3,7 +3,7 @@
     <h5 class="primary-header-label">Payment</h5>
   </div>
   <div>
-    <div class="px-5 pt-5">
+    <div class="primary-p-table-container">
       <app-payment-plan-view-add-edit-form [CustomerPaymentPlan]="customersPaymentPlan" [formMode]="'view'"></app-payment-plan-view-add-edit-form>
     </div>
     <div class="px-5 d-flex justify-content-center ofH_calc_pagin" style="width: 100%;">
@@ -21,7 +21,7 @@
     </div>
 
     <div class="d-flex justify-content-end primary-filter-icon-container">
-      <div class="filter-icon" (click)="op.toggle($event)"><i class="fa-solid fa-filter"></i></div> 
+      <div class="filter-icon" (click)="op.toggle($event)"><i class="fa-solid fa-filter"></i></div>
     </div>
     <p-popover styleClass="primary-filter-popover" class="p-3" #op>
       <div>

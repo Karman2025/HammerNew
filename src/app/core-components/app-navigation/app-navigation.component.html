@@ -58,12 +58,8 @@
       </button>
 
       <ng-container *ngIf="!isMobileScreen">
-        <div style="margin-right: 13px">
-          <span
-            (click)="op.toggle($event)"
-            class="px-2"
-            style="font-size: 1.5rem; cursor: pointer; color: var(--primary-text-color);"
-          >
+        <div>
+          <span (click)="op.toggle($event)" class="px-2 nav-user-icon">
             <i class="fa-regular fa-circle-user"></i>
           </span>
         </div>
@@ -132,7 +128,7 @@
           </ul>
         </div>
       </div>
-      
+
     </ng-template>
   </p-drawer>
 </nav>

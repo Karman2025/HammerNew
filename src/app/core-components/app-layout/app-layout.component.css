@@ -1,0 +1,9 @@
+.nav-container-theme {
+  padding: 0px;
+  background: var(--primary-gradient-color);
+}
+.app-body-container-theme {
+  background: var(--primary);
+  overflow-x: hidden;
+  border-radius: 15px;
+}

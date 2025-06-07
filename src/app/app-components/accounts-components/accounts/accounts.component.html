@@ -6,7 +6,7 @@
     </button>
   </div>
   <div>
-    <div class="px-5 pt-5">
+    <div class="primary-p-table-container">
       <p-table
         [scrollable]="true"
         scrollHeight="{{getOffsetHeightForPrimaryTable(109)}}"
@@ -93,7 +93,7 @@
   </div>
 
   <div class="d-flex justify-content-end primary-filter-icon-container">
-    <div class="filter-icon" (click)="op.toggle($event)"><i class="fa-solid fa-filter"></i></div>  
+    <div class="filter-icon" (click)="op.toggle($event)"><i class="fa-solid fa-filter"></i></div>
   </div>
   <p-popover styleClass="primary-filter-popover" class="p-3" #op>
     <div>
