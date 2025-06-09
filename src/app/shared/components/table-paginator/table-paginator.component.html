@@ -1,0 +1,30 @@
+<div class="d-flex align-items-center justify-content-between">
+    <p-paginator
+    class="primary-paginator no-pagination-controls"
+    (onPageChange)="onPageChange($event)"
+    [first]="first"
+    [rows]="rows"
+    [totalRecords]="totalRecords"
+    [showFirstLastIcon]="false"
+    [showCurrentPageReport]="true"
+    [showPageLinks]="false"
+    pageLinkSize="0"
+    currentPageReportTemplate="{first} - {last} of {totalRecords}"
+    [rowsPerPageOptions]="[]">
+  </p-paginator>
+
+  <p-paginator
+    class="primary-paginator"
+    (onPageChange)="onPageChange($event)"
+    [first]="first"
+    [rows]="rows"
+    [totalRecords]="totalRecords"
+    [showFirstLastIcon]="false"
+    [showCurrentPageReport]="false"
+    [showPageLinks]="true"
+    pageLinkSize="2"
+    currentPageReportTemplate="{first} - {last} of {totalRecords}"
+    [rowsPerPageOptions]="paginationRowsPerPage">
+  </p-paginator>
+
+</div>

@@ -1575,15 +1575,47 @@ input.form-control::placeholder {
 }
 
 .primary-filter-icon-container {
-  height: 41px;
-  width: 41px;
-  position: fixed;
-  bottom: 25px;
-  right: 30px;
-  z-index: 1100;
+    background: var(--quaternary);
+    border-radius: 5px;
+    color: #ffff;
+    font-weight: 600;
+    padding: 4px 12px;
+    border: 1px solid #423d50;
+    cursor: pointer;
+}
+.primary-filter-icon-container .filter-icon {
+    font-size: 0.9rem;
+}
+/* .primary-filter-icon-container .filter-label {
+    font-size: 0.9rem;
+    font-weight: 500;
+} */
+.primary-globel-filter {
+    display: flex;
+    justify-content: center;
+    background: var(--quaternary);
+    align-items: center;
+    margin-right: .5rem;
+    border: 1px solid #423d50;
+    border-radius: 5px;
+    margin-left: .6rem;
+}
+.primary-globel-filter i {
+    padding: 0px 2px 0px 12px;
+    color: #fff;
+}
+.primary-globel-filter input{
+    padding: 5px 5px;
+    border-radius: 5px;
+    background: none;
+    border: none;
+    color: #fff;
+}
+.primary-globel-filter .form-control:focus {
+    background: none;
 }
 
-.filter-icon {
+/* .filter-icon {
   position: absolute;
   width: 40px;
   height: 40px;
@@ -1596,9 +1628,9 @@ input.form-control::placeholder {
   cursor: pointer;
   z-index: 2;
   transition: left 0.2s ease;
-}
+} */
 
-.standard-paginator {
+/* .standard-paginator {
   padding: 0px;
 }
 
@@ -1609,7 +1641,7 @@ input.form-control::placeholder {
 
 .standard-paginator .p-paginator-current {
   color: #000;
-}
+} */
 
 /* .standard-paginator .p-paginator-page, */
 .standard-paginator .p-paginator-next,
@@ -1619,7 +1651,7 @@ input.form-control::placeholder {
   color: #000;
 }
 
-.standard-paginator .p-select {
+/* .standard-paginator .p-select {
   height: 35px;
   width: 75px;
   border-color: #1e293b;
@@ -1627,14 +1659,14 @@ input.form-control::placeholder {
 
 .standard-paginator p-select:not(.p-disabled):hover {
   border-color: var(--primary);
-}
+} */
 
 /* .standard-paginator .p-select-option.p-select-option-selected {
   background: #0d6efd;
   color: #dc3545;
 } */
 
-.standard-paginator .p-select-option.p-select-option-selected.p-focus {
+/* .standard-paginator .p-select-option.p-select-option-selected.p-focus {
     background: var(--primary);
     color: #1e293b;
 }
@@ -1644,7 +1676,7 @@ input.form-control::placeholder {
   display: flex;
   justify-content: center;
   align-items: center;
-}
+} */
 
 .primary-filter-popover .p-popover-content {
   padding: 0;
@@ -1665,7 +1697,7 @@ input.form-control::placeholder {
   border-color: #dee2e6;
 }
 .primary-p-table-container {
-  margin: 1rem;
+  margin: 1rem 1rem 0.7rem 1rem;
   /* background: linear-gradient(rgb(18, 19, 27), rgb(46, 31, 41)); */
   background: var(--primary-gradient-color);
   border-radius: 10px;

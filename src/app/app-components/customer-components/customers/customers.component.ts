@@ -16,13 +16,14 @@ import { FilterFieldsContainerComponent } from '../../../shared/components/filte
 import { PaginatorModule } from 'primeng/paginator';
 import { paginationRowsPerPageOptions } from '../../../shared/data/master-data';
 import { TooltipModule } from 'primeng/tooltip';
+import { TablePaginatorComponent } from '../../../shared/components/table-paginator/table-paginator.component';
 
 
 @Component({
   selector: 'app-customers',
   templateUrl: './customers.component.html',
   styleUrls: ['./customers.component.css'],
-  imports: [CommonModule, TableModule, DialogModule, CustomerAddEditFormComponent,Popover, FilterFieldsContainerComponent,PaginatorModule, TooltipModule],
+  imports: [CommonModule, TableModule, DialogModule, CustomerAddEditFormComponent,Popover, FilterFieldsContainerComponent,PaginatorModule, TooltipModule, TablePaginatorComponent],
 })
 export class CustomersComponent implements OnInit {
 
