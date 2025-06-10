@@ -14,11 +14,12 @@ import { PaginatorModule } from 'primeng/paginator';
 import { paginationRowsPerPageOptions } from '../../../shared/data/master-data';
 import { TooltipModule } from 'primeng/tooltip';
 import { getPopupWidth } from '../../../shared/functions/responsiveFunction';
+import { TablePaginatorComponent } from '../../../shared/components/table-paginator/table-paginator.component';
 
 
 @Component({
   selector: 'app-trainers',
-  imports: [CommonModule, TableModule, DialogModule, TrainerAddEditFormComponent, Popover, FilterFieldsContainerComponent, PaginatorModule, TooltipModule],
+  imports: [CommonModule, TableModule, DialogModule, TrainerAddEditFormComponent, Popover, FilterFieldsContainerComponent, PaginatorModule, TooltipModule, TablePaginatorComponent],
   templateUrl: './trainers.component.html',
   styleUrl: './trainers.component.css',
 })
@@ -37,7 +38,7 @@ export class TrainersComponent {
   paginationRowsPerPage = paginationRowsPerPageOptions;
   isButtonLoading: boolean = false;
   popupWidth = getPopupWidth();
-  
+
 
   filterFields = {
     branchId: null,

@@ -3,12 +3,11 @@
 ::ng-deep .no-pagination-controls .p-paginator-next {
   display: none !important;
 }
-::ng-deep .no-pagination-control .p-paginator.p-component {
+::ng-deep .no-pagination-controls .p-paginator.p-component {
   padding: 0;
   background: none;
 }
-::ng-deep .no-pagination-control .p-paginator-current {
-  color: #fff;
+::ng-deep .no-pagination-controls .p-paginator-current {
   font-size: 0.9rem;
 }
 ::ng-deep .primary-paginator .p-paginator.p-component {

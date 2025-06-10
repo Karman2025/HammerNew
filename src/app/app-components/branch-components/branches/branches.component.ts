@@ -13,13 +13,14 @@ import { PaginatorModule } from 'primeng/paginator';
 import { paginationRowsPerPageOptions } from '../../../shared/data/master-data';
 import { TooltipModule } from 'primeng/tooltip';
 import { getPopupWidth } from '../../../shared/functions/responsiveFunction';
+import { TablePaginatorComponent } from '../../../shared/components/table-paginator/table-paginator.component';
 
 
 @Component({
   selector: 'app-branches',
   templateUrl: './branches.component.html',
   styleUrls: ['./branches.component.css'],
-  imports: [CommonModule, BranchAddEditFormComponent, TableModule, DialogModule, Popover, FilterFieldsContainerComponent, PaginatorModule, TooltipModule],
+  imports: [CommonModule, BranchAddEditFormComponent, TableModule, DialogModule, Popover, FilterFieldsContainerComponent, PaginatorModule, TooltipModule, TablePaginatorComponent],
 })
 export class BranchesComponent implements OnInit {
 
@@ -103,7 +104,7 @@ export class BranchesComponent implements OnInit {
 
   getAllBranches(resetPage: boolean = false){
     if (resetPage) this.pageNo = 1;
-    
+
     let params:any = {
       pageSize : this.pageSize,
       pageNo : this.pageNo
@@ -120,7 +121,7 @@ export class BranchesComponent implements OnInit {
       } else {
         this.toasterMessage.add({ key: 'root-toast', severity: 'error', summary: 'Error', detail: this.toastErrorMessage });
       }
-      
+
     })
   }
 
@@ -136,7 +137,7 @@ export class BranchesComponent implements OnInit {
      if (this.formMode === 'create'){
        this.service.createBranch(formData).subscribe((res:any) => {
         console.log(res);
-        
+
         if (res?.Results && res?.Results?.error) {
           const errorMessage = res?.Results?.error;
           this.toasterMessage.add({ key: 'root-toast', severity: 'error', summary: 'Error', detail: errorMessage });
@@ -150,7 +151,7 @@ export class BranchesComponent implements OnInit {
      } else if (this.formMode === 'edit') {
        this.service.updateBranch(formData).subscribe((res:any) => {
         console.log(res);
-        
+
         if (res?.Results && res?.Results?.error) {
           const errorMessage = res?.Results?.error;
           this.toasterMessage.add({ key: 'root-toast', severity: 'error', summary: 'Error', detail: errorMessage });
@@ -209,11 +210,11 @@ export class BranchesComponent implements OnInit {
 
 //   get dialogWidth(): string {
 //     console.log(window.innerWidth);
-    
+
 //   if (window.innerWidth < 576) return '95vw';
 //   if (window.innerWidth < 768) return '80vw';
 //   if (window.innerWidth < 992) return '60vw';
-//   return '30vw'; 
+//   return '30vw';
 // }
 
 

@@ -6,18 +6,13 @@
     <div class="primary-p-table-container">
       <app-payment-plan-view-add-edit-form [CustomerPaymentPlan]="customersPaymentPlan" [formMode]="'view'"></app-payment-plan-view-add-edit-form>
     </div>
-    <div class="px-5 d-flex justify-content-center ofH_calc_pagin" style="width: 100%;">
-      <p-paginator
-        class="standard-paginator"
-        (onPageChange)="onPageChange($event)"
+    <div class="d-flex justify-content-center ofH_calc_pagin px-4" style="width: 100%;">
+      <app-table-paginator class="w-100"
+        (OnPageChange)="onPageChange($event)"
         [first]="indexOfFirstRecord"
         [rows]="pageSize"
-        [totalRecords]="xPagination?.totalCount"
-        [showFirstLastIcon]="false"
-        [showCurrentPageReport]="true"
-        currentPageReportTemplate="{first} - {last} of {totalRecords}"
-        [rowsPerPageOptions]="paginationRowsPerPage">
-      </p-paginator>
+        [totalRecords]="xPagination?.totalCount">
+      </app-table-paginator>
     </div>
 
     <div class="d-flex justify-content-end primary-filter-icon-container">

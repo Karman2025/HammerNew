@@ -81,6 +81,7 @@ export class CustomersComponent implements OnInit {
   totalRecords:any;
   loggedInUser:any;
   isVisibleDeleteCustomerConfirmationDialog:boolean = false;
+  isVisibleFilterCustomerDetailsDialog:boolean = false;
   isDeletingCustomer:boolean = false;
   deleteCustomerDetails:any;
   constructor(

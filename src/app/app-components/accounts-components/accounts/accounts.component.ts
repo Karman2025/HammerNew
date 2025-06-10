@@ -13,13 +13,14 @@ import { dateObjToString } from '../../../shared/functions/date-string-to-obj';
 import { MessageService } from 'primeng/api';
 import { paginationRowsPerPageOptions } from '../../../shared/data/master-data';
 import { getPopupWidth } from '../../../shared/functions/responsiveFunction';
+import { TablePaginatorComponent } from '../../../shared/components/table-paginator/table-paginator.component';
 
 
 @Component({
   selector: 'app-accounts',
   templateUrl: './accounts.component.html',
   styleUrls: ['./accounts.component.css'],
-  imports: [CommonModule, TableModule, DialogModule, AccountsAddEditFormComponent, Popover, FilterFieldsContainerComponent, PaginatorModule]
+  imports: [CommonModule, TableModule, DialogModule, AccountsAddEditFormComponent, Popover, FilterFieldsContainerComponent, PaginatorModule, TablePaginatorComponent]
 })
 export class AccountsComponent implements OnInit {
 
@@ -92,12 +93,12 @@ export class AccountsComponent implements OnInit {
       if(res?.Results) {
         this.accountsList = JSON.parse(JSON.stringify(res?.Results ?? []));
         this.xPagination = res?.XPagination;
-  
+
         this.indexOfFirstRecord = (this.xPagination.currentPage - 1) * this.xPagination.pageSize;
         this.totalRecords = this.xPagination.totalCount;
       } else {
         this.toasterMessage.add({ key: 'root-toast', severity: 'error', summary: 'Error', detail: this.toastErrorMessage });
-      }  
+      }
     })
   }
 
@@ -114,7 +115,7 @@ export class AccountsComponent implements OnInit {
     if(isCreateCustomerFormValid){
       this.isButtonLoading = true;
       this.service.createAccountEntry(formData).subscribe((res:any)=>{
-        console.log(res);   
+        console.log(res);
         if(res?.Results?._id){
           this.isVisibleAccountsAddEditDialog = false;
           this.getAllAccounts();

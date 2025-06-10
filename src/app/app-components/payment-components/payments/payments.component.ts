@@ -13,6 +13,7 @@ import { dateObjToString } from '../../../shared/functions/date-string-to-obj';
 import { paginationRowsPerPageOptions } from '../../../shared/data/master-data';
 import { MessageService } from 'primeng/api';
 import { getPopupWidth } from '../../../shared/functions/responsiveFunction';
+import { TablePaginatorComponent } from '../../../shared/components/table-paginator/table-paginator.component';
 
 
 interface Payments {
@@ -27,7 +28,7 @@ interface Payments {
   selector: 'app-payments',
   templateUrl: './payments.component.html',
   styleUrls: ['./payments.component.css'],
-  imports: [TableModule, PaymentPlanViewAddEditFormComponent, Popover, FilterFieldsContainerComponent, CommonModule, PaginatorModule] // Include TableModule here
+  imports: [TableModule, PaymentPlanViewAddEditFormComponent, Popover, FilterFieldsContainerComponent, CommonModule, PaginatorModule, TablePaginatorComponent] // Include TableModule here
 })
 export class PaymentsComponent implements OnInit {
   customersPaymentPlan: Payments[] = [];
@@ -36,7 +37,7 @@ export class PaymentsComponent implements OnInit {
   getBranchOptions: {_id: string, bch_Name: string, bch_Code: string}[] = [];
   paginationRowsPerPage = paginationRowsPerPageOptions;
   popupWidth = getPopupWidth();
-  
+
 
 
   filterFields = {
@@ -114,7 +115,7 @@ export class PaymentsComponent implements OnInit {
       } else {
         this.toasterMessage.add({ key: 'root-toast', severity: 'error', summary: 'Error', detail: this.toastErrorMessage });
       }
-      
+
     })
   }
 
