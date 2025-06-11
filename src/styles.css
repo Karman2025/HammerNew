@@ -1414,7 +1414,9 @@ body {
   cursor: default;
 }
 .primary-p-dialog .p-dialog.p-component {
-  background: var(--secondary);
+  /* background: var(--secondary); */
+  background: var(--primary-gradient-color);
+  border-color: transparent;
 }
 .primary-p-dialog .p-p-dialog-header {
   display: flex;
@@ -1445,6 +1447,25 @@ body {
 }
 .primary-p-dialog .p-p-dialog-header .p-p-dialog-header-button:focus-visible {
   outline: none;
+}
+.primary-p-dialog .form-control {
+  background: var(--primary);
+  border-color: var(--primary);
+}
+.primary-p-dialog .form-control.primary-p-select {
+  background: var(--primary);
+  border-color: var(--primary) !important;
+}
+.primary-p-dialog .primary-date-picker .p-component .p-inputtext {
+  background: var(--primary);
+  border-color: var(--primary);
+}
+.primary-p-dialog .form-label {
+  color: #fff;
+}
+.p-select-overlay.p-component {
+  background: var(--quaternary);
+  border-color: var(--quaternary);
 }
 .custom-primary-outerline-btn {
   border: none;
