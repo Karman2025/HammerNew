@@ -15,7 +15,7 @@ export class AppComponentsApiService {
     ) { }
     private readonly getAllBranchEndPoint = '/admin/branch/getAllBranch';
     private readonly createBranchEndPoint = '/admin/branch/createBranch';
-    private readonly updateBranchEndPoint = '/admin/branch//updateBranch';
+    private readonly updateBranchEndPoint = '/admin/branch/updateBranch';
     private readonly getAllBranchAutocompleteEndPoint = '/admin/branch/getAllBranchAutocomplete';
 
     private readonly getAllTrainerEndPoint = '/admin/trainer/getAllTrainer';
