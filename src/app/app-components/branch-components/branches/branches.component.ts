@@ -6,7 +6,6 @@ import { TableModule } from 'primeng/table';
 import { DialogModule } from 'primeng/dialog';
 import { MessageService } from 'primeng/api';
 import { getOffsetHeightForModal, getOffsetHeightForPrimaryTable } from '../../../shared/functions/calcHeightOffset';
-import { Popover } from 'primeng/popover';
 import { getOffsetHeightByCustomClass } from '../../../shared/functions/calcHeightOffset';
 import { FilterFieldsContainerComponent } from '../../../shared/components/filter-fields-container/filter-fields-container.component';
 import { PaginatorModule } from 'primeng/paginator';
@@ -20,7 +19,7 @@ import { TablePaginatorComponent } from '../../../shared/components/table-pagina
   selector: 'app-branches',
   templateUrl: './branches.component.html',
   styleUrls: ['./branches.component.css'],
-  imports: [CommonModule, BranchAddEditFormComponent, TableModule, DialogModule, Popover, FilterFieldsContainerComponent, PaginatorModule, TooltipModule, TablePaginatorComponent],
+  imports: [CommonModule, BranchAddEditFormComponent, TableModule, DialogModule, FilterFieldsContainerComponent, PaginatorModule, TooltipModule, TablePaginatorComponent],
 })
 export class BranchesComponent implements OnInit {
 
@@ -33,6 +32,7 @@ export class BranchesComponent implements OnInit {
   formMode: "view" | "edit" | "create" = "view";
   toastErrorMessage: string = 'Something went wrong';
   isVisibleBranchAddEditDialog:boolean = false;
+  isVisibleBranchFilterDialog: boolean = false;
   containerOffSetHeightClasses:any[] = ['ofH_calc_nav_bar', 'ofH_calc_body_header'];
   paginationRowsPerPage = paginationRowsPerPageOptions;
   isButtonLoading: boolean = false;

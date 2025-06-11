@@ -5,7 +5,6 @@ import { TableModule } from 'primeng/table';
 import { getOffsetHeightForModal, getOffsetHeightForPrimaryTable } from '../../../shared/functions/calcHeightOffset';
 import { AppComponentsApiService } from '../../app-components-api-service';
 import { AccountsAddEditFormComponent } from '../accounts-add-edit-form/accounts-add-edit-form.component';
-import { Popover } from 'primeng/popover';
 import { getOffsetHeightByCustomClass } from '../../../shared/functions/calcHeightOffset';
 import { FilterFieldsContainerComponent } from '../../../shared/components/filter-fields-container/filter-fields-container.component';
 import { PaginatorModule } from 'primeng/paginator';
@@ -20,7 +19,7 @@ import { TablePaginatorComponent } from '../../../shared/components/table-pagina
   selector: 'app-accounts',
   templateUrl: './accounts.component.html',
   styleUrls: ['./accounts.component.css'],
-  imports: [CommonModule, TableModule, DialogModule, AccountsAddEditFormComponent, Popover, FilterFieldsContainerComponent, PaginatorModule, TablePaginatorComponent]
+  imports: [CommonModule, TableModule, DialogModule, AccountsAddEditFormComponent, FilterFieldsContainerComponent, PaginatorModule, TablePaginatorComponent]
 })
 export class AccountsComponent implements OnInit {
 
@@ -30,6 +29,7 @@ export class AccountsComponent implements OnInit {
   accountsList:any[] = [];
   formMode: "view" | "edit" | "create" = "view";
   isVisibleAccountsAddEditDialog:boolean = false;
+  isVisibleAccountsFilterDialog: boolean = false;
   toastErrorMessage: string = 'Something went wrong';
   selectedAccounts: any;
   containerOffSetHeightClasses:any[] = ['ofH_calc_nav_bar', 'ofH_calc_body_header'];

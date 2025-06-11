@@ -7,7 +7,6 @@ import { TrainerAddEditFormComponent } from "../trainer-add-edit-form/trainer-ad
 import { catchError, of } from 'rxjs';
 import { getOffsetHeightForModal, getOffsetHeightForPrimaryTable } from '../../../shared/functions/calcHeightOffset';
 import { MessageService } from 'primeng/api';
-import { Popover } from 'primeng/popover';
 import { getOffsetHeightByCustomClass } from '../../../shared/functions/calcHeightOffset';
 import { FilterFieldsContainerComponent } from '../../../shared/components/filter-fields-container/filter-fields-container.component';
 import { PaginatorModule } from 'primeng/paginator';
@@ -19,7 +18,7 @@ import { TablePaginatorComponent } from '../../../shared/components/table-pagina
 
 @Component({
   selector: 'app-trainers',
-  imports: [CommonModule, TableModule, DialogModule, TrainerAddEditFormComponent, Popover, FilterFieldsContainerComponent, PaginatorModule, TooltipModule, TablePaginatorComponent],
+  imports: [CommonModule, TableModule, DialogModule, TrainerAddEditFormComponent, FilterFieldsContainerComponent, PaginatorModule, TooltipModule, TablePaginatorComponent],
   templateUrl: './trainers.component.html',
   styleUrl: './trainers.component.css',
 })
@@ -31,6 +30,7 @@ export class TrainersComponent {
   trainersList:any[] = [];
   formMode: "view" | "edit" | "create" = "view";
   isVisibleTrainerAddEditDialog:boolean = false;
+  isVisibleTrainerFilterDialog: boolean = false;
   toastErrorMessage: string = 'Something went wrong';
   selectedTrainer: any;
   getBranchOptions: {_id: string, bch_Name: string, bch_Code: string}[] = [];

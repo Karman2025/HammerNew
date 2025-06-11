@@ -4,7 +4,6 @@ import { getOffsetHeightForModal, getOffsetHeightForPrimaryTable } from '../../.
 import { PaymentPlanViewAddEditFormComponent } from '../payment-plan-view-add-edit-form/payment-plan-view-add-edit-form.component';
 import { AppComponentsApiService } from '../../app-components-api-service';
 import { CommonModule } from '@angular/common';
-import { Popover } from 'primeng/popover';
 import { getOffsetHeightByCustomClass } from '../../../shared/functions/calcHeightOffset';
 import { FilterFieldsContainerComponent } from '../../../shared/components/filter-fields-container/filter-fields-container.component';
 import { PaginatorModule } from 'primeng/paginator';
@@ -14,6 +13,8 @@ import { paginationRowsPerPageOptions } from '../../../shared/data/master-data';
 import { MessageService } from 'primeng/api';
 import { getPopupWidth } from '../../../shared/functions/responsiveFunction';
 import { TablePaginatorComponent } from '../../../shared/components/table-paginator/table-paginator.component';
+import { DialogModule } from 'primeng/dialog';
+
 
 
 interface Payments {
@@ -28,7 +29,7 @@ interface Payments {
   selector: 'app-payments',
   templateUrl: './payments.component.html',
   styleUrls: ['./payments.component.css'],
-  imports: [TableModule, PaymentPlanViewAddEditFormComponent, Popover, FilterFieldsContainerComponent, CommonModule, PaginatorModule, TablePaginatorComponent] // Include TableModule here
+  imports: [TableModule, PaymentPlanViewAddEditFormComponent, FilterFieldsContainerComponent, CommonModule, PaginatorModule, TablePaginatorComponent, DialogModule] // Include TableModule here
 })
 export class PaymentsComponent implements OnInit {
   customersPaymentPlan: Payments[] = [];
@@ -37,6 +38,7 @@ export class PaymentsComponent implements OnInit {
   getBranchOptions: {_id: string, bch_Name: string, bch_Code: string}[] = [];
   paginationRowsPerPage = paginationRowsPerPageOptions;
   popupWidth = getPopupWidth();
+  isVisiblePaymentsFilterDialog: boolean = false;
 
 
 

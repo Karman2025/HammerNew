@@ -5,7 +5,6 @@ import { AppComponentsApiService } from '../../app-components-api-service';
 import { DatePicker } from 'primeng/datepicker';
 import { FormsModule } from '@angular/forms'
 import { dateObjToString, newDateString } from '../../../shared/functions/date-string-to-obj';
-import { Popover } from 'primeng/popover';
 import { ButtonModule } from 'primeng/button';
 import { getOffsetHeightByCustomClass } from '../../../shared/functions/calcHeightOffset';
 import { TooltipModule } from 'primeng/tooltip';
@@ -15,12 +14,14 @@ import { MessageService } from 'primeng/api';
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
 import { getPopupWidth } from '../../../shared/functions/responsiveFunction';
 import { SkeletonModule } from 'primeng/skeleton';
+import { DialogModule } from 'primeng/dialog';
+
 
 @Component({
   selector: 'app-attendance',
   templateUrl: './attendance.component.html',
   styleUrls: ['./attendance.component.css'],
-   imports: [CommonModule, SlideButtonComponent, DatePicker, FormsModule, Popover, ButtonModule, TooltipModule, FilterFieldsContainerComponent, InfiniteScrollDirective, SkeletonModule]
+   imports: [CommonModule, SlideButtonComponent, DatePicker, FormsModule, ButtonModule, TooltipModule, FilterFieldsContainerComponent, InfiniteScrollDirective, SkeletonModule, DialogModule]
 })
 export class AttendanceComponent implements OnInit {
   attendanceList: any[] = [];
@@ -34,6 +35,7 @@ export class AttendanceComponent implements OnInit {
   getBranchOptions: {_id: string, bch_Name: string, bch_Code: string}[] = [];
   popupWidth = getPopupWidth();
   showSkeletonLoader:boolean = false;
+  isVisibleFilterAttendanceDialog: boolean = false;
 
   filterFields = {
     branchId: null,
