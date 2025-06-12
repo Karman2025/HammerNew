@@ -14,6 +14,7 @@
   --quaternary: #302c3c;
   /* --primary-color: #D3E7F7; */
   --primary-color-text: #fff;
+  --primary-color-icon: #fff;
   /* --primary-text-color: #549bd8; */
   --primary-gradient-color: linear-gradient(to bottom, #2e202a, #1d1c2b);
   --secondary-gradient-color: linear-gradient(to bottom, #b01c55, #5b1832);

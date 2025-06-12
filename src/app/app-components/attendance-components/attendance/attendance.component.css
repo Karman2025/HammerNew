@@ -1,19 +1,23 @@
 .profile-picture {
     width: 100px;
     height: 100px;
+    padding: 1px;
     border-radius: 10%;
     object-fit: cover;
-    border: 2px solid #ccc;
+    border: 2px solid var(--primary);
+    background-color: var(--primary);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 .card-custom-shadow {
     box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.15);
     border: none;
     border-radius: 8px;
+    color: var(--primary-color-text);
 }
 
 ::ng-deep .attendance-skeleton .p-skeleton.p-component {
     height: 100% !important;
     width: 100% !important;
     min-height: 200px;
+    background-color: var(--primary);
 }

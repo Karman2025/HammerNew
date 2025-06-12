@@ -3,7 +3,7 @@
   <input type="range" min="0" max="100" value="0" class="slider" [disabled]="isCheckedIn" (input)="onSlideToConfirm($event)">
 </div> -->
 
-<div class="slider-container" #track>
+<div class="slider-container" [ngClass]="{'checked-in': isCheckedIn}" #track>
   <span class="slider-text" [ngStyle]="{color: getTextColor()}">
     {{ getStatusText() }}
   </span>
