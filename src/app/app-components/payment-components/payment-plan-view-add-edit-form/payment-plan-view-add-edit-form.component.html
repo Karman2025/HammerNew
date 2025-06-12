@@ -128,7 +128,7 @@
     </ng-template>
     <ng-template pTemplate="emptymessage">
       <tr>
-          <td colspan="12" class="text-center fw-bold">No Data</td>
+          <td colspan="12" class="text-center fw-bold text-white">No Data</td>
       </tr>
     </ng-template>
   </p-table>
@@ -146,7 +146,7 @@
       <span class="p-p-dialog-header-label">{{createPaymentPlanForm.get('_id')?.value ? 'Edit Payment Plan' : 'Add Payment Plan'}}</span>
     </div>
     <div>
-      <button class="p-p-dialog-header-button" (click)="isVisibleAddUpdatePaymentPlanDialog = false" ><i class="fa-solid fa-xmark"></i></button>
+      <button class="p-p-dialog-header-button" (click)="isVisibleAddUpdatePaymentPlanDialog = false" ><i class="fa-solid fa-xmark c-pointer text-white"></i></button>
     </div>
   </div>
   <div class="p-p-dialog-body" [ngStyle]="{ 'max-height': getOffsetHeightForModal(93), 'overflow-x': 'hidden' }">
@@ -244,8 +244,8 @@
   </div>
   <div class="p-p-dialog-footer ofH_calc_modal_footer">
     <div>
-      <button (click)="isVisibleAddUpdatePaymentPlanDialog = false" class="btn btn-danger mx-2 px-3 py-1"> Cancel </button>
-      <button [disabled]="isPaymentPlanButtonLoading" class="btn btn-success px-3 py-1" (click)="addUpdateCustomerPaymentPlan()">Save</button>
+      <button (click)="isVisibleAddUpdatePaymentPlanDialog = false" class="custom-dark-form-btn mx-2 px-3 py-1"> Cancel </button>
+      <button [disabled]="isPaymentPlanButtonLoading" class="custom-primary-form-btn px-3 py-1" (click)="addUpdateCustomerPaymentPlan()">Save</button>
     </div>
   </div>
 </p-dialog>
@@ -258,7 +258,7 @@
       <span class="p-p-dialog-header-label">Payment History</span>
     </div>
     <div>
-      <button class="p-p-dialog-header-button" (click)="isVisiblePaymentHistoryDialog = false" ><i class="fa-solid fa-xmark"></i></button>
+      <button class="p-p-dialog-header-button" (click)="isVisiblePaymentHistoryDialog = false" ><i class="fa-solid fa-xmark c-pointer text-white"></i></button>
     </div>
   </div>
   <div class="p-p-dialog-body">
@@ -309,14 +309,14 @@
       </ng-template>
       <ng-template pTemplate="emptymessage">
         <tr>
-            <td colspan="10" class="text-center fw-bold">No Data</td>
+            <td colspan="10" class="text-center fw-bold text-white">No Data</td>
         </tr>
       </ng-template>
     </p-table>
   </div>
   <div class="p-p-dialog-footer ofH_calc_modal_footer">
     <div>
-      <button (click)="isVisiblePaymentHistoryDialog = false" class="btn btn-danger mx-2 px-3 py-1"> Close </button>
+      <button (click)="isVisiblePaymentHistoryDialog = false" class="custom-dark-form-btn mx-2 px-3 py-1"> Close </button>
     </div>
   </div>
 </p-dialog>
@@ -328,7 +328,7 @@
       <span class="p-p-dialog-header-label">Payment</span>
     </div>
     <div>
-      <button class="p-p-dialog-header-button" (click)="isVisiblePayBalanceDialog = false" ><i class="fa-solid fa-xmark"></i></button>
+      <button class="p-p-dialog-header-button" (click)="isVisiblePayBalanceDialog = false" ><i class="fa-solid fa-xmark c-pointer text-white"></i></button>
     </div>
   </div>
   <div class="p-p-dialog-body">
@@ -376,8 +376,8 @@
   </div>
   <div class="p-p-dialog-footer ofH_calc_modal_footer">
     <div>
-      <button (click)="isVisiblePayBalanceDialog = false" class="btn btn-danger mx-2 px-3 py-1"> Cancel </button>
-      <button [disabled]="isButtonLoading" class="btn btn-success px-3 py-1" (click)="savePayBalanceAmount()">Save</button>
+      <button (click)="isVisiblePayBalanceDialog = false" class="custom-dark-form-btn mx-2 px-3 py-1"> Cancel </button>
+      <button [disabled]="isButtonLoading" class="custom-primary-form-btn px-3 py-1" (click)="savePayBalanceAmount()">Save</button>
     </div>
   </div>
 </p-dialog>

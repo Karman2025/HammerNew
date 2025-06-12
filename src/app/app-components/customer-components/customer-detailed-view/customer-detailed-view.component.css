@@ -1,8 +1,9 @@
 .custom-container-card {
   padding: 1rem;
-  border: 1px solid #dee2e6;
+  border: 1px solid var(--primary);
   border-radius: 11px;
   /* position: relative; */
+  background: var(--primary-gradient-color);
 }
 
 /* .overlay-header {
