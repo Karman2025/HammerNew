@@ -54,7 +54,8 @@
         *ngIf="isMobileScreen"
         (click)="visible = true"
       >
-        <i class="fa-solid fa-bars"></i>
+        <!-- <i class="fa-solid fa-bars"></i> -->
+         <div class="hamburger-icon"></div>
       </button>
 
       <ng-container *ngIf="!isMobileScreen">
@@ -63,7 +64,7 @@
             <i class="fa-regular fa-circle-user"></i>
           </span>
         </div>
-        <p-popover styleClass="profile-popover-card" class="p-3" #op>
+        <p-popover styleClass="profile-popover-card" #op>
           <div class="d-flex align-items-center justify-content-center">
             <ul class="profile-popover">
               <li class="profile-popover-items">Usergmail.com</li>

@@ -188,12 +188,13 @@
     border: none;
     /* background-color: inherit; */
     display: block;
-    padding: 7px 15px;
+    /* padding: 7px 15px; */
     border-radius: 8px;
     font-size: 1.2rem;
     font-weight: 700;
     color: var(--primary-color-icon);
     background: var(--secondary-gradient-color);
+    background: inherit;
 }
 
 
@@ -231,4 +232,32 @@
     font-size: 1.5rem;
     cursor: pointer;
     color: var(--ternary);
+}
+
+.hamburger-icon {
+width: 21px;
+    height: 2px;
+    background-color: currentColor;
+    position: relative;
+    margin: 5px;
+    color: var(--ternary);
+    font-weight: bold;
+}
+
+.hamburger-icon::before,
+.hamburger-icon::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: currentColor;
+  left: 0;
+}
+
+.hamburger-icon::before {
+  top: -9px;
+}
+
+.hamburger-icon::after {
+  top: 9px;
 }

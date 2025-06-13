@@ -45,9 +45,16 @@
 ::ng-deep .primary-paginator .p-paginator-rpp-dropdown .p-select-dropdown .p-component.p-iconwrapper {
   width: 15px;
 }
-::ng-deep .primary-paginator .p-ripple {
+::ng-deep .paginator-container .primary-paginator .p-ripple.p-paginator-next,
+::ng-deep .paginator-container .primary-paginator .p-ripple.p-paginator-prev {
   min-width: unset;
   min-height: unset;
   height: 25px;
   width: 25px;
+}
+::ng-deep .paginator-container .p-select-option.p-select-option-selected,
+::ng-deep .paginator-container .p-select-option.p-select-option-selected.p-focus,
+::ng-deep .paginator-container .p-select-option:not(.p-select-option-selected):not(.p-disabled).p-focus {
+  background: var(--primary);
+  color: #fff !important;
 }

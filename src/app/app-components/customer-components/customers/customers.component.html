@@ -5,13 +5,15 @@
         <h5 style="font-weight: 600; color: #fff;" class="mb-0">Customer</h5>
       </div>
       <div class="d-flex">
-        <div class="d-flex">
-          <div (click)="isVisibleFilterCustomerDetailsDialog = true" class="primary-filter-icon-container">
-            <span  class="filter-icon"><i class="fa-solid fa-filter"></i></span>
-          </div>
-          <div class="primary-globel-filter">
-            <span><i class="fa-solid fa-magnifying-glass"></i></span>
-            <input type="text" class="form-control" placeholder="Search Here...">
+        <div class="filter-container f-c-desk-view">
+          <div class="d-flex">
+            <div (click)="isVisibleFilterCustomerDetailsDialog = true" class="primary-filter-icon-container">
+              <span  class="filter-icon"><i class="fa-solid fa-filter"></i></span>
+            </div>
+            <div class="primary-globel-filter">
+              <span><i class="fa-solid fa-magnifying-glass"></i></span>
+              <input type="text" class="form-control" placeholder="Search Here...">
+            </div>
           </div>
         </div>
         <div>
@@ -22,6 +24,17 @@
       </div>
     </div>
     <div>
+      <div class="filter-container f-c-mob-view">
+        <div class="d-flex align-items-center filter-container justify-content-end pe-2 pt-3">
+          <div (click)="isVisibleFilterCustomerDetailsDialog = true" class="primary-filter-icon-container">
+            <span  class="filter-icon"><i class="fa-solid fa-filter"></i></span>
+          </div>
+          <div class="primary-globel-filter">
+            <span><i class="fa-solid fa-magnifying-glass"></i></span>
+            <input type="text" class="form-control" placeholder="Search Here...">
+          </div>
+        </div>
+      </div>
       <div class="primary-p-table-container" [style]="{ height: getOffsetHeightForPrimaryTable(70)}" [style]="{ height: getOffsetHeightForPrimaryTable(70)}">
         <p-table
         [scrollable]="true"

@@ -1,7 +1,23 @@
 /* You can add global styles to this file, and also import other style files */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
 
+html {
+  font-size: 16px;
+}
 
+body {
+  margin: 0 !important;
+  font-family: Helvetica, Arial, sans-serif !important;
+  font-size: 16px !important;
+}
+@media (max-width: 999px) {
+  body {
+    font-size: 12px !important;
+  }
+  html {
+    font-size: 12px !important;
+  }
+}
 
 :root {
   /* --primary: #3f5b87;
@@ -965,7 +981,7 @@
 }
 
 .font-monospace {
-  font-family: 'Aptos', sans-serif !important;
+  /* font-family: 'Aptos', sans-serif !important; */
 }
 
 .fs-1 {
@@ -1283,11 +1299,6 @@
   z-index: 1020;
 }
 
-body {
-  margin: 0 !important;
-  font-family: 'Poppins', sans-serif;
-}
-
 .custom-container-fluid {
   width: 100%;
   /* max-width: 1200px; */
@@ -1404,9 +1415,6 @@ body {
 }
 .primary-p-table .p-datatable-thead {
   background: none !important;
-}
-body {
-  font-family: Helvetica, Arial, sans-serif !important;
 }
 .c-pointer {
   cursor: pointer;
@@ -1774,4 +1782,21 @@ input.form-control::placeholder {
 }
 .primary-p-table .p-datatable-tbody tr {
   background: unset;
+}
+.paginator-container .p-select:not(.p-disabled).p-focus {
+  border-color: #423d50 !important;
+}
+.filter-container.f-c-desk-view {
+  display: block ;
+}
+.filter-container.f-c-mob-view {
+  display: none ;
+}
+@media (max-width: 650px) {
+  .filter-container.f-c-desk-view {
+  display: none ;
+}
+.filter-container.f-c-mob-view {
+  display: block ;
+}
 }
