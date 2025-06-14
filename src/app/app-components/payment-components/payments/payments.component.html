@@ -48,7 +48,7 @@
         [showFilterFields]="showFilterFields"></app-filter-fields-container>
     </div>
     <div style="border-top: 1px solid var(--primary);" class="d-flex justify-content-end px-3 py-3">
-      <button (click)="onFilterClear()" class="custom-dark-form-btn mx-1 px-3 py-1">Clear</button>
+      <button (click)="isVisiblePaymentsFilterDialog = false; onFilterClear();" class="custom-dark-form-btn mx-1 px-3 py-1">Clear</button>
       <button (click)="getAllCustomerPaymentPlans(true)" class="mx-1 custom-primary-form-btn mx-1 px-3 py-1">Apply</button>
     </div>
   </div>
