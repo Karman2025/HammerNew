@@ -235,8 +235,8 @@
 }
 
 .hamburger-icon {
-width: 21px;
-    height: 2px;
+    width: 23px;
+    height: 3px;
     background-color: currentColor;
     position: relative;
     margin: 5px;
@@ -255,9 +255,9 @@ width: 21px;
 }
 
 .hamburger-icon::before {
-  top: -9px;
+  top: -10px;
 }
 
 .hamburger-icon::after {
-  top: 9px;
+  top: 10px;
 }
