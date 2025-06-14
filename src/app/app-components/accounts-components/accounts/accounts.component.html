@@ -1,16 +1,18 @@
 <div class="custom-container-fluid p-0">
-  <div class="primary-header-container align-items-center d-flex justify-content-between px-3 py-3 ofH_calc_body_header" style="border-bottom: 2px solid var(--primary);">
+  <div class="primary-header-container align-items-center d-flex justify-content-between px-3 py-3 ofH_calc_body_header" style="border-bottom: 2px solid var(--secondary);">
   <div>
     <h5 class="primary-header-label">Accounts</h5>
   </div>
   <div class="d-flex">
-    <div class="d-flex">
-      <div (click)="isVisibleAccountsFilterDialog = true" class="primary-filter-icon-container">
-        <span class="filter-icon"><i class="fa-solid fa-filter"></i></span>
-      </div>
-      <div class="primary-globel-filter">
-        <span><i class="fa-solid fa-magnifying-glass"></i></span>
-        <input type="text" class="form-control" placeholder="Search Here...">
+    <div class="filter-container f-c-desk-view">
+      <div class="d-flex">
+        <div (click)="isVisibleAccountsFilterDialog = true" class="primary-filter-icon-container">
+          <span  class="filter-icon"><i class="fa-solid fa-filter"></i></span>
+        </div>
+        <div class="primary-global-filter">
+          <span><i class="fa-solid fa-magnifying-glass"></i></span>
+          <input type="text" class="form-control" placeholder="Search Here...">
+        </div>
       </div>
     </div>
     <div>
@@ -21,6 +23,17 @@
   </div>
   </div>
   <div>
+    <div class="filter-container f-c-mob-view ofH_calc_mob_global_filter">
+      <div class="d-flex align-items-center filter-container justify-content-end pe-2 pt-3">
+        <div (click)="isVisibleAccountsFilterDialog = true" class="primary-filter-icon-container">
+          <span  class="filter-icon"><i class="fa-solid fa-filter"></i></span>
+        </div>
+        <div class="primary-global-filter">
+          <span><i class="fa-solid fa-magnifying-glass"></i></span>
+          <input type="text" class="form-control" placeholder="Search Here...">
+        </div>
+      </div>
+    </div>
     <div class="primary-p-table-container" [style]="{ height: getOffsetHeightForPrimaryTable(70)}">
       <p-table
         [scrollable]="true"

@@ -21,3 +21,22 @@
     min-height: 200px;
     background-color: var(--primary);
 }
+::ng-deep .attendance-date-picker .p-datepicker.p-component{
+    border: 1px solid #423d50;
+    border-radius: 5px;
+    background: var(--quaternary);
+}
+::ng-deep .attendance-date-picker .p-component .p-inputtext{
+    padding: 5px 10px;
+    background: var(--quaternary);
+    color: #fff;
+    font-size: 0.9rem;
+    border-color: var(--quaternary);
+    border-radius: 8px;
+}
+::ng-deep .attendance-date-picker .p-component .p-datepicker-dropdown {
+    background: var(--quaternary);
+    color: #64748b;
+    border-color: var(--quaternary);
+    border-radius: 8px;
+}

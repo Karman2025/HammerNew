@@ -4,23 +4,36 @@
       <h5 class="primary-header-label">Attendence</h5>
     </div>
     <div class="d-flex">
-      <div class="d-flex">
-        <div (click)="isVisibleFilterAttendanceDialog = true" class="primary-filter-icon-container">
-          <span class="filter-icon"><i class="fa-solid fa-filter"></i></span>
+        <div class="filter-container f-c-desk-view">
+          <div class="d-flex">
+            <div (click)="isVisibleFilterAttendanceDialog = true" class="primary-filter-icon-container">
+              <span  class="filter-icon"><i class="fa-solid fa-filter"></i></span>
+            </div>
+            <div class="primary-global-filter">
+              <span><i class="fa-solid fa-magnifying-glass"></i></span>
+              <input type="text" class="form-control" placeholder="Search Here...">
+            </div>
+          </div>
         </div>
-        <div class="primary-globel-filter">
-          <span><i class="fa-solid fa-magnifying-glass"></i></span>
-          <input type="text" class="form-control" placeholder="Search Here...">
-        </div>
-      </div>
       <div>
-        <p-datepicker [(ngModel)]="attendanceDate" placeholder="Select date" showIcon="true" [dateFormat]="'yy/mm/dd'"
+        <p-datepicker class="attendance-date-picker" [(ngModel)]="attendanceDate" placeholder="Select date" showIcon="true" [dateFormat]="'yy/mm/dd'"
           [maxDate]="maxDate" (onSelect)="attendanceDateSelect($event)" appendTo="body" />
       </div>
     </div>
   </div>
   <div>
-    <div class="attendance_scroll_container p-4" [ngStyle]="{ 'max-height': getOffsetHeightByCustomClass(61, containerOffSetHeightClasses), 'overflow-x': 'hidden' }">
+    <div class="filter-container f-c-mob-view ofH_calc_mob_global_filter">
+      <div class="d-flex align-items-center filter-container justify-content-end pe-2 pt-3">
+        <div (click)="isVisibleFilterAttendanceDialog = true" class="primary-filter-icon-container">
+          <span  class="filter-icon"><i class="fa-solid fa-filter"></i></span>
+        </div>
+        <div class="primary-global-filter">
+          <span><i class="fa-solid fa-magnifying-glass"></i></span>
+          <input type="text" class="form-control" placeholder="Search Here...">
+        </div>
+      </div>
+    </div>
+    <div class="attendance_scroll_container px-4 pb-4 mt-4" [ngStyle]="{ 'max-height': getOffsetHeightByCustomClass(61, containerOffSetHeightClasses), 'overflow-x': 'hidden' }">
       <div class="row" infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollUpDistance]="1.5" [fromRoot]="true"
         [infiniteScrollThrottle]="50" (scrolled)="onScroll()" [infiniteScrollContainer]="'.attendance_scroll_container'">
         <ng-container *ngFor="let item of attendanceList">

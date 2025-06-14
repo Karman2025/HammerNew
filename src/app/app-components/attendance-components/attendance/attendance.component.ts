@@ -31,7 +31,7 @@ export class AttendanceComponent implements OnInit {
   formattedDate: string = '';
   toastErrorMessage: string = 'Something went wrong';
   isPastDay: boolean = false;
-  containerOffSetHeightClasses:any[] = ['ofH_calc_nav_bar', 'ofH_calc_body_header'];
+  containerOffSetHeightClasses:any[] = ['ofH_calc_nav_bar', 'ofH_calc_body_header', 'ofH_calc_mob_global_filter'];
   getBranchOptions: {_id: string, bch_Name: string, bch_Code: string}[] = [];
   popupWidth = getPopupWidth();
   showSkeletonLoader:boolean = false;

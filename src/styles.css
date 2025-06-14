@@ -1664,7 +1664,7 @@ input.form-control::placeholder {
     font-size: 0.9rem;
     font-weight: 500;
 } */
-.primary-globel-filter {
+.primary-global-filter {
     display: flex;
     justify-content: center;
     background: var(--quaternary);
@@ -1674,11 +1674,11 @@ input.form-control::placeholder {
     border-radius: 5px;
     margin-left: .6rem;
 }
-.primary-globel-filter i {
+.primary-global-filter i {
     padding: 0px 2px 0px 12px;
     color: #fff;
 }
-.primary-globel-filter input{
+.primary-global-filter input{
     padding: 5px 5px;
     border-radius: 5px;
     background: none;
@@ -1686,10 +1686,10 @@ input.form-control::placeholder {
     color: #fff;
     background: var(--quaternary) !important;
 }
-.primary-globel-filter input:focus {
+.primary-global-filter input:focus {
   background: var(--quaternary) !important;
 }
-.primary-globel-filter .form-control:focus {
+.primary-global-filter .form-control:focus {
     background: none;
 }
 

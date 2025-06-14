@@ -50,6 +50,9 @@
     display: inline-block;
     color: var(--primary-color-text);
     transition: color 0.2s ease;
+    user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
 }
 .menu-item.active a {
     padding: 4px 12px;
