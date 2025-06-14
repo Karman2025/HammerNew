@@ -115,7 +115,7 @@
       <div class="pt-1">
         <label class="form-label" for="customer-dob">DOB</label>
         <div [ngClass]="{'form-validation-error': createCustomerForm.get('ctr_Dob')?.invalid && createCustomerForm.get('ctr_Dob')?.touched}">
-          <p-datepicker class="primary-p-datepicker form-control" id="customer-dob" formControlName="ctr_Dob" placeholder="dd-mm-yyyy" dateFormat="dd-mm-yy" appendTo="body"/>
+          <p-datepicker class="primary-p-datepicker" id="customer-dob" formControlName="ctr_Dob" placeholder="dd-mm-yyyy" dateFormat="dd-mm-yy" appendTo="body"/>
           <div class="form-validation-msg">
             <span>Required</span>
           </div>

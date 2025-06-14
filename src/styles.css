@@ -1470,7 +1470,7 @@ body {
 }
 .primary-p-datepicker .p-component .p-inputtext {
   background: var(--primary) !important;
-  border-color: var(--primary) !important;
+  border-color: var(--primary);
 }
 .form-label {
   color: #fff;
@@ -1766,14 +1766,15 @@ input.form-control::placeholder {
   width: 100%;
 }
 .primary-p-datepicker .p-component .p-inputtext {
-  padding: 0.3rem 0.7rem;
-  border: 1px solid #dee2e6;
+  padding: .375rem .75rem;
+  /* border: 1px solid #dee2e6; */
   font-size: 0.9rem;
   color: #fff;
 }
 .primary-p-datepicker .p-component .p-inputtext:enabled:focus,
 .primary-p-datepicker .p-component .p-inputtext:enabled:hover {
-  border-color: #dee2e6;
+  /* border-color: #dee2e6; */
+  border-color: var(--primary);
 }
 .primary-p-table-container {
   margin: 1rem 1rem 0.7rem 1rem;
