@@ -13,13 +13,14 @@ import { paginationRowsPerPageOptions } from '../../../shared/data/master-data';
 import { TooltipModule } from 'primeng/tooltip';
 import { getPopupWidth } from '../../../shared/functions/responsiveFunction';
 import { TablePaginatorComponent } from '../../../shared/components/table-paginator/table-paginator.component';
+import { FormsModule } from '@angular/forms';
 
 
 @Component({
   selector: 'app-branches',
   templateUrl: './branches.component.html',
   styleUrls: ['./branches.component.css'],
-  imports: [CommonModule, BranchAddEditFormComponent, TableModule, DialogModule, FilterFieldsContainerComponent, PaginatorModule, TooltipModule, TablePaginatorComponent],
+  imports: [CommonModule, FormsModule, BranchAddEditFormComponent, TableModule, DialogModule, FilterFieldsContainerComponent, PaginatorModule, TooltipModule, TablePaginatorComponent],
 })
 export class BranchesComponent implements OnInit {
 
@@ -60,7 +61,7 @@ export class BranchesComponent implements OnInit {
   pageNo:number = 1;
   indexOfFirstRecord:number = 0;
   totalRecords:any;
-
+  globalSearch:any;
 
   constructor(private service:AppComponentsApiService, private toasterMessage: MessageService) {
     this.getAllBranches();
@@ -107,7 +108,8 @@ export class BranchesComponent implements OnInit {
 
     let params:any = {
       pageSize : this.pageSize,
-      pageNo : this.pageNo
+      pageNo : this.pageNo,
+      search : this.globalSearch
     };
     params = {...params, ...this.filterFields}
     this.service.getAllBranch(params).subscribe((res:any)=>{
@@ -208,14 +210,8 @@ export class BranchesComponent implements OnInit {
     this.getAllBranches();
   }
 
-//   get dialogWidth(): string {
-//     console.log(window.innerWidth);
-
-//   if (window.innerWidth < 576) return '95vw';
-//   if (window.innerWidth < 768) return '80vw';
-//   if (window.innerWidth < 992) return '60vw';
-//   return '30vw';
-// }
-
+  onGlobalSearch(){
+    this.getAllBranches();
+  }
 
 }

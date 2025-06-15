@@ -1,14 +1,16 @@
 .loader-container {
     position: absolute;
-    width: 100%;
+    /* width: 100%; */
+    width: -webkit-fill-available; /* For WebKit browsers */
+    width: -moz-available;         /* For Firefox */
+    width: fill-available;         /* Standard (some newer support) */
     height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
     z-index: 1000;
   }
-  
+
 ::ng-deep .primary-spinner-style .p-progressspinner-circle {
     stroke: #6cb4ee !important;
   }
-  

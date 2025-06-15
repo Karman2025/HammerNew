@@ -14,11 +14,12 @@ import { paginationRowsPerPageOptions } from '../../../shared/data/master-data';
 import { TooltipModule } from 'primeng/tooltip';
 import { getPopupWidth } from '../../../shared/functions/responsiveFunction';
 import { TablePaginatorComponent } from '../../../shared/components/table-paginator/table-paginator.component';
+import { FormsModule } from '@angular/forms';
 
 
 @Component({
   selector: 'app-trainers',
-  imports: [CommonModule, TableModule, DialogModule, TrainerAddEditFormComponent, FilterFieldsContainerComponent, PaginatorModule, TooltipModule, TablePaginatorComponent],
+  imports: [CommonModule, FormsModule, TableModule, DialogModule, TrainerAddEditFormComponent, FilterFieldsContainerComponent, PaginatorModule, TooltipModule, TablePaginatorComponent],
   templateUrl: './trainers.component.html',
   styleUrl: './trainers.component.css',
 })
@@ -69,6 +70,7 @@ export class TrainersComponent {
   indexOfFirstRecord:number = 0;
   totalRecords:any;
   loggedInUser:any;
+  globalSearch:any;
 
   constructor(private service:AppComponentsApiService, private toasterMessage: MessageService) {
     this.getAllTrainers();
@@ -119,7 +121,8 @@ export class TrainersComponent {
     if (resetPage) this.pageNo = 1;
     let param:any = {
       pageSize : this.pageSize,
-      pageNo : this.pageNo
+      pageNo : this.pageNo,
+      search : this.globalSearch
     };
     param = {...param, ...this.filterFields}
 
@@ -214,6 +217,10 @@ export class TrainersComponent {
       tnr_MobileNo: null,
       tnr_Email: null,
     };
+    this.getAllTrainers();
+  }
+
+  onGlobalSearch(){
     this.getAllTrainers();
   }
 }

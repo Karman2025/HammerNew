@@ -64,6 +64,7 @@ export class AttendanceComponent implements OnInit {
     hasNextPage: false,
     hasPreviousPage: false
   };
+  globalSearch:any;
 
   constructor(
     private service: AppComponentsApiService,
@@ -126,6 +127,7 @@ export class AttendanceComponent implements OnInit {
       pageSize : this.pageSize,
       pageNo : this.pageNo,
       attendanceDate: dateObjToString(selectedDate),
+      search : this.globalSearch
     };
 
     param = {...param, ...this.filterFields};
@@ -213,6 +215,10 @@ export class AttendanceComponent implements OnInit {
       this.pageNo++;
 
       this.getAllAttendance(false, false, true);
+    }
   }
-}
+
+  onGlobalSearch(){
+    this.getAllAttendance(true, true);
+  }
 }

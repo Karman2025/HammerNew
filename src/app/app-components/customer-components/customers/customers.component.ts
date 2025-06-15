@@ -17,13 +17,14 @@ import { PaginatorModule } from 'primeng/paginator';
 import { paginationRowsPerPageOptions } from '../../../shared/data/master-data';
 import { TooltipModule } from 'primeng/tooltip';
 import { TablePaginatorComponent } from '../../../shared/components/table-paginator/table-paginator.component';
+import { FormsModule } from '@angular/forms';
 
 
 @Component({
   selector: 'app-customers',
   templateUrl: './customers.component.html',
   styleUrls: ['./customers.component.css'],
-  imports: [CommonModule, TableModule, DialogModule, CustomerAddEditFormComponent,Popover, FilterFieldsContainerComponent,PaginatorModule, TooltipModule, TablePaginatorComponent],
+  imports: [CommonModule, FormsModule, TableModule, DialogModule, CustomerAddEditFormComponent,Popover, FilterFieldsContainerComponent,PaginatorModule, TooltipModule, TablePaginatorComponent],
 })
 export class CustomersComponent implements OnInit {
 
@@ -84,6 +85,8 @@ export class CustomersComponent implements OnInit {
   isVisibleFilterCustomerDetailsDialog:boolean = false;
   isDeletingCustomer:boolean = false;
   deleteCustomerDetails:any;
+  globalSearch:any;
+
   constructor(
     private service:AppComponentsApiService,
     private router: Router,
@@ -151,7 +154,8 @@ export class CustomersComponent implements OnInit {
 
     let params:any = {
       pageSize : this.pageSize,
-      pageNo : this.pageNo
+      pageNo : this.pageNo,
+      search : this.globalSearch
     };
     this.filterFields.createdDateFrom = this.filterFields?.createdDate?.[0] ? dateObjToString(this.filterFields?.createdDate[0]) : null;
     this.filterFields.createdDateTo = this.filterFields?.createdDate?.[1] ? dateObjToString(this.filterFields?.createdDate[1]) : null;
@@ -258,6 +262,10 @@ onCustomerCreate() {
         createdDateTo: null,
         paymentPlanStatus: null
       };
+      this.getAllCustomers();
+    }
+
+    onGlobalSearch(){
       this.getAllCustomers();
     }
 }

@@ -14,6 +14,7 @@ import { MessageService } from 'primeng/api';
 import { getPopupWidth } from '../../../shared/functions/responsiveFunction';
 import { TablePaginatorComponent } from '../../../shared/components/table-paginator/table-paginator.component';
 import { DialogModule } from 'primeng/dialog';
+import { FormsModule } from '@angular/forms';
 
 
 
@@ -29,7 +30,7 @@ interface Payments {
   selector: 'app-payments',
   templateUrl: './payments.component.html',
   styleUrls: ['./payments.component.css'],
-  imports: [TableModule, PaymentPlanViewAddEditFormComponent, FilterFieldsContainerComponent, CommonModule, PaginatorModule, TablePaginatorComponent, DialogModule] // Include TableModule here
+  imports: [TableModule, FormsModule, PaymentPlanViewAddEditFormComponent, FilterFieldsContainerComponent, CommonModule, PaginatorModule, TablePaginatorComponent, DialogModule] // Include TableModule here
 })
 export class PaymentsComponent implements OnInit {
   customersPaymentPlan: Payments[] = [];
@@ -83,6 +84,7 @@ export class PaymentsComponent implements OnInit {
   pageNo:number = 1;
   indexOfFirstRecord:number = 0;
   totalRecords:any;
+  globalSearch:any;
 
   constructor(
     private service: AppComponentsApiService,
@@ -100,7 +102,8 @@ export class PaymentsComponent implements OnInit {
     if (resetPage) this.pageNo = 1;
     let params:any = {
       pageSize : this.pageSize,
-      pageNo : this.pageNo
+      pageNo : this.pageNo,
+      search : this.globalSearch
     };
     this.filterFields.planStartDateFrom = this.filterFields?.planStartDate?.[0] ? dateObjToString(this.filterFields?.planStartDate[0]) : null;
     this.filterFields.planStartDateTo = this.filterFields?.planStartDate?.[1] ? dateObjToString(this.filterFields?.planStartDate[1]) : null;
@@ -178,6 +181,10 @@ export class PaymentsComponent implements OnInit {
       planEndDateFrom: null,
       planEndDateTo: null
     };
+    this.getAllCustomerPaymentPlans();
+  }
+
+  onGlobalSearch(){
     this.getAllCustomerPaymentPlans();
   }
 }

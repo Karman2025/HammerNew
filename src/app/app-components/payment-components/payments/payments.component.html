@@ -10,8 +10,9 @@
               <span  class="filter-icon"><i class="fa-solid fa-filter"></i></span>
             </div>
             <div class="primary-global-filter">
-              <input type="text" class="form-control" placeholder="Search Here...">
-              <span class="magnifying-glass-icon-container"><i class="fa-solid fa-magnifying-glass"></i></span>
+              <input type="text" class="form-control" placeholder="Search Here..." (keydown.enter)="onGlobalSearch()" [(ngModel)]="globalSearch">
+              <span style="font-size: 0.9rem; width: 19px;" class="c-pointer d-flex" (click)="globalSearch = ''; onGlobalSearch()"><i *ngIf="globalSearch" class="fa-solid fa-xmark pe-2 ps-0"></i></span>
+              <span class="magnifying-glass-icon-container" (click)="onGlobalSearch()"><i class="fa-solid fa-magnifying-glass"></i></span>
             </div>
           </div>
         </div>
@@ -24,8 +25,9 @@
           <span  class="filter-icon"><i class="fa-solid fa-filter"></i></span>
         </div>
         <div class="primary-global-filter">
-          <input type="text" class="form-control" placeholder="Search Here...">
-          <span class="magnifying-glass-icon-container"><i class="fa-solid fa-magnifying-glass"></i></span>
+          <input type="text" class="form-control" placeholder="Search Here..." (keydown.enter)="onGlobalSearch()" [(ngModel)]="globalSearch">
+          <span style="font-size: 0.9rem; width: 19px;" class="c-pointer d-flex" (click)="globalSearch = ''; onGlobalSearch()"><i *ngIf="globalSearch" class="fa-solid fa-xmark pe-2 ps-0"></i></span>
+          <span class="magnifying-glass-icon-container" (click)="onGlobalSearch()"><i class="fa-solid fa-magnifying-glass"></i></span>
         </div>
       </div>
     </div>
@@ -63,7 +65,7 @@
         [showFilterFields]="showFilterFields"></app-filter-fields-container>
     </div>
     <div style="border-top: 1px solid var(--primary);" class="d-flex justify-content-end px-3 py-3">
-      <button (click)="isVisiblePaymentsFilterDialog = false; onFilterClear();" class="custom-dark-form-btn mx-1 px-3 py-1">Clear</button>
+      <button (click)="onFilterClear();" class="custom-dark-form-btn mx-1 px-3 py-1">Clear</button>
       <button (click)="getAllCustomerPaymentPlans(true)" class="mx-1 custom-primary-form-btn mx-1 px-3 py-1">Apply</button>
     </div>
   </div>
