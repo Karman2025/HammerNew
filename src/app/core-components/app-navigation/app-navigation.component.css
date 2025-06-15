@@ -269,7 +269,7 @@
 ::ng-deep .profile-popover-card.p-popover:before {
   display: none !important;
 }
-::ng-deep .profile-popover-card {
+::ng-deep .profile-popover-card.p-popover {
   border: none;
   border-radius: 15px;
 }
