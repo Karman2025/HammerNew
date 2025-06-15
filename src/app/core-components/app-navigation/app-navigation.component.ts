@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { Popover } from 'primeng/popover';
 import { DrawerModule } from 'primeng/drawer';
 import { ButtonModule } from 'primeng/button';
@@ -18,7 +18,9 @@ export class AppNavigationComponent implements OnInit {
   isMobileScreen: boolean = false;
   visible: boolean = false;
 
-  constructor() {
+  constructor(
+    private router: Router
+  ) {
     this.loggedInUser = JSON.parse(localStorage.getItem('USER-INFO') ?? "{}");
   }
 
@@ -43,5 +45,8 @@ export class AppNavigationComponent implements OnInit {
 
   signOut() {
     localStorage.removeItem('USER-JWT-TOKEN');
+    this.router.navigate(['signin']);
+
   }
+
 }
