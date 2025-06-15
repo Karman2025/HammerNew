@@ -1801,9 +1801,56 @@ input.form-control::placeholder {
 }
 @media (max-width: 650px) {
   .filter-container.f-c-desk-view {
-  display: none ;
+    display: none ;
+  }
+  .filter-container.f-c-mob-view {
+    display: block ;
+  }
 }
-.filter-container.f-c-mob-view {
-  display: block ;
+.primary-p-datepicker-panel.p-datepicker-panel .p-datepicker-header,
+.primary-p-datepicker-panel.p-datepicker-panel {
+  background: #302c3b;
+  border-color: var(--primary);
 }
+.primary-p-datepicker-panel .p-datepicker-decade,
+.primary-p-datepicker-panel .p-datepicker-day,
+.primary-p-datepicker-panel .p-datepicker-select-year,
+.primary-p-datepicker-panel .p-datepicker-select-month,
+.primary-p-datepicker-panel .p-datepicker-weekday,
+.primary-p-datepicker-panel .p-datepicker-day {
+  color: #fff;
+}
+.primary-p-datepicker-panel .p-datepicker-today .p-datepicker-day,
+.primary-p-datepicker-panel .p-datepicker-select-year:hover,
+.primary-p-datepicker-panel .p-datepicker-select-month:hover {
+  color: #000;
+}
+.primary-p-datepicker-panel .p-datepicker-weekday-cell {
+  text-align: center;
+  border: none;
+}
+.primary-p-datepicker-panel.p-datepicker-panel .p-button-text:not(:disabled):hover,
+.primary-p-datepicker-panel .p-datepicker-day:not(.p-datepicker-day-selected):not(.p-disabled):hover {
+  color: #000;
+}
+.primary-p-datepicker-panel.p-datepicker-panel .p-button-text {
+  color: #fff;
+}
+.primary-p-datepicker-panel .p-datepicker-day-selected {
+  background: var(--ternary);
+  color: #fff;
+}
+.primary-p-datepicker-panel .p-datepicker-today .p-datepicker-day-selected,
+.primary-p-datepicker-panel .p-datepicker-year-selected,
+.primary-p-datepicker-panel .p-datepicker-month-selected {
+  color: #fff;
+  background: var(--ternary);
+}
+.primary-p-datepicker-panel .p-datepicker-year,
+.primary-p-datepicker-panel .p-datepicker-month {
+  color: #fff;
+}
+.primary-p-datepicker-panel .p-datepicker-year:not(.p-disabled):not(.p-datepicker-year-selected):hover,
+.primary-p-datepicker-panel .p-datepicker-month:not(.p-disabled):not(.p-datepicker-month-selected):hover {
+  color: #000;
 }

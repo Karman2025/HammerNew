@@ -17,7 +17,7 @@
           </div>
         </div>
       <div>
-        <p-datepicker class="attendance-date-picker" [(ngModel)]="attendanceDate" placeholder="Select date" showIcon="true" [dateFormat]="'yy/mm/dd'"
+        <p-datepicker class="attendance-date-picker" panelStyleClass="primary-p-datepicker-panel" [(ngModel)]="attendanceDate" placeholder="Select date" showIcon="true" [dateFormat]="'yy/mm/dd'"
           [maxDate]="maxDate" (onSelect)="attendanceDateSelect($event)" appendTo="body" />
       </div>
     </div>
