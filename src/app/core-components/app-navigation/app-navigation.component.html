@@ -137,9 +137,25 @@
         </div>
         <div class="mobile-panel-footer d-flex flex-column align-items-center py-3 mt-3">
           <ul class="mobile-menu-user-block">
-            <li class="mobile-menu-user-list">Usergmail.com</li>
             <li class="mobile-menu-user-list">
-              <a routerLink="/signin" (click)="signOut()">Logout</a>
+              <div style="border-bottom: 2px solid var(--primary);" class="d-flex align-items-center pb-1 pt-1 px-2">
+                <div>
+                  <span class="fs-1" style="color: var(--ternary);"><i class="fa-regular fa-circle-user"></i></span>
+                </div>
+                <div class="d-flex flex-column">
+                  <span class="px-2"> {{(loggedInUser?.firstName && loggedInUser?.lastName) ? (loggedInUser.firstName + ' ' +
+                    loggedInUser.lastName) : (loggedInUser?.bch_Name ?? loggedInUser?.tnr_Name) }}</span>
+                  <span style="font-size: 0.8rem; color: #ccc;" class="px-2">{{loggedInUser?.role == '1' ? 'Admin' :
+                    loggedInUser?.role == '2' ? 'Branch' : loggedInUser?.role == '3' ? 'Trainer' : ''}}</span>
+                </div>
+              </div>
+            </li>
+            <li class="mobile-menu-user-list">
+              <!-- <a routerLink="/signin" (click)="signOut()">Logout</a> -->
+              <div (click)="signOut()" class="d-flex justify-content-center">
+                <span class="px-2"><i class="fa-solid fa-arrow-right-from-bracket"></i></span>
+                <span>Logout</span>
+              </div>
             </li>
           </ul>
         </div>
