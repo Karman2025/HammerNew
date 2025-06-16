@@ -2,7 +2,7 @@
   <p-table
   [scrollable]="true"
   scrollHeight="{{getOffsetHeightForPrimaryTable(70)}}"
-  [tableStyle]="{'min-height': customerPaymentPlan.length == 0 ? getOffsetHeightForPrimaryTable(70) : 'unset'}"
+  [tableStyle]="{'min-height': customerPaymentPlan.length == 0 ? getOffsetHeightForPrimaryTable(IsCustomer ? 562 : 70) : 'unset'}"
   class="primary-p-table"
   [value]="customerPaymentPlan">
     <ng-template pTemplate="header">

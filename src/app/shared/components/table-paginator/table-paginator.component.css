@@ -42,6 +42,10 @@
   border-radius: 6px;
   padding: 0px 3px;
 }
+::ng-deep .primary-paginator .p-select.p-disabled {
+  opacity: 1;
+  background: none !important;
+}
 ::ng-deep .primary-paginator .p-paginator-rpp-dropdown .p-select-dropdown .p-component.p-iconwrapper {
   width: 15px;
 }
