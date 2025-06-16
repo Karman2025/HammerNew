@@ -49,7 +49,7 @@ export class CustomerDetailedViewComponent implements OnInit {
   paymentPlanOptions:any[] = paymentPlanOptions;
   customerFormPaymentPlanData:any = {};
   popupWidth = getPopupWidth();
-  
+
 
   constructor(
     private service: AppComponentsApiService,
@@ -82,6 +82,7 @@ export class CustomerDetailedViewComponent implements OnInit {
   }
 
   onCustomerInfoEdit(){
+    this.formMode = "edit";
     this.customerData = JSON.parse(JSON.stringify(this.customerDetails?.customerInfo))
     this.isVisibleCustomerEditDialog = true;
   }

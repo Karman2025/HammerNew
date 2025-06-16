@@ -1614,37 +1614,42 @@ input.form-control::placeholder {
 .badge-danger {
   background: rgba(var(--bs-danger-rgb));
   color: #fff !important;
-  padding: 1px 7px;
+  padding: 0px 8px;
   border-radius: 10px;
-  font-size: 0.8rem;
+  font-size: 0.9rem;
+  font-weight: 600;
 }
 .badge-intermediate {
   background: #ff7600;
   color: #fff !important;
-  padding: 1px 7px;
+  padding: 0px 8px;
   border-radius: 10px;
-  font-size: 0.8rem;
+  font-size: 0.9rem;
+  font-weight: 600;
 }
 .badge-success {
   background: rgba(var(--bs-success-rgb));
   color: #fff !important;
-  padding: 1px 7px;
+  padding: 0px 8px;
   border-radius: 10px;
-  font-size: 0.8rem;
+  font-size: 0.9rem;
+  font-weight: 600;
 }
 .badge-warning {
-  background: #ffc107;
+  background: #d3a006;
   color: #fff !important;
-  padding: 1px 7px;
+  padding: 0px 8px;
   border-radius: 10px;
-  font-size: 0.8rem;
+  font-size: 0.9rem;
+  font-weight: 600;
 }
 .badge-inactive {
   background: #9f9f9f;
   color: #fff !important;
-  padding: 1px 7px;
+  padding: 0px 8px;
   border-radius: 10px;
-  font-size: 0.8rem;
+  font-size: 0.9rem;
+  font-weight: 600;
 }
 .text-overflow-ellipsis{
   box-sizing: border-box;

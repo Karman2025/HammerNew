@@ -146,12 +146,15 @@ export class PaymentPlanViewAddEditFormComponent implements OnInit {
     plan.planStartDate = dateStringToObj(plan?.planStartDate);
     plan.planEndDate = dateStringToObj(plan?.planEndDate);
     plan.paymentMethod = plan?.payments[plan?.payments?.length - 1]?.paymentMethod;
+    plan.receiptNumber = plan?.payments?.[0]?.receiptNumber;
+
     this.createPaymentPlanForm.reset(plan);
     this.selectedPaymentPlan = JSON.parse(JSON.stringify(plan));
     this.isVisibleAddUpdatePaymentPlanDialog = true;
     this.createPaymentPlanForm.get('payableAmount')?.disable();
     this.createPaymentPlanForm.get('paidAmount')?.disable();
     this.createPaymentPlanForm.get('paymentMethod')?.disable();
+    this.createPaymentPlanForm.get('receiptNumber')?.disable();
   }
 
   addUpdateCustomerPaymentPlan() {
@@ -213,6 +216,7 @@ export class PaymentPlanViewAddEditFormComponent implements OnInit {
             this.createPaymentPlanForm.get('payableAmount')?.enable();
             this.createPaymentPlanForm.get('paidAmount')?.enable();
             this.createPaymentPlanForm.get('paymentMethod')?.enable();
+            this.createPaymentPlanForm.get('receiptNumber')?.enable();
             this.changeShowExtendPlan.emit(false);
           } else {
             this.toasterMessage.add({ key: 'root-toast', severity: 'error', summary: 'Error', detail: res?.Results?.error ?? 'Something went wrong please try again later' });

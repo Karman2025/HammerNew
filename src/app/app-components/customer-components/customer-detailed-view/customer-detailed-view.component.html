@@ -19,7 +19,7 @@
             </div>
           </div>
           <div>
-            <app-customer-add-edit-form [formDataMode]="formMode" [branchOptions]="branchOptions" [customerData]="customerDetails?.customerInfo"></app-customer-add-edit-form>
+            <app-customer-add-edit-form [formDataMode]="'view'" [branchOptions]="branchOptions" [customerData]="customerDetails?.customerInfo"></app-customer-add-edit-form>
           </div>
         </div>
       </div>
@@ -96,7 +96,7 @@
       <button class="p-p-dialog-header-button" (click)="isVisibleCustomerEditDialog = false" ><i class="fa-solid fa-xmark c-pointer text-white"></i></button>
     </div>
   </div>
-  <div class="p-p-dialog-body" [ngStyle]="{ 'max-height': getOffsetHeightForModal(93), 'overflow-x': 'hidden' }">
+  <div class="p-p-dialog-body" [ngStyle]="{ 'max-height': getOffsetHeightForModal(100), 'overflow-x': 'hidden' }">
     <app-customer-add-edit-form #CustomerAddEditFormComponent *ngIf="isVisibleCustomerEditDialog" [formDataMode]="'edit'" [branchOptions]="branchOptions" [customerData]="customerData"></app-customer-add-edit-form>
   </div>
   <div class="p-p-dialog-footer ofH_calc_modal_footer">
