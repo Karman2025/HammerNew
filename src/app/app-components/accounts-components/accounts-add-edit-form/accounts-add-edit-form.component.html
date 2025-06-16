@@ -28,7 +28,7 @@
       <div class="pt-1">
         <label class="form-label" for="accounts-credit-debit">Credit/Debit</label>
         <div [ngClass]="{'form-validation-error': createAccountsForm.get('isCredit')?.invalid && createAccountsForm.get('isCredit')?.touched}">
-          <p-select class="form-control primary-p-select"
+          <p-select class="form-control primary-p-select" panelStyleClass="primary-p-select-panel"
           [options]="creditDebitOptions" dataKey="_id"
           formControlName="isCredit" appendTo="body"
           optionLabel="name" optionValue="value"
@@ -43,7 +43,7 @@
       <div class="pt-1">
         <label class="form-label" for="accounts-payment-type">Payment Type</label>
         <div [ngClass]="{'form-validation-error': createAccountsForm.get('paymentTypeId')?.invalid && createAccountsForm.get('paymentTypeId')?.touched}">
-          <p-select class="form-control primary-p-select"
+          <p-select class="form-control primary-p-select" panelStyleClass="primary-p-select-panel"
           [options]="paymentTypeMaster" dataKey="_id"
           formControlName="paymentTypeId" appendTo="body"
           optionLabel="name" optionValue="_id"

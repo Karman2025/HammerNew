@@ -156,7 +156,7 @@
           <div class="pt-1">
             <label class="form-label" for="customer-payment-plan">Payment Plan</label>
             <div [ngClass]="{'form-validation-error': createPaymentPlanForm.get('paymentPlanId')?.invalid && createPaymentPlanForm.get('paymentPlanId')?.touched}">
-              <p-select class="form-control primary-p-select"
+              <p-select class="form-control primary-p-select" panelStyleClass="primary-p-select-panel"
               [options]="paymentPlanOptions" dataKey="_id"
               formControlName="paymentPlanId" (onChange)="onPaymentPlanChange()"
               optionLabel="name" optionValue="_id"
@@ -204,7 +204,7 @@
           <div class="pt-1">
             <label class="form-label" for="customer-payment-plan">Payment Method</label>
             <div [ngClass]="{'form-validation-error': createPaymentPlanForm.get('paymentMethod')?.invalid && createPaymentPlanForm.get('paymentMethod')?.touched}">
-              <p-select class="form-control primary-p-select" appendTo="body"
+              <p-select class="form-control primary-p-select" panelStyleClass="primary-p-select-panel" appendTo="body"
               [options]="paymentMethodsOptions" dataKey="_id" formControlName="paymentMethod"
               optionLabel="name" optionValue="name" placeholder="Select a Method"/>
               <div class="form-validation-msg">
@@ -337,7 +337,7 @@
         <div class="pt-1">
           <label class="form-label" for="customer-payment-plan">Payment Method</label>
           <div [ngClass]="{'form-validation-error': showPaymentMethodValidation}">
-            <p-select class="form-control primary-p-select"
+            <p-select class="form-control primary-p-select" panelStyleClass="primary-p-select-panel"
             [options]="paymentMethodsOptions" dataKey="_id"
             [(ngModel)]="selectedPaymentPlan.payBalancePaymentMethod"
             optionLabel="name" optionValue="name" appendTo="body"

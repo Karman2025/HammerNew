@@ -3,7 +3,7 @@
     <div class="col-12" *ngIf="showFilterFields?.branchId">
       <div class="pt-1">
         <label class="form-label" for="trainer-name">Branch</label>
-        <p-select class="form-control primary-p-select"
+        <p-select class="form-control primary-p-select" panelStyleClass="primary-p-select-panel"
           [options]="branchOptions" dataKey="_id"
           [(ngModel)]="filterFields.branchId"
           name="branchId"
@@ -107,7 +107,7 @@
     <div class="col-12" *ngIf="showFilterFields?.paymentPlanStatus">
       <div class="pt-1">
         <label class="form-label" for="trainer-name">Plan Status</label>
-        <p-select class="form-control primary-p-select"
+        <p-select class="form-control primary-p-select" panelStyleClass="primary-p-select-panel"
           [options]="paymentPlanStatus" dataKey="_id"
           [(ngModel)]="filterFields.paymentPlanStatus"
           name="branchId"
@@ -149,7 +149,7 @@
     <div class="col-12" *ngIf="showFilterFields?.paymentTypeId">
       <div class="pt-1">
         <label class="form-label" for="payment-type-name">Payment Type</label>
-        <p-select class="form-control primary-p-select"
+        <p-select class="form-control primary-p-select" panelStyleClass="primary-p-select-panel"
           [options]="paymentOptions" dataKey="_id"
           [(ngModel)]="filterFields.paymentTypeId"
           name="paymentTypeId"
@@ -163,7 +163,7 @@
     <div class="col-12" *ngIf="showFilterFields?.isCredit">
       <div class="pt-1">
         <label class="form-label" for="payment-type-name">Credit Or Debit</label>
-        <p-select class="form-control primary-p-select"
+        <p-select class="form-control primary-p-select" panelStyleClass="primary-p-select-panel"
           [options]="creditStatus" dataKey="_id"
           [(ngModel)]="filterFields.isCredit"
           name="isCredit"
@@ -203,7 +203,7 @@
     <div class="col-12" *ngIf="showFilterFields?.paymentStatus">
       <div class="pt-1">
       <label class="form-label" for="payment-status-name">Payment Status</label>
-      <p-select class="form-control primary-p-select"
+      <p-select class="form-control primary-p-select" panelStyleClass="primary-p-select-panel"
         [options]="paymentStatus" dataKey="_id"
         [(ngModel)]="filterFields.paymentStatus"
         name="paymentStatus"
@@ -217,7 +217,7 @@
     <div class="col-12" *ngIf="showFilterFields?.paymentPlanId">
       <div class="pt-1">
       <label class="form-label" for="payment-plan">Payment Plan</label>
-      <p-select class="form-control primary-p-select"
+      <p-select class="form-control primary-p-select" panelStyleClass="primary-p-select-panel"
         [options]="paymentPlanOptions" dataKey="_id"
         [(ngModel)]="filterFields.paymentPlanId"
         name="paymentPlanId"
@@ -246,7 +246,7 @@
     <div class="col-12" *ngIf="showFilterFields?.isPresent">
       <div class="pt-1">
       <label class="form-label" for="payment-status-name">Attendence Status</label>
-      <p-select class="form-control primary-p-select"
+      <p-select class="form-control primary-p-select" panelStyleClass="primary-p-select-panel"
         [options]="attendanceStatus" dataKey="_id"
         [(ngModel)]="filterFields.isPresent"
         name="isPresent"

@@ -4,7 +4,7 @@
         <div class="">
           <label class="form-label" for="trainer-name">Branch</label>
           <div [ngClass]="{'form-validation-error': createTrainerForm.get('branchId')?.invalid && createTrainerForm.get('branchId')?.touched}">
-            <p-select class="form-control primary-p-select"
+            <p-select class="form-control primary-p-select" panelStyleClass="primary-p-select-panel"
             [options]="branchOptions" dataKey="_id"
             formControlName="branchId"
             optionLabel="bch_Name" optionValue="_id"
