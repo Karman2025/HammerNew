@@ -1572,6 +1572,11 @@ body {
   border-color: #dee2e6 !important;
   padding: 0px !important;
 }
+.primary-p-select .p-select-option:not(.p-select-option-selected):not(.p-disabled).p-focus,
+.primary-p-select .p-select-option.p-select-option-selected {
+  background: var(--primary) !important;
+  color: #fff !important;
+}
 /* .primary-p-datepicker.form-control {
   border: none;
   padding: unset;

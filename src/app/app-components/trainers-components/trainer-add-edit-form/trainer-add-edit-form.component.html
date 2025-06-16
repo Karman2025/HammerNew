@@ -48,7 +48,7 @@
           </div>
         </div>
       </div>
-      <div class="col-12">
+      <div class="col-12" *ngIf="formMode != 'view'">
         <div class="pt-3">
           <label class="form-label" for="branch-password">Password</label>
           <div [ngClass]="{'form-validation-error': createTrainerForm.get('tnr_password')?.invalid && createTrainerForm.get('tnr_password')?.touched}">
