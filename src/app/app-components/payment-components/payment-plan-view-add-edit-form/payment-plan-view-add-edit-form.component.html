@@ -107,18 +107,18 @@
           </div>
         </td>
         <td pFrozenColumn alignFrozen="right">
-          <div>
-            <span *ngIf="IsCustomer" (click)="editPaymentPlan(plan)" pTooltip="Edit" tooltipPosition="top" class="c-pointer px-3">
+          <div class="d-flex align-items-center gap-3">
+            <span *ngIf="IsCustomer" (click)="editPaymentPlan(plan)" pTooltip="Edit" tooltipPosition="top" class="c-pointer">
               <i class="fa-solid fa-pen-to-square"></i>
             </span>
-            <span (click)="viewPaymentHistory(plan?.payments)" pTooltip="Payment History" tooltipPosition="top" class="c-pointer px-3">
+            <span (click)="viewPaymentHistory(plan?.payments)" pTooltip="Payment History" tooltipPosition="top" class="c-pointer">
               <i class="fa-solid fa-clock-rotate-left"></i>
             </span>
             <div style="width: 47px;">
-              <span *ngIf="plan?.paymentStatus == 'Completed' && !IsCustomer" (click)="openPaymentPlanRenewModal(plan)" pTooltip="Renew Plan" tooltipPosition="top" class="c-pointer px-3">
+              <span *ngIf="plan?.paymentStatus == 'Completed' && !IsCustomer" (click)="openPaymentPlanRenewModal(plan)" pTooltip="Renew Plan" tooltipPosition="top" class="c-pointer">
                 <i class="fa-solid fa-repeat"></i>
               </span>
-              <span *ngIf="plan?.paymentStatus == 'Pending'" (click)="openPayBalanceAmountDialog(plan)" pTooltip="Pay Balance" tooltipPosition="top" class="c-pointer px-3">
+              <span *ngIf="plan?.paymentStatus == 'Pending'" (click)="openPayBalanceAmountDialog(plan)" pTooltip="Pay Balance" tooltipPosition="top" class="c-pointer">
                 <i class="fa-solid fa-cash-register"></i>
               </span>
             </div>
