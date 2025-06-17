@@ -226,7 +226,7 @@ export class CustomerAddEditFormComponent implements OnInit {
   loadCustomerFormData() {
     if(this.formMode === 'view' || this.formMode ==='edit') {
       if(this.customerFieldData) {
-        console.log(this.customerFieldData);
+        // console.log(this.customerFieldData);
 
         this.createCustomerForm.patchValue(this.customerFieldData);
       }

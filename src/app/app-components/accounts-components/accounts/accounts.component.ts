@@ -89,7 +89,7 @@ export class AccountsComponent implements OnInit {
     params = { ...params, ...this.filterFields };
 
     this.service.getAllAccounts(params).subscribe((res:any)=>{
-      console.log(res);
+      // console.log(res);
       if(res?.Results) {
         this.accountsList = JSON.parse(JSON.stringify(res?.Results ?? []));
         this.xPagination = res?.XPagination;
@@ -115,7 +115,7 @@ export class AccountsComponent implements OnInit {
     if(isCreateCustomerFormValid){
       this.isButtonLoading = true;
       this.service.createAccountEntry(formData).subscribe((res:any)=>{
-        console.log(res);
+        // console.log(res);
         if(res?.Results?._id){
           this.isVisibleAccountsAddEditDialog = false;
           this.getAllAccounts();
@@ -147,7 +147,7 @@ export class AccountsComponent implements OnInit {
 
       const requestedPage = page + 1; // because your backend uses 1-based index
 
-      console.log('Go to page:', requestedPage);
+      // console.log('Go to page:', requestedPage);
 
       // Now call API with requestedPage and rows
       this.pageNo = requestedPage;

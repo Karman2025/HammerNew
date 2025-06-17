@@ -108,7 +108,7 @@ export class TrainersComponent {
       })
     ).subscribe((res: any) => {
       if (res && Array.isArray(res)) {
-        console.log('getAllBranchAutocomplete', res);
+        // console.log('getAllBranchAutocomplete', res);
         this.getBranchOptions = res;
       } else {
         console.warn('Unexpected response format:', res);
@@ -127,7 +127,7 @@ export class TrainersComponent {
     param = {...param, ...this.filterFields}
 
     this.service.getAllTrainer(param).subscribe((res:any)=>{
-      console.log(res)
+      // console.log(res)
       if(res?.Results) {
         this.trainersList = JSON.parse(JSON.stringify(res?.Results));
         this.xPagination = res?.XPagination;
@@ -151,7 +151,7 @@ export class TrainersComponent {
       this.isButtonLoading = true;
       if (this.formMode === 'create'){
         this.service.createTrainer(formData).subscribe((res:any) => {
-          console.log(res);
+          // console.log(res);
           // this.getAllTrainers();
           if (res?.Results && res?.Results?.error) {
             const errorMessage = res?.Results?.error;
@@ -165,7 +165,7 @@ export class TrainersComponent {
         })
       } else if (this.formMode === 'edit') {
         this.service.updateTrainer(formData).subscribe((res: any)=> {
-          console.log(res);
+          // console.log(res);
             // this.getAllTrainers();
             // this.isVisibleTrainerAddEditDialog = false;
             if (res?.Results && res?.Results?.error) {
@@ -200,7 +200,7 @@ export class TrainersComponent {
 
     const requestedPage = page + 1; // because your backend uses 1-based index
 
-    console.log('Go to page:', requestedPage);
+    // console.log('Go to page:', requestedPage);
 
     // Now call API with requestedPage and rows
     this.pageNo = requestedPage;

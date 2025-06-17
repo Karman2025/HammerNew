@@ -113,12 +113,12 @@ export class BranchesComponent implements OnInit {
     };
     params = {...params, ...this.filterFields}
     this.service.getAllBranch(params).subscribe((res:any)=>{
-      console.log(res);
+      // console.log(res);
       if(res?.Results) {
         this.branchesList = JSON.parse(JSON.stringify(res?.Results ?? []));
         this.xPagination = res?.XPagination;
         this.indexOfFirstRecord = (this.xPagination.currentPage - 1) * this.xPagination.pageSize;
-        console.log(this.indexOfFirstRecord)
+        // console.log(this.indexOfFirstRecord)
         this.totalRecords = this.xPagination.totalCount;
       } else {
         this.toasterMessage.add({ key: 'root-toast', severity: 'error', summary: 'Error', detail: this.toastErrorMessage });
@@ -138,7 +138,7 @@ export class BranchesComponent implements OnInit {
      this.isButtonLoading = true;
      if (this.formMode === 'create'){
        this.service.createBranch(formData).subscribe((res:any) => {
-        console.log(res);
+        // console.log(res);
 
         if (res?.Results && res?.Results?.error) {
           const errorMessage = res?.Results?.error;
@@ -152,7 +152,7 @@ export class BranchesComponent implements OnInit {
       })
      } else if (this.formMode === 'edit') {
        this.service.updateBranch(formData).subscribe((res:any) => {
-        console.log(res);
+        // console.log(res);
 
         if (res?.Results && res?.Results?.error) {
           const errorMessage = res?.Results?.error;

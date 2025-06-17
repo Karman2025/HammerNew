@@ -136,9 +136,9 @@ export class CustomersComponent implements OnInit {
   }
 
   deleteCustomer(){
-    console.log(this.deleteCustomerDetails)
+    // console.log(this.deleteCustomerDetails)
     this.service.deleteCustomer(this.deleteCustomerDetails._id).subscribe((res:any)=>{
-      console.log(res)
+      // console.log(res)
       if(res && res?.Results && res?.Results?.message == "Customer deleted successfully"){
         this.toasterMessage.add({ key: 'root-toast', severity: 'success', summary: 'Success', detail: 'Customer deleted successfully' });
         this.isVisibleDeleteCustomerConfirmationDialog = false;
@@ -161,14 +161,14 @@ export class CustomersComponent implements OnInit {
     this.filterFields.createdDateTo = this.filterFields?.createdDate?.[1] ? dateObjToString(this.filterFields?.createdDate[1]) : null;
     params = {...params, ...this.filterFields}
     this.service.getAllCustomer(params).subscribe((res:any)=>{
-      console.log(res);
+      // console.log(res);
       if(res?.Results?.length >= 0) {
         this.customersList = JSON.parse(JSON.stringify(res?.Results ?? []));
         this.xPagination = res?.XPagination;
         this.indexOfFirstRecord = (this.xPagination.currentPage - 1) * this.xPagination.pageSize;
         this.totalRecords = this.xPagination.totalCount;
       } else {
-        console.warn('Unexpected response format:',res);
+        // console.warn('Unexpected response format:',res);
         this.toasterMessage.add({ key: 'root-toast', severity: 'error', summary: 'Error', detail: this.toastErrorMessage });
       }
     })
@@ -204,7 +204,7 @@ onCustomerCreate() {
     formData.ctr_Dob = dateObjToString(formData?.ctr_Dob);
 
       this.service.createCustomer(formData).subscribe((res:any) => {
-        console.log(res);
+        // console.log(res);
         if(res?.Results?._id){
           this.isVisibleCustomerddEditDialog = false;
           this.getAllCustomers();
@@ -240,7 +240,7 @@ onCustomerCreate() {
 
       const requestedPage = page + 1; // because your backend uses 1-based index
 
-      console.log('Go to page:', requestedPage);
+      // console.log('Go to page:', requestedPage);
 
       // Now call API with requestedPage and rows
       this.pageNo = requestedPage;

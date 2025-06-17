@@ -16,7 +16,7 @@ export class FilterFieldsContainerComponent implements OnInit {
   @Input() branchOptions: { _id: string, bch_Name: string, bch_Code: string }[]=[];
   @Input() showFilterFields:any;
   @Input() set FilterFields(value:any) {
-    console.log(value)
+    // console.log(value)
     this.filterFields = value;
   };
   get FilterFields(): any {

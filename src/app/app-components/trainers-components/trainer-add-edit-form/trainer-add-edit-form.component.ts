@@ -21,11 +21,11 @@ export class TrainerAddEditFormComponent {
   }
   @Input() branchOptions: { _id: string, bch_Name: string, bch_Code: string }[]=[];
   @Input() set trainerData(value: any) {
-    console.log("childTrainerValue",value);
+    // console.log("childTrainerValue",value);
 
     if (value) {
       this.trainerFieldData = value;
-      console.log("child trainer",this.trainerData);
+      // console.log("child trainer",this.trainerData);
       this.loadTrainerFormData();
     }
   }
@@ -87,7 +87,7 @@ export class TrainerAddEditFormComponent {
 
   loadTrainerFormData() {
     if(this.formMode === 'view' || this.formMode ==='edit') {
-      console.log(this.trainerFieldData)
+      // console.log(this.trainerFieldData)
       if(this.trainerFieldData) {
         this.createTrainerForm.patchValue(this.trainerFieldData);
       }
@@ -108,7 +108,7 @@ export class TrainerAddEditFormComponent {
   // }
 
   isCreateTrainerFormValid(){
-    console.log(this.createTrainerForm)
+    // console.log(this.createTrainerForm)
     if (this.createTrainerForm.valid) {
       return true;
     } else {

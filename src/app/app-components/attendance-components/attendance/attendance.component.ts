@@ -97,17 +97,17 @@ export class AttendanceComponent implements OnInit {
 
 
   attendanceDateSelect(event: any) {
-    console.log("Selected date: ", event);
+    // console.log("Selected date: ", event);
     this.attendanceDate = event; // stays as Date
     const formatted = dateObjToString(event)?.split('T')[0];
-    console.log("Formatted: ", formatted);
+    // console.log("Formatted: ", formatted);
     this.getAllAttendance(true);
   }
 
 
   onCheckin(item: any){
-    console.log('onslide')
-    console.log(item);
+    // console.log('onslide')
+    // console.log(item);
     this.selectedCustomer = JSON.parse(JSON.stringify(item));
     this.checkInCustomer();
   }
@@ -140,7 +140,7 @@ export class AttendanceComponent implements OnInit {
         } else {
           this.attendanceList = [...this.attendanceList, ...res.Results];
         }
-        console.log(this.attendanceList);
+        // console.log(this.attendanceList);
         this.xPagination = res?.XPagination;
       } else {
         console.warn('Unexpected response format:',res);
@@ -169,10 +169,10 @@ export class AttendanceComponent implements OnInit {
       "checkinTime": dateObjToString(currentTime),
       "attendanceDate": dateObjToString(todaysDate)
     }
-    console.log(payload);
+    // console.log(payload);
 
     this.service.customerCheckIn(payload, false).subscribe((res: any) => {
-      console.log("CheckIn successfull", res);
+      // console.log("CheckIn successfull", res);
       if (res?.Results) {
         // this.getAllAttendance(false,true);
         this.attendanceList.forEach((x:any)=>{

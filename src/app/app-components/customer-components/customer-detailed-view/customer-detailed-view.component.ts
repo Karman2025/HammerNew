@@ -73,7 +73,7 @@ export class CustomerDetailedViewComponent implements OnInit {
       })
       this.customerData.showExtendPlan = res?.paymentPlan?.filter((x:any)=>x.status == 'Completed')?.length == res?.paymentPlan?.length || res?.paymentPlan?.length == 0;
       this.customerDetails = JSON.parse(JSON.stringify(res));
-      console.log(res);
+      // console.log(res);
 
       if(!this.customerDetails?.paymentPlan || !this.customerDetails?.paymentPlan?.length || this.customerDetails?.paymentPlan?.length == 0){
         this.addPaymentPlan();
@@ -198,7 +198,7 @@ onCustomerUpdate() {
         console.warn('Unexpected response format:', res);
         this.branchOptions = [];
       }
-      console.log(this.branchOptions)
+      // console.log(this.branchOptions)
     });
   }
 }

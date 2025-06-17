@@ -13,7 +13,7 @@ export class BranchAddEditFormComponent implements OnInit {
 
   @Input() set formDataMode(value: any){
     this.formMode = JSON.parse(JSON.stringify(value));
-    console.log("child",JSON.parse(JSON.stringify(value)));
+    // console.log("child",JSON.parse(JSON.stringify(value)));
 
     if (this.formMode === 'view') {
       this.createBranchForm.disable();
@@ -24,7 +24,7 @@ export class BranchAddEditFormComponent implements OnInit {
   @Input() set branchData(value: any) {
     if(value){
       this.branchFieldData = value;
-      console.log("child",this.branchData);
+      // console.log("child",this.branchData);
       this.loadBranchFormData();
     }
   }
@@ -112,7 +112,7 @@ export class BranchAddEditFormComponent implements OnInit {
 
 
   isCreateBranchFormValid(){
-    console.log(this.createBranchForm)
+    // console.log(this.createBranchForm)
     if (this.createBranchForm.valid) {
       return true;
     } else {

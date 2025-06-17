@@ -157,7 +157,7 @@ export class PaymentsComponent implements OnInit {
 
     const requestedPage = page + 1; // because your backend uses 1-based index
 
-    console.log('Go to page:', requestedPage);
+    // console.log('Go to page:', requestedPage);
 
     // Now call API with requestedPage and rows
     this.pageNo = requestedPage;
