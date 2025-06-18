@@ -80,6 +80,7 @@ export class AccountsComponent implements OnInit {
     this.getAllBranchAutocompleteData();
     this.getAllAccounts();
     this.loggedInUser = JSON.parse(localStorage.getItem('USER-INFO') ?? "{}");
+    if(this.loggedInUser?.role == "2") this.showFilterFields.branchId = false;
   }
 
   ngOnInit() {

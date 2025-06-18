@@ -150,7 +150,7 @@
     </div>
   </div>
   <div class="p-p-dialog-body" [ngStyle]="{ 'max-height': getOffsetHeightForModal(93), 'overflow-x': 'hidden' }">
-    <app-accounts-add-edit-form #AccountsAddEditFormComponent *ngIf="isVisibleAccountsAddEditDialog" [formDataMode]="formMode" [accountsData]="selectedAccounts"></app-accounts-add-edit-form>
+    <app-accounts-add-edit-form #AccountsAddEditFormComponent *ngIf="isVisibleAccountsAddEditDialog" [formDataMode]="formMode" [accountsData]="selectedAccounts" [branchOptions]="branchOptions"></app-accounts-add-edit-form>
   </div>
   <div class="p-p-dialog-footer ofH_calc_modal_footer">
     <div>
