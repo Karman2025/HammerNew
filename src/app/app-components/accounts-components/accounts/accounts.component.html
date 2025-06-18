@@ -6,13 +6,14 @@
   <div class="d-flex">
     <div class="filter-container f-c-desk-view">
       <div class="d-flex">
-        <div (click)="isVisibleAccountsFilterDialog = true" class="primary-filter-icon-container mx-2">
+        <div (click)="isVisibleAccountsFilterDialog = true" class="primary-filter-icon-container">
           <span  class="filter-icon"><i class="fa-solid fa-filter"></i></span>
         </div>
-        <!-- <div class="primary-global-filter">
-          <input type="text" class="form-control" placeholder="Search Here..." (keydown.enter)="onGlobalSearch()" [(ngModel)]="globalSearch">
-          <span class="magnifying-glass-icon-container" (click)="onGlobalSearch()"><i class="fa-solid fa-magnifying-glass"></i></span>
-        </div> -->
+          <div class="primary-global-filter">
+            <input type="text" class="form-control" placeholder="Search Here..." (keydown.enter)="onGlobalSearch()" [(ngModel)]="globalSearch">
+            <span style="font-size: 0.9rem; width: 19px;" class="c-pointer d-flex" (click)="globalSearch = ''; onGlobalSearch()"><i *ngIf="globalSearch" class="fa-solid fa-xmark pe-2 ps-0"></i></span>
+            <span class="magnifying-glass-icon-container" (click)="onGlobalSearch()"><i class="fa-solid fa-magnifying-glass"></i></span>
+          </div>
       </div>
     </div>
     <div>
@@ -25,13 +26,14 @@
   <div>
     <div class="filter-container f-c-mob-view ofH_calc_mob_global_filter">
       <div class="d-flex align-items-center filter-container justify-content-end pe-2 pt-3">
-        <div (click)="isVisibleAccountsFilterDialog = true" class="primary-filter-icon-container mx-2">
+        <div (click)="isVisibleAccountsFilterDialog = true" class="primary-filter-icon-container">
           <span  class="filter-icon"><i class="fa-solid fa-filter"></i></span>
         </div>
-        <!-- <div class="primary-global-filter">
-          <input type="text" class="form-control" placeholder="Search Here..." (keydown.enter)="onGlobalSearch()" [(ngModel)]="globalSearch">
-          <span class="magnifying-glass-icon-container" (click)="onGlobalSearch()"><i class="fa-solid fa-magnifying-glass"></i></span>
-        </div> -->
+          <div class="primary-global-filter">
+            <input type="text" class="form-control" placeholder="Search Here..." (keydown.enter)="onGlobalSearch()" [(ngModel)]="globalSearch" >
+            <span style="font-size: 0.9rem; width: 19px;" class="c-pointer d-flex" (click)="globalSearch = ''; onGlobalSearch()"><i *ngIf="globalSearch" class="fa-solid fa-xmark pe-2 ps-0"></i></span>
+            <span class="magnifying-glass-icon-container" (click)="onGlobalSearch()"><i class="fa-solid fa-magnifying-glass"></i></span>
+          </div>
       </div>
     </div>
     <div class="primary-p-table-container" [style]="{ height: getOffsetHeightForPrimaryTable(70)}">
@@ -42,6 +44,14 @@
         class="primary-p-table" [value]="accountsList">
           <ng-template pTemplate="header">
             <tr>
+              <ng-container *ngIf="loggedInUser?.role == '1'">
+                <th>
+                  <span>Branch Name</span>
+                </th>
+                <th>
+                  <span>Branch Code</span>
+                </th>
+              </ng-container>
               <th>
                 <span>Payment Date</span>
               </th>
@@ -64,6 +74,18 @@
           </ng-template>
           <ng-template pTemplate="body" let-account>
             <tr>
+              <ng-container *ngIf="loggedInUser?.role == '1'">
+                <td>
+                  <div>
+                    <span>{{ account?.branch?.bch_Name }}</span>
+                  </div>
+                </td>
+                <td>
+                  <div>
+                    <span>{{ account?.branch?.bch_Code }}</span>
+                  </div>
+                </td>
+              </ng-container>
               <td>
                 <div>
                   <span>{{ account?.actionDate | date : 'dd/MM/yyy' }}</span>
@@ -152,7 +174,7 @@
     <div class="px-3 py-3"
       [ngStyle]="{ 'height': getOffsetHeightByCustomClass(175, containerOffSetHeightClasses), 'max-width': popupWidth }"
       style="overflow-x: hidden;">
-      <app-filter-fields-container [FilterFields]="filterFields"
+      <app-filter-fields-container [FilterFields]="filterFields" [branchOptions]="branchOptions"
         [showFilterFields]="showFilterFields"></app-filter-fields-container>
     </div>
     <div style="border-top: 1px solid var(--primary);" class="d-flex justify-content-end px-3 py-3">

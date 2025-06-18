@@ -1689,7 +1689,7 @@ input.form-control::placeholder {
     color: #fff;
 }
 .primary-global-filter input{
-    padding: 5px 0px 5px 7px;
+    padding: 5px 5px 5px 7px;
     border-radius: 5px;
     background: none;
     border: none;

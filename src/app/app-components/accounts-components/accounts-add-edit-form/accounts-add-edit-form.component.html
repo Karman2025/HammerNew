@@ -2,6 +2,21 @@
   <div class="row">
     <div class="col-12">
       <div class="pt-1">
+        <label class="form-label" for="accounts-payment-type">Branch</label>
+        <div [ngClass]="{'form-validation-error': createAccountsForm.get('branchId')?.invalid && createAccountsForm.get('branchId')?.touched}">
+          <p-select class="form-control primary-p-select" panelStyleClass="primary-p-select-panel"
+          [options]="branchOptions" dataKey="_id"
+          formControlName="branchId"
+          optionLabel="bch_Name" optionValue="_id"
+          placeholder="Select a Branch"/>
+          <div class="form-validation-msg">
+            <span>Required</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-12">
+      <div class="pt-1">
         <label class="form-label" for="accounts-amount">Amount</label>
         <div [ngClass]="{'form-validation-error': createAccountsForm.get('amount')?.invalid && createAccountsForm.get('amount')?.touched}">
           <input type="number" class="form-control" id="accounts-amount" formControlName="amount" placeholder="ex: 100 AED">

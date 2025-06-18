@@ -4,6 +4,7 @@ import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } 
 import { SelectModule } from 'primeng/select';
 import { creditDebitOptions, paymentTypeMaster } from '../../../shared/data/master-data';
 import { dateStringToObj } from '../../../shared/functions/date-string-to-obj';
+import { AppComponentsApiService } from '../../app-components-api-service';
 
 
 @Component({
@@ -13,8 +14,18 @@ import { dateStringToObj } from '../../../shared/functions/date-string-to-obj';
   imports: [CommonModule, ReactiveFormsModule, SelectModule]
 })
 export class AccountsAddEditFormComponent implements OnInit {
+  @Input() branchOptions:any[] = [];
   @Input() formDataMode: "view" | "edit" | "create" = "view";
-
+  @Input() set accountsData(value: any) {
+    if (value) {
+      this.accountsFieldData = value;
+      this.accountsFieldData.actionDate = dateStringToObj(this.accountsFieldData?.actionDate);
+      this.loadCustomerFormData();
+    }
+  }
+  get accountsData(): any {
+    return this.accountsFieldData;
+  }
   createAccountsForm!  : FormGroup;
   creditDebitOptions:any[] = creditDebitOptions;
   paymentTypeMaster:any[] = paymentTypeMaster;
@@ -24,17 +35,9 @@ export class AccountsAddEditFormComponent implements OnInit {
     remarks: '',
     isCredit: null,
     paymentTypeId: null,
+    branchId: null
   };
-    @Input() set accountsData(value: any) {
-      if (value) {
-        this.accountsFieldData = value;
-        this.accountsFieldData.actionDate = dateStringToObj(this.accountsFieldData?.actionDate);
-        this.loadCustomerFormData();
-      }
-    }
-    get accountsData(): any {
-      return this.accountsFieldData;
-    }
+  loggedInUser:any;
 
   constructor(
     private fb: FormBuilder,
@@ -52,15 +55,21 @@ export class AccountsAddEditFormComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.loggedInUser = JSON.parse(localStorage.getItem('USER-INFO') ?? "{}");
+    if (this.loggedInUser?.role == '2') {
+      this.createAccountsForm.patchValue({ branchId: this.loggedInUser._id });
+      this.createAccountsForm.get('branchId')?.disable();
+    }
   }
 
   inItFormControl(){
     this.createAccountsForm = this.fb.group({
       _id: new FormControl(''),
-      amount: new FormControl('', [Validators.required]), 
+      amount: new FormControl('', [Validators.required]),
       remarks: new FormControl('', Validators.required),
       isCredit: new FormControl('', Validators.required),
       paymentTypeId: new FormControl('', Validators.required),
+      branchId: new FormControl('', Validators.required),
     });
   }
 

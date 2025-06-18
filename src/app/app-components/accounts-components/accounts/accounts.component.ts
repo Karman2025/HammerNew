@@ -13,13 +13,14 @@ import { MessageService } from 'primeng/api';
 import { paginationRowsPerPageOptions } from '../../../shared/data/master-data';
 import { getPopupWidth } from '../../../shared/functions/responsiveFunction';
 import { TablePaginatorComponent } from '../../../shared/components/table-paginator/table-paginator.component';
+import { FormsModule } from '@angular/forms';
 
 
 @Component({
   selector: 'app-accounts',
   templateUrl: './accounts.component.html',
   styleUrls: ['./accounts.component.css'],
-  imports: [CommonModule, TableModule, DialogModule, AccountsAddEditFormComponent, FilterFieldsContainerComponent, PaginatorModule, TablePaginatorComponent]
+  imports: [CommonModule, FormsModule, TableModule, DialogModule, AccountsAddEditFormComponent, FilterFieldsContainerComponent, PaginatorModule, TablePaginatorComponent]
 })
 export class AccountsComponent implements OnInit {
 
@@ -38,6 +39,7 @@ export class AccountsComponent implements OnInit {
   popupWidth = getPopupWidth();
 
   filterFields = {
+    branchId: null,
     actionDate: null,
     paymentTypeId: null,
     isCredit: null,
@@ -47,6 +49,7 @@ export class AccountsComponent implements OnInit {
     actionDateTo: '' as string | null,
   };
   showFilterFields = {
+    branchId: true,
     actionDate: true,
     paymentTypeId: true,
     isCredit: true,
@@ -66,12 +69,17 @@ export class AccountsComponent implements OnInit {
   pageNo:number = 1;
   indexOfFirstRecord:number = 0;
   totalRecords:any;
+  loggedInUser:any;
+  branchOptions:any[] = [];
+  globalSearch:any;
 
   constructor(
     private service: AppComponentsApiService,
     private toasterMessage: MessageService
   ) {
+    this.getAllBranchAutocompleteData();
     this.getAllAccounts();
+    this.loggedInUser = JSON.parse(localStorage.getItem('USER-INFO') ?? "{}");
   }
 
   ngOnInit() {
@@ -81,7 +89,8 @@ export class AccountsComponent implements OnInit {
     if (resetPage) this.pageNo = 1;
     let params:any = {
       pageSize : this.pageSize,
-      pageNo : this.pageNo
+      pageNo : this.pageNo,
+      search : this.globalSearch
     };
     this.filterFields.actionDateFrom = this.filterFields?.actionDate?.[0] ? dateObjToString(this.filterFields?.actionDate[0]) : null;
     this.filterFields.actionDateTo = this.filterFields?.actionDate?.[1] ? dateObjToString(this.filterFields?.actionDate[1]) : null;
@@ -158,6 +167,7 @@ export class AccountsComponent implements OnInit {
 
     onFilterClear() {
       this.filterFields = {
+        branchId: null,
         actionDate: null,
         paymentTypeId: null,
         isCredit: null,
@@ -166,6 +176,21 @@ export class AccountsComponent implements OnInit {
         actionDateFrom: null,
         actionDateTo: null,
       };
+      this.getAllAccounts();
+    }
+
+    getAllBranchAutocompleteData() {
+      this.service.getAllBranchAutocompleteData().subscribe((res: any) => {
+        if (res && res?.length > 0) {
+          this.branchOptions = res;
+        } else {
+          console.warn('Unexpected response format:', res);
+          this.branchOptions = [];
+        }
+      });
+    }
+
+    onGlobalSearch(){
       this.getAllAccounts();
     }
 }
