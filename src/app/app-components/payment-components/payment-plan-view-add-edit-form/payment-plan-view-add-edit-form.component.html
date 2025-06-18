@@ -114,14 +114,14 @@
             <span (click)="viewPaymentHistory(plan?.payments)" pTooltip="Payment History" tooltipPosition="top" class="c-pointer">
               <i class="fa-solid fa-clock-rotate-left"></i>
             </span>
-            <div style="width: 47px;">
+            <!-- <div style="width: 47px;"> -->
               <span *ngIf="plan?.paymentStatus == 'Completed' && !IsCustomer" (click)="openPaymentPlanRenewModal(plan)" pTooltip="Renew Plan" tooltipPosition="top" class="c-pointer">
                 <i class="fa-solid fa-repeat"></i>
               </span>
               <span *ngIf="plan?.paymentStatus == 'Pending'" (click)="openPayBalanceAmountDialog(plan)" pTooltip="Pay Balance" tooltipPosition="top" class="c-pointer">
                 <i class="fa-solid fa-cash-register"></i>
               </span>
-            </div>
+            <!-- </div> -->
           </div>
         </td>
       </tr>
