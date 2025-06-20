@@ -177,8 +177,8 @@
   <app-customer-detailed-view [CustomerId]="selectedCustomer?._id"></app-customer-detailed-view>
   <div class="d-flex justify-content-end align-items-center px-3 py-3 ofH_calc_customer_detaile_nav">
     <button (click)="onBackToList()" class="back-to-list-btn py-1">Bakc To List</button>
-    <button (click)="onPreviousCustomer()" [disabled]="disablePrevious" class="next-previous-btn mx-2">Previous</button>
-    <button (click)="onNextCustomer()" [disabled]="disableNext" class="next-previous-btn">Next</button>
+    <button *ngIf="selectedCustomerDetailsIndex != null" (click)="onPreviousCustomer()" [disabled]="disablePrevious" class="next-previous-btn mx-2">Previous</button>
+    <button *ngIf="selectedCustomerDetailsIndex != null" (click)="onNextCustomer()" [disabled]="disableNext" class="next-previous-btn">Next</button>
   </div>
 </ng-container>
 

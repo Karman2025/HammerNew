@@ -32,7 +32,7 @@ export class CustomerDetailedViewComponent implements OnInit {
     paymentPlanViewAddEditFormComponent!: PaymentPlanViewAddEditFormComponent;
 
   @Input() set CustomerId(value:any){
-    console.log(value)
+    this.customerId = value;
     this.getCustomerDetailsById(value);
   }
   @Input() branchOptions:any[] = [];

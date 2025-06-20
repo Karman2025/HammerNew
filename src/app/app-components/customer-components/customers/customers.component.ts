@@ -90,7 +90,7 @@ export class CustomersComponent implements OnInit {
   showCustomerDetailedView:boolean = false;
   disablePrevious:boolean = false;
   disableNext:boolean = false;
-  selectedCustomerDetailsIndex:number = 0;
+  selectedCustomerDetailsIndex:any = null;
 
   constructor(
     private service:AppComponentsApiService,
@@ -217,9 +217,12 @@ onCustomerCreate() {
           this.isVisibleCustomerddEditDialog = false;
           this.getAllCustomers();
           if(this.loggedInUser?.role != "3"){
-            this.router.navigate(['/home/customers/customer-details'], {
-              queryParams: { customerId: res?.Results?._id }
-            });
+            // this.router.navigate(['/home/customers/customer-details'], {
+            //   queryParams: { customerId: res?.Results?._id }
+            // });
+            this.selectedCustomerDetailsIndex = null;
+            this.selectedCustomer = JSON.parse(JSON.stringify(res?.Results));
+            this.showCustomerDetailedView = true;
           }
           this.toasterMessage.add({ key: 'root-toast', severity: 'success', summary: 'Success', detail: 'Customer created successfully!' });
         } else {
@@ -280,6 +283,10 @@ onCustomerCreate() {
     onBackToList(){
       this.showCustomerDetailedView = false;
       this.selectedCustomer = {};
+      if(this.selectedCustomerDetailsIndex == null) {
+        this.globalSearch = "";
+        this.onFilterClear();
+      }
     }
 
     onPreviousCustomer(){
