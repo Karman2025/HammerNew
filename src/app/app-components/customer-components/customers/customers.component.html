@@ -1,4 +1,4 @@
-<ng-container>
+<ng-container *ngIf="!showCustomerDetailedView">
   <div class="custom-container-fluid p-0">
     <div class="primary-header-container align-items-center d-flex justify-content-between px-3 py-3 ofH_calc_body_header">
       <div>
@@ -77,7 +77,7 @@
               </th>
             </tr>
           </ng-template>
-          <ng-template pTemplate="body" let-customer>
+          <ng-template pTemplate="body" let-customer let-index="rowIndex">
             <tr>
               <td>
                 <div class="d-flex p-0">
@@ -145,7 +145,7 @@
               </td>
               <td  *ngIf="loggedInUser?.role != '3'" pFrozenColumn alignFrozen="right">
                 <div class="d-flex align-items-center gap-3">
-                  <span class="c-pointer" pTooltip="View" tooltipPosition="top" (click)="viewCustomer(customer)">
+                  <span class="c-pointer" pTooltip="View" tooltipPosition="top" (click)="viewCustomer(customer,index)">
                     <i class="fa-regular fa-eye"></i>
                   </span>
                   <span class="c-pointer" pTooltip="Delete" tooltipPosition="top" (click)="openDeleteCustomerConfirmationDialog(customer)">
@@ -171,6 +171,14 @@
         </app-table-paginator>
       </div>
     </div>
+  </div>
+</ng-container>
+<ng-container *ngIf="showCustomerDetailedView">
+  <app-customer-detailed-view [CustomerId]="selectedCustomer?._id"></app-customer-detailed-view>
+  <div class="d-flex justify-content-end align-items-center px-3 py-3 ofH_calc_customer_detaile_nav">
+    <button (click)="onBackToList()" class="back-to-list-btn py-1">Bakc To List</button>
+    <button (click)="onPreviousCustomer()" [disabled]="disablePrevious" class="next-previous-btn mx-2">Previous</button>
+    <button (click)="onNextCustomer()" [disabled]="disableNext" class="next-previous-btn">Next</button>
   </div>
 </ng-container>
 

@@ -18,13 +18,14 @@ import { paginationRowsPerPageOptions } from '../../../shared/data/master-data';
 import { TooltipModule } from 'primeng/tooltip';
 import { TablePaginatorComponent } from '../../../shared/components/table-paginator/table-paginator.component';
 import { FormsModule } from '@angular/forms';
+import { CustomerDetailedViewComponent } from '../customer-detailed-view/customer-detailed-view.component';
 
 
 @Component({
   selector: 'app-customers',
   templateUrl: './customers.component.html',
   styleUrls: ['./customers.component.css'],
-  imports: [CommonModule, FormsModule, TableModule, DialogModule, CustomerAddEditFormComponent,Popover, FilterFieldsContainerComponent,PaginatorModule, TooltipModule, TablePaginatorComponent],
+  imports: [CommonModule, FormsModule, TableModule, DialogModule, CustomerAddEditFormComponent,Popover, FilterFieldsContainerComponent,PaginatorModule, TooltipModule, TablePaginatorComponent, CustomerDetailedViewComponent],
 })
 export class CustomersComponent implements OnInit {
 
@@ -86,6 +87,10 @@ export class CustomersComponent implements OnInit {
   isDeletingCustomer:boolean = false;
   deleteCustomerDetails:any;
   globalSearch:any;
+  showCustomerDetailedView:boolean = false;
+  disablePrevious:boolean = false;
+  disableNext:boolean = false;
+  selectedCustomerDetailsIndex:number = 0;
 
   constructor(
     private service:AppComponentsApiService,
@@ -122,12 +127,15 @@ export class CustomersComponent implements OnInit {
     this.selectedCustomer = {};
     this.isVisibleCustomerddEditDialog = true;
   }
-  viewCustomer(customer: any) {
+  viewCustomer(customer: any,index:any) {
+    this.selectedCustomerDetailsIndex = JSON.parse(JSON.stringify(index));
+    this.enableDisablePreviousNext();
     this.setFormMode('view');
     this.selectedCustomer = JSON.parse(JSON.stringify(customer));
-    this.router.navigate(['/home/customers/customer-details'], {
-      queryParams: { customerId: this.selectedCustomer?._id }
-    });
+    this.showCustomerDetailedView = true;
+    // this.router.navigate(['/home/customers/customer-details'], {
+    //   queryParams: { customerId: this.selectedCustomer?._id }
+    // });
   }
 
   openDeleteCustomerConfirmationDialog(customer:any){
@@ -267,5 +275,35 @@ onCustomerCreate() {
 
     onGlobalSearch(){
       this.getAllCustomers();
+    }
+
+    onBackToList(){
+      this.showCustomerDetailedView = false;
+      this.selectedCustomer = {};
+    }
+
+    onPreviousCustomer(){
+      this.selectedCustomerDetailsIndex = --this.selectedCustomerDetailsIndex;
+      this.selectedCustomer = JSON.parse(JSON.stringify(this.customersList[this.selectedCustomerDetailsIndex]));
+      this.enableDisablePreviousNext();
+    }
+
+    onNextCustomer(){
+      this.selectedCustomerDetailsIndex = ++this.selectedCustomerDetailsIndex;
+      this.selectedCustomer = JSON.parse(JSON.stringify(this.customersList[this.selectedCustomerDetailsIndex]));
+      this.enableDisablePreviousNext();
+    }
+
+    enableDisablePreviousNext(){
+      if(this.selectedCustomerDetailsIndex == 0){
+        this.disablePrevious = true;
+      } else {
+        this.disablePrevious = false;
+      }
+      if((this.customersList?.length - 1) == this.selectedCustomerDetailsIndex){
+        this.disableNext = true;
+      } else {
+        this.disableNext = false;
+      }
     }
 }

@@ -31,7 +31,10 @@ export class CustomerDetailedViewComponent implements OnInit {
   @ViewChild('PaymentPlanViewAddEditFormComponent', {static: false})
     paymentPlanViewAddEditFormComponent!: PaymentPlanViewAddEditFormComponent;
 
-
+  @Input() set CustomerId(value:any){
+    console.log(value)
+    this.getCustomerDetailsById(value);
+  }
   @Input() branchOptions:any[] = [];
   @Input() formMode:"view" | "edit" | "create" = "view";
   @Input() dietPlanFormMode:"view" | "edit" | "create" = "view";
@@ -45,7 +48,7 @@ export class CustomerDetailedViewComponent implements OnInit {
   isSaving: boolean = false;
   customerDietPlan:any[] = [];
   customerId:any;
-  containerOffSetHeightClasses:any[] = ['ofH_calc_nav_bar', 'ofH_calc_body_header'];
+  containerOffSetHeightClasses:any[] = ['ofH_calc_nav_bar', 'ofH_calc_body_header', 'ofH_calc_customer_detaile_nav'];
   paymentPlanOptions:any[] = paymentPlanOptions;
   customerFormPaymentPlanData:any = {};
   popupWidth = getPopupWidth();
@@ -60,10 +63,10 @@ export class CustomerDetailedViewComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.route.queryParams.subscribe(params => {
-      this.customerId = params['customerId'];
-      this.getCustomerDetailsById(this.customerId);
-    });
+    // this.route.queryParams.subscribe(params => {
+    //   this.customerId = params['customerId'];
+    //   this.getCustomerDetailsById(this.customerId);
+    // });
   }
 
   getCustomerDetailsById(customerId:any){

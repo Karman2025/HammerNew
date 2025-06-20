@@ -29,9 +29,9 @@ export class CustomerAddEditFormComponent implements OnInit {
     if (value) {
       this.customerFieldData = value;
       this.customerFieldData.ctr_Dob = dateStringToObj(this.customerFieldData?.ctr_Dob);
-      if (this.customerFieldData.profileImage) {
+      // if (this.customerFieldData.profileImage) {
         this.profileImage = this.customerFieldData.profileImage;
-      }
+      // }
       this.loadCustomerFormData();
     }
   }
