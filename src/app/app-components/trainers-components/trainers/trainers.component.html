@@ -1,16 +1,46 @@
 <div class="custom-container-fluid p-0">
     <div class="primary-header-container align-items-center d-flex justify-content-between px-3 py-3 ofH_calc_body_header">
-      <h5 class="primary-header-label">Trainer</h5>
-      <button class="custom-primary-outerline-btn" (click)="addTrainer();">
-        <span>Add Trainer</span>
-      </button>
+      <div>
+        <h5 class="primary-header-label">Trainers</h5>
+      </div>
+      <div class="d-flex">
+        <div class="filter-container f-c-desk-view">
+          <div class="d-flex">
+            <div (click)="isVisibleTrainerFilterDialog = true" class="primary-filter-icon-container">
+              <span  class="filter-icon"><i class="fa-solid fa-filter"></i></span>
+            </div>
+            <div class="primary-global-filter">
+              <input type="text" class="form-control" placeholder="Search Here..." (keydown.enter)="onGlobalSearch()" [(ngModel)]="globalSearch">
+              <span style="font-size: 0.9rem; width: 19px;" class="c-pointer d-flex" (click)="globalSearch = ''; onGlobalSearch()"><i *ngIf="globalSearch" class="fa-solid fa-xmark pe-2 ps-0"></i></span>
+              <span class="magnifying-glass-icon-container" (click)="onGlobalSearch()"><i class="fa-solid fa-magnifying-glass"></i></span>
+            </div>
+          </div>
+        </div>
+        <div>
+          <button class="custom-primary-btn" (click)="addTrainer();">
+            <span>Add Trainer</span>
+          </button>
+        </div>
+      </div>
     </div>
     <div>
-      <div class="px-5 pt-5 pb-0">
+      <div class="filter-container f-c-mob-view ofH_calc_mob_global_filter">
+        <div class="d-flex align-items-center filter-container justify-content-end pe-2 pt-3">
+          <div (click)="isVisibleTrainerFilterDialog = true" class="primary-filter-icon-container">
+            <span  class="filter-icon"><i class="fa-solid fa-filter"></i></span>
+          </div>
+          <div class="primary-global-filter">
+            <input type="text" class="form-control" placeholder="Search Here..." (keydown.enter)="onGlobalSearch()" [(ngModel)]="globalSearch">
+            <span style="font-size: 0.9rem; width: 19px;" class="c-pointer d-flex" (click)="globalSearch = ''; onGlobalSearch()"><i *ngIf="globalSearch" class="fa-solid fa-xmark pe-2 ps-0"></i></span>
+            <span class="magnifying-glass-icon-container" (click)="onGlobalSearch()"><i class="fa-solid fa-magnifying-glass"></i></span>
+          </div>
+        </div>
+      </div>
+      <div class="primary-p-table-container" [style]="{ height: getOffsetHeightForPrimaryTable(70)}">
         <p-table
           [scrollable]="true"
-          scrollHeight="{{getOffsetHeightForPrimaryTable(109)}}"
-          [tableStyle]="{'min-height': trainersList.length == 0 ? getOffsetHeightForPrimaryTable(109) : 'unset'}"
+          scrollHeight="{{getOffsetHeightForPrimaryTable(70)}}"
+          [tableStyle]="{'min-height': trainersList.length == 0 ? getOffsetHeightForPrimaryTable(70) : 'unset'}"
           class="primary-p-table" [value]="trainersList">
             <ng-template pTemplate="header">
               <tr>
@@ -78,11 +108,11 @@
                   </div>
                 </td>
                 <td pFrozenColumn alignFrozen="right">
-                  <div>
+                  <div class="d-flex align-items-center gap-3">
                     <span class="c-pointer" pTooltip="View" tooltipPosition="top" (click)="viewTrainer(trainer)">
                       <i class="fa-regular fa-eye"></i>
                     </span>
-                    <span class="px-3 c-pointer" pTooltip="Edit" tooltipPosition="top" (click)="editTrainer(trainer)">
+                    <span class="c-pointer" pTooltip="Edit" tooltipPosition="top" (click)="editTrainer(trainer)">
                       <i class="fa-regular fa-pen-to-square"></i>
                     </span>
                     <!-- <span class="c-pointer" pTooltip="Delete" tooltipPosition="top">
@@ -94,50 +124,20 @@
             </ng-template>
             <ng-template pTemplate="emptymessage">
               <tr>
-                  <td colspan="10" class="text-center fw-bold">No Data</td>
+                  <td colspan="10" class="text-center fw-bold text-white">No Data</td>
               </tr>
             </ng-template>
         </p-table>
       </div>
-      <div class="px-5 d-flex justify-content-center ofH_calc_pagin" style="width: 100%;">
-        <p-paginator
-          class="standard-paginator"
-          (onPageChange)="onPageChange($event)"
+      <div class="d-flex justify-content-center ofH_calc_pagin px-4" style="width: 100%;">
+        <app-table-paginator class="w-100"
+          (OnPageChange)="onPageChange($event)"
           [first]="indexOfFirstRecord"
           [rows]="pageSize"
-          [totalRecords]="xPagination?.totalCount"
-          [showFirstLastIcon]="false"
-          [showCurrentPageReport]="true"
-          currentPageReportTemplate="{first} - {last} of {totalRecords}"
-          [rowsPerPageOptions] = "paginationRowsPerPage">
-        </p-paginator>
+          [totalRecords]="xPagination?.totalCount">
+        </app-table-paginator>
       </div>
 
-      <div class="d-flex justify-content-end primary-filter-icon-container">
-        <div class="filter-icon" (click)="op.toggle($event)"><i class="fa-solid fa-filter"></i></div>
-      </div>
-      <p-popover styleClass="primary-filter-popover" class="p-3" #op>
-        <div>
-          <div style="border-bottom: 1px solid #ccc;" class="d-flex align-items-center justify-content-between px-3 py-3">
-            <div>
-              <span style="font-weight: 700; font-size: 1.1rem;">Filter</span>
-            </div>
-            <div style="line-height: 1rem;">
-              <span (click)="op.hide()"><i class="fa-solid fa-circle-xmark"></i></span>
-            </div>
-          </div>
-          <div class="px-3 py-3"
-            [ngStyle]="{ 'height': getOffsetHeightByCustomClass(175, containerOffSetHeightClasses), 'max-width': popupWidth }"
-            style="overflow-x: hidden;">
-            <app-filter-fields-container [branchOptions]="getBranchOptions" [FilterFields]="filterFields"
-              [showFilterFields]="showFilterFields"></app-filter-fields-container>
-          </div>
-          <div style="border-top: 1px solid #ccc;" class="d-flex justify-content-end px-3 py-3">
-            <button (click)="onFilterClear()" class="btn btn-warning mx-1 px-2 py-1">Clear</button>
-            <button (click)="getAllTrainers(true)" class="mx-1 btn btn-success mx-1 px-2 py-1">Apply</button>
-          </div>
-        </div>
-      </p-popover>
 
     </div>
   </div>
@@ -148,7 +148,7 @@
         <span class="p-p-dialog-header-label">{{(formMode == 'view' ? 'View' : formMode == 'create' ? 'Create' : 'Edit')}} Trainer</span>
       </div>
       <div>
-        <button class="p-p-dialog-header-button" (click)="dialogCloseBtn()"><i class="fa-solid fa-xmark"></i></button>
+        <button class="p-p-dialog-header-button" (click)="dialogCloseBtn()"><i class="fa-solid fa-xmark c-pointer text-white"></i></button>
       </div>
     </div>
     <div class="p-p-dialog-body" [ngStyle]="{ 'max-height': getOffsetHeightForModal(93), 'overflow-x': 'hidden' }">
@@ -156,8 +156,32 @@
     </div>
     <div class="p-p-dialog-footer ofH_calc_modal_footer">
       <div>
-        <button (click)="dialogCloseBtn()" class="btn btn-danger mx-2 px-3 py-1">{{formMode == 'view' ? 'Close' : 'Cancel'}}</button>
-        <button [disabled]="isButtonLoading" class="btn btn-success px-3 py-1" (click)="onTrainerSubmit();">Save</button>
+        <button (click)="dialogCloseBtn()" class="custom-dark-form-btn mx-2 px-3 py-1">{{formMode == 'view' ? 'Close' : 'Cancel'}}</button>
+        <button [disabled]="isButtonLoading" class="custom-primary-form-btn px-3 py-1" (click)="onTrainerSubmit();">Save</button>
+      </div>
+    </div>
+  </p-dialog>
+
+  <p-dialog [draggable]="true" [dismissableMask]="true" [showHeader]="false" class="primary-p-dialog" [modal]="true"
+    [position]="'right'" [(visible)]="isVisibleTrainerFilterDialog" [style]="{ width: popupWidth }">
+    <div>
+      <div style="border-bottom: 1px solid var(--primary);" class="d-flex align-items-center justify-content-between px-3 py-3">
+        <div>
+          <span style="font-weight: 700; font-size: 1.1rem; color: #fff;">Filter</span>
+        </div>
+        <div style="line-height: 1rem;">
+          <span (click)="isVisibleTrainerFilterDialog = false"><i class="fa-solid fa-xmark c-pointer text-white"></i></span>
+        </div>
+      </div>
+      <div class="px-3 py-3"
+        [ngStyle]="{ 'height': getOffsetHeightByCustomClass(175, containerOffSetHeightClasses), 'max-width': popupWidth }"
+        style="overflow-x: hidden;">
+        <app-filter-fields-container [branchOptions]="getBranchOptions" [FilterFields]="filterFields"
+          [showFilterFields]="showFilterFields"></app-filter-fields-container>
+      </div>
+      <div style="border-top: 1px solid var(--primary);" class="d-flex justify-content-end px-3 py-3">
+        <button (click)="onFilterClear()" class="custom-dark-form-btn mx-1 px-3 py-1">Clear</button>
+        <button (click)="getAllTrainers(true)" class="mx-1 custom-primary-form-btn mx-1 px-3 py-1">Apply</button>
       </div>
     </div>
   </p-dialog>

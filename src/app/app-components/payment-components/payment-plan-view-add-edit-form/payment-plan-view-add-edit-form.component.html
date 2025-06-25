@@ -1,8 +1,8 @@
 <ng-container *ngIf="formMode == 'view'">
   <p-table
   [scrollable]="true"
-  scrollHeight="{{getOffsetHeightForPrimaryTable(110)}}"
-  [tableStyle]="{'min-height': customerPaymentPlan.length == 0 ? getOffsetHeightForPrimaryTable(110) : 'unset'}"
+  scrollHeight="{{getOffsetHeightForPrimaryTable(70)}}"
+  [tableStyle]="{'min-height': customerPaymentPlan.length == 0 ? getOffsetHeightForPrimaryTable(IsCustomer ? 562 : 70) : 'unset'}"
   class="primary-p-table"
   [value]="customerPaymentPlan">
     <ng-template pTemplate="header">
@@ -38,6 +38,9 @@
         </th>
         <th>
           <span>Plan Ends In</span>
+        </th>
+        <th>
+          <span>Paused From / To</span>
         </th>
         <th>
           <span>Status</span>
@@ -93,42 +96,55 @@
         </td>
         <td>
           <div>
-            <span>{{ plan?.planEndDate | date:'dd/MM/yyy' }}</span>
+            <span>{{ plan?.paymentStatus == 'Paused' ? '-- / -- / --' : (plan?.planEndDate | date:'dd/MM/yyy') }}</span>
           </div>
         </td>
         <td>
           <div>
-            <span>{{ plan?.planEndsIn }} days</span>
+            <span>{{ plan?.paymentStatus == 'Paused' ? '--' :  plan?.planEndsIn }} days</span>
+          </div>
+        </td>
+        <td>
+          <div class="d-flex">
+            <span>{{ plan?.freezeDate ? (plan?.freezeDate | date:'dd/MM/yyy') : '-- / -- / --' }}</span>
+            <span class="px-2"> - </span>
+            <span>{{ plan?.unfreezeDate ? (plan?.unfreezeDate | date:'dd/MM/yyy') : '-- / -- / --' }}</span>
           </div>
         </td>
         <td>
           <div>
-            <span [ngClass]="plan?.paymentStatus == 'Pending' ? 'badge-danger' : 'badge-success'">{{ plan?.paymentStatus}}</span>
+            <span [ngClass]="plan?.paymentStatus == 'Pending' ? 'badge-danger' : plan?.paymentStatus == 'Paused' ? 'badge-inactive' : plan?.paymentStatus == 'Completed' ? 'badge-success' : ''">{{ plan?.paymentStatus}}</span>
           </div>
         </td>
         <td pFrozenColumn alignFrozen="right">
-          <div>
-            <span *ngIf="IsCustomer" (click)="editPaymentPlan(plan)" pTooltip="Edit" tooltipPosition="top" class="c-pointer px-3">
+          <div class="d-flex align-items-center gap-3" style="justify-content: unset;">
+            <span *ngIf="IsCustomer && plan?.paymentStatus != 'Paused'" (click)="editPaymentPlan(plan)" pTooltip="Edit" tooltipPosition="top" class="c-pointer">
               <i class="fa-solid fa-pen-to-square"></i>
             </span>
-            <span (click)="viewPaymentHistory(plan?.payments)" pTooltip="Payment History" tooltipPosition="top" class="c-pointer px-3">
+            <ng-container *ngIf="plan?.paymentStatus != 'Completed'">
+              <span *ngIf="plan?.paymentStatus != 'Paused'" (click)="openFreezePaymentPlanModal(plan)" pTooltip="Pause Plan" tooltipPosition="top" class="c-pointer">
+                <i class="fa-regular fa-circle-pause"></i>
+              </span>
+              <span *ngIf="plan?.paymentStatus == 'Paused'" (click)="openUnFreezePaymentPlanModal(plan)" pTooltip="Resume Plan" tooltipPosition="top" class="c-pointer">
+                <i class="fa-regular fa-circle-play"></i>
+              </span>
+            </ng-container>
+            <span (click)="viewPaymentHistory(plan?.payments)" pTooltip="Payment History" tooltipPosition="top" class="c-pointer">
               <i class="fa-solid fa-clock-rotate-left"></i>
             </span>
-            <div style="width: 47px;">
-              <span *ngIf="plan?.paymentStatus == 'Completed' && !IsCustomer" (click)="openPaymentPlanRenewModal(plan)" pTooltip="Renew Plan" tooltipPosition="top" class="c-pointer px-3">
-                <i class="fa-solid fa-repeat"></i>
-              </span>
-              <span *ngIf="plan?.paymentStatus == 'Pending'" (click)="openPayBalanceAmountDialog(plan)" pTooltip="Pay Balance" tooltipPosition="top" class="c-pointer px-3">
-                <i class="fa-solid fa-cash-register"></i>
-              </span>
-            </div>
+            <span *ngIf="plan?.paymentStatus == 'Completed' && !IsCustomer" (click)="openPaymentPlanRenewModal(plan)" pTooltip="Renew Plan" tooltipPosition="top" class="c-pointer">
+              <i class="fa-solid fa-repeat"></i>
+            </span>
+            <span *ngIf="plan?.paymentStatus == 'Pending'" (click)="openPayBalanceAmountDialog(plan)" pTooltip="Pay Balance" tooltipPosition="top" class="c-pointer">
+              <i class="fa-solid fa-cash-register"></i>
+            </span>
           </div>
         </td>
       </tr>
     </ng-template>
     <ng-template pTemplate="emptymessage">
       <tr>
-          <td colspan="12" class="text-center fw-bold">No Data</td>
+          <td colspan="12" class="text-center fw-bold text-white">No Data</td>
       </tr>
     </ng-template>
   </p-table>
@@ -146,7 +162,7 @@
       <span class="p-p-dialog-header-label">{{createPaymentPlanForm.get('_id')?.value ? 'Edit Payment Plan' : 'Add Payment Plan'}}</span>
     </div>
     <div>
-      <button class="p-p-dialog-header-button" (click)="isVisibleAddUpdatePaymentPlanDialog = false" ><i class="fa-solid fa-xmark"></i></button>
+      <button class="p-p-dialog-header-button" (click)="isVisibleAddUpdatePaymentPlanDialog = false" ><i class="fa-solid fa-xmark c-pointer text-white"></i></button>
     </div>
   </div>
   <div class="p-p-dialog-body" [ngStyle]="{ 'max-height': getOffsetHeightForModal(93), 'overflow-x': 'hidden' }">
@@ -156,7 +172,7 @@
           <div class="pt-1">
             <label class="form-label" for="customer-payment-plan">Payment Plan</label>
             <div [ngClass]="{'form-validation-error': createPaymentPlanForm.get('paymentPlanId')?.invalid && createPaymentPlanForm.get('paymentPlanId')?.touched}">
-              <p-select class="form-control primary-p-select"
+              <p-select class="form-control primary-p-select" panelStyleClass="primary-p-select-panel"
               [options]="paymentPlanOptions" dataKey="_id"
               formControlName="paymentPlanId" (onChange)="onPaymentPlanChange()"
               optionLabel="name" optionValue="_id"
@@ -204,7 +220,7 @@
           <div class="pt-1">
             <label class="form-label" for="customer-payment-plan">Payment Method</label>
             <div [ngClass]="{'form-validation-error': createPaymentPlanForm.get('paymentMethod')?.invalid && createPaymentPlanForm.get('paymentMethod')?.touched}">
-              <p-select class="form-control primary-p-select" appendTo="body"
+              <p-select class="form-control primary-p-select" panelStyleClass="primary-p-select-panel" appendTo="body"
               [options]="paymentMethodsOptions" dataKey="_id" formControlName="paymentMethod"
               optionLabel="name" optionValue="name" placeholder="Select a Method"/>
               <div class="form-validation-msg">
@@ -218,7 +234,7 @@
           <div class="pt-1">
             <label class="form-label" for="planStartDate">Plan Start Date</label>
             <div [ngClass]="{'form-validation-error': createPaymentPlanForm.get('planStartDate')?.invalid && createPaymentPlanForm.get('planStartDate')?.touched}">
-              <p-datepicker class="primary-p-datepicker form-control" id="planStartDate" formControlName="planStartDate" placeholder="dd-mm-yyy" dateFormat="dd-MM-yy" appendTo="body"/>
+              <p-datepicker class="primary-p-datepicker" panelStyleClass="primary-p-datepicker-panel" id="planStartDate" formControlName="planStartDate" placeholder="dd-mm-yyy" dateFormat="dd-MM-yy" appendTo="body"/>
               <div class="form-validation-msg">
                 <span>Required</span>
               </div>
@@ -231,7 +247,7 @@
             <div class="pt-1">
               <label class="form-label" for="planEndDate">Plan End Date</label>
               <div [ngClass]="{'form-validation-error': createPaymentPlanForm.get('planEndDate')?.invalid && createPaymentPlanForm.get('planEndDate')?.touched}">
-                <p-datepicker class="primary-p-datepicker form-control" id="planEndDate" formControlName="planEndDate" [minDate]="getMinEndDate()" placeholder="dd-mm-yyy" dateFormat="dd-MM-yy" appendTo="body"/>
+                <p-datepicker class="primary-p-datepicker" panelStyleClass="primary-p-datepicker-panel" id="planEndDate" formControlName="planEndDate" [minDate]="getMinEndDate()" placeholder="dd-mm-yyy" dateFormat="dd-MM-yy" appendTo="body"/>
                 <div class="form-validation-msg">
                   <span>Required</span>
                 </div>
@@ -244,8 +260,8 @@
   </div>
   <div class="p-p-dialog-footer ofH_calc_modal_footer">
     <div>
-      <button (click)="isVisibleAddUpdatePaymentPlanDialog = false" class="btn btn-danger mx-2 px-3 py-1"> Cancel </button>
-      <button [disabled]="isPaymentPlanButtonLoading" class="btn btn-success px-3 py-1" (click)="addUpdateCustomerPaymentPlan()">Save</button>
+      <button (click)="isVisibleAddUpdatePaymentPlanDialog = false" class="custom-dark-form-btn mx-2 px-3 py-1"> Cancel </button>
+      <button [disabled]="isPaymentPlanButtonLoading" class="custom-primary-form-btn px-3 py-1" (click)="addUpdateCustomerPaymentPlan()">Save</button>
     </div>
   </div>
 </p-dialog>
@@ -258,7 +274,7 @@
       <span class="p-p-dialog-header-label">Payment History</span>
     </div>
     <div>
-      <button class="p-p-dialog-header-button" (click)="isVisiblePaymentHistoryDialog = false" ><i class="fa-solid fa-xmark"></i></button>
+      <button class="p-p-dialog-header-button" (click)="isVisiblePaymentHistoryDialog = false" ><i class="fa-solid fa-xmark c-pointer text-white"></i></button>
     </div>
   </div>
   <div class="p-p-dialog-body">
@@ -309,14 +325,14 @@
       </ng-template>
       <ng-template pTemplate="emptymessage">
         <tr>
-            <td colspan="10" class="text-center fw-bold">No Data</td>
+            <td colspan="10" class="text-center fw-bold text-white">No Data</td>
         </tr>
       </ng-template>
     </p-table>
   </div>
   <div class="p-p-dialog-footer ofH_calc_modal_footer">
     <div>
-      <button (click)="isVisiblePaymentHistoryDialog = false" class="btn btn-danger mx-2 px-3 py-1"> Close </button>
+      <button (click)="isVisiblePaymentHistoryDialog = false" class="custom-dark-form-btn mx-2 px-3 py-1"> Close </button>
     </div>
   </div>
 </p-dialog>
@@ -328,7 +344,7 @@
       <span class="p-p-dialog-header-label">Payment</span>
     </div>
     <div>
-      <button class="p-p-dialog-header-button" (click)="isVisiblePayBalanceDialog = false" ><i class="fa-solid fa-xmark"></i></button>
+      <button class="p-p-dialog-header-button" (click)="isVisiblePayBalanceDialog = false" ><i class="fa-solid fa-xmark c-pointer text-white"></i></button>
     </div>
   </div>
   <div class="p-p-dialog-body">
@@ -337,7 +353,7 @@
         <div class="pt-1">
           <label class="form-label" for="customer-payment-plan">Payment Method</label>
           <div [ngClass]="{'form-validation-error': showPaymentMethodValidation}">
-            <p-select class="form-control primary-p-select"
+            <p-select class="form-control primary-p-select" panelStyleClass="primary-p-select-panel"
             [options]="paymentMethodsOptions" dataKey="_id"
             [(ngModel)]="selectedPaymentPlan.payBalancePaymentMethod"
             optionLabel="name" optionValue="name" appendTo="body"
@@ -376,8 +392,78 @@
   </div>
   <div class="p-p-dialog-footer ofH_calc_modal_footer">
     <div>
-      <button (click)="isVisiblePayBalanceDialog = false" class="btn btn-danger mx-2 px-3 py-1"> Cancel </button>
-      <button [disabled]="isButtonLoading" class="btn btn-success px-3 py-1" (click)="savePayBalanceAmount()">Save</button>
+      <button (click)="isVisiblePayBalanceDialog = false" class="custom-dark-form-btn mx-2 px-3 py-1"> Cancel </button>
+      <button [disabled]="isButtonLoading" class="custom-primary-form-btn px-3 py-1" (click)="savePayBalanceAmount()">Save</button>
     </div>
   </div>
+</p-dialog>
+
+<p-dialog [draggable]="false" [showHeader]="false" class="primary-p-dialog" [modal]="true" [position]="'center'" [(visible)]="isVisibleFreezeCustomerModal" [style]="{ width: popupWidth }">
+  <div class="p-p-dialog-header ofH_calc_modal_header">
+    <div>
+      <span class="p-p-dialog-header-label">Pause Payemnt plan</span>
+    </div>
+    <div>
+      <button class="p-p-dialog-header-button" (click)="isVisibleFreezeCustomerModal = false" ><i class="fa-solid fa-xmark c-pointer text-white"></i></button>
+    </div>
+  </div>
+  <div class="p-p-dialog-body" [ngStyle]="{ 'max-height': getOffsetHeightForModal(93), 'overflow-x': 'hidden' }">
+    <form class="primary-form-control">
+      <div class="row">
+        <div class="col-12">
+          <div class="pt-1">
+            <label class="form-label" for="freezeDate">Plan Pause Date</label>
+            <div [ngClass]="{'form-validation-error': showFreezeDateValidationMsg}">
+              <p-datepicker class="primary-p-datepicker" [(ngModel)]="planFreezeDate" panelStyleClass="primary-p-datepicker-panel" name="freezeDate" placeholder="dd-mm-yyy" dateFormat="dd-MM-yy" appendTo="body" [minDate]="currentDate"/>
+              <div class="form-validation-msg">
+                <span>Required</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="p-p-dialog-footer ofH_calc_modal_footer">
+    <div>
+      <button (click)="isVisibleFreezeCustomerModal = false" class="custom-dark-form-btn mx-2 px-3 py-1"> Cancel </button>
+      <button [disabled]="disablePlanFreezeUnfreeze" class="custom-primary-form-btn px-3 py-1" (click)="freezeUnfreezeCustomerPaymentPlan()">Save</button>
+    </div>
+  </div>
+</p-dialog>
+
+<p-dialog [draggable]="false" [showHeader]="false" class="primary-p-dialog" [modal]="true" [position]="'center'" [(visible)]="isVisibleUnFreezeCustomerModal" [style]="{ width: popupWidth }">
+  <ng-container *ngIf="isVisibleUnFreezeCustomerModal">
+    <div class="p-p-dialog-header ofH_calc_modal_header">
+      <div>
+        <span class="p-p-dialog-header-label">Resume Payemnt plan</span>
+      </div>
+      <div>
+        <button class="p-p-dialog-header-button" (click)="isVisibleUnFreezeCustomerModal = false" ><i class="fa-solid fa-xmark c-pointer text-white"></i></button>
+      </div>
+    </div>
+    <div class="p-p-dialog-body" [ngStyle]="{ 'max-height': getOffsetHeightForModal(93), 'overflow-x': 'hidden' }">
+      <form class="primary-form-control">
+        <div class="row">
+          <div class="col-12">
+            <div class="pt-1">
+              <label class="form-label" for="unfreezeDate">Plan Resume Date</label>
+              <div [ngClass]="{'form-validation-error': showUnFreezeDateValidationMsg}">
+                <p-datepicker class="primary-p-datepicker" [(ngModel)]="planUnFreezeDate" panelStyleClass="primary-p-datepicker-panel" name="unfreezeDate" placeholder="dd-mm-yyy" dateFormat="dd-MM-yy" appendTo="body" [minDate]="selectedPaymentPlan.freezeDate"/>
+                <div class="form-validation-msg">
+                  <span>Required</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="p-p-dialog-footer ofH_calc_modal_footer">
+      <div>
+        <button (click)="isVisibleUnFreezeCustomerModal = false" class="custom-dark-form-btn mx-2 px-3 py-1"> Cancel </button>
+        <button [disabled]="disablePlanUnFreeze" class="custom-primary-form-btn px-3 py-1" (click)="freezeUnfreezeCustomerPaymentPlan()">Save</button>
+      </div>
+    </div>
+  </ng-container>
 </p-dialog>

@@ -9,20 +9,20 @@
           <p style="margin-top: 1rem;" class="welcome-text">Welcome to Hammer Fitness</p>
         </div>
       </div>
-      
- 
+
+
       <div class="col-md-7 d-flex align-items-center justify-content-center" style="padding: 2.5rem;">
         <div class="login-form-container">
           <div>
             <h2 class="login-title">Login</h2>
-            
+
             <form [formGroup]="signInForm" (ngSubmit)="onSignInSubmit()">
               <div class="form-group mb-3">
                 <label style="font-size: 15px;" for="email">Email address</label>
-                <input 
-                  type="email" 
-                  id="email" 
-                  class="form-control" 
+                <input
+                  type="email"
+                  id="email"
+                  class="form-control"
                   placeholder="Enter your email"
                   formControlName="email"
                   [ngClass]="{'is-invalid': signInForm.get('email')?.invalid && (signInForm.get('email')?.dirty || signInForm.get('email')?.touched)}">
@@ -31,13 +31,13 @@
                   <div *ngIf="signInForm.get('email')?.errors?.['email']">Please enter a valid email</div>
                 </div>
               </div>
-              
+
               <div class="form-group mb-3">
                 <label style="font-size: 15px;" for="password">Password</label>
-                <input 
-                  type="password" 
-                  id="password" 
-                  class="form-control" 
+                <input
+                  type="password"
+                  id="password"
+                  class="form-control"
                   placeholder="Enter your password"
                   formControlName="password"
                   [ngClass]="{'is-invalid': signInForm.get('password')?.invalid && (signInForm.get('password')?.dirty || signInForm.get('password')?.touched)}">
@@ -45,12 +45,12 @@
                   Password is required
                 </div>
               </div>
-              
+
               <div class="remember-me mb-3">
                 <input type="checkbox" id="rememberMe">
                 <label style="font-size: 14px;" for="rememberMe">Remember me</label>
               </div>
-              
+
               <div style="padding: 0rem 2rem;" class="mb-3">
                 <button type="submit" class="login-btn" [disabled]="isLoading">
                   <span *ngIf="!isLoading">Login</span>
@@ -60,11 +60,11 @@
                   </span>
                 </button>
               </div>
-              
-              <div class="signup-link">
+
+              <!-- <div class="signup-link">
                 <span style="font-size: 14px;">Don't have an account? </span>
                 <a href="#">Sign up</a>
-              </div>
+              </div> -->
             </form>
           </div>
         </div>

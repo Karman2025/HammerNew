@@ -37,6 +37,7 @@ export class AppComponentsApiService {
     private readonly createCustomerPaymentPlanEndPoint = '/admin/payment/createCustomerPaymentPlan';
     private readonly updateCustomerPaymentPlanEndPoint = '/admin/payment/updateCustomerPaymentPlan';
     private readonly payCustomerBalancePaymentPlanEndPoint = '/admin/payment/payCustomerBalancePaymentPlan';
+    private readonly freezeUnfreezeCustomerPaymentPlanEndPoint = '/admin/payment/freezeUnfreezeCustomerPaymentPlan';
 
     private readonly getAllAccountsEndPoint = '/admin/accounts/getAllAccounts';
     private readonly createAccountEntryEndPoint = '/admin/accounts/createAccountEntry';
@@ -185,6 +186,11 @@ export class AppComponentsApiService {
 
     deleteCustomer(customerId: any){
       return this.api.put<any[]>(this.deleteCustomerEndPoint + "?customerId=" + customerId,null)
+      .pipe(map((response) => response));
+    }
+
+    freezeUnfreezeCustomerPaymentPlan(data:any){
+      return this.api.put<any[]>(this.freezeUnfreezeCustomerPaymentPlanEndPoint,data)
       .pipe(map((response) => response));
     }
 }

@@ -5,7 +5,6 @@ import { TableModule } from 'primeng/table';
 import { getOffsetHeightForModal, getOffsetHeightForPrimaryTable } from '../../../shared/functions/calcHeightOffset';
 import { AppComponentsApiService } from '../../app-components-api-service';
 import { AccountsAddEditFormComponent } from '../accounts-add-edit-form/accounts-add-edit-form.component';
-import { Popover } from 'primeng/popover';
 import { getOffsetHeightByCustomClass } from '../../../shared/functions/calcHeightOffset';
 import { FilterFieldsContainerComponent } from '../../../shared/components/filter-fields-container/filter-fields-container.component';
 import { PaginatorModule } from 'primeng/paginator';
@@ -13,13 +12,15 @@ import { dateObjToString } from '../../../shared/functions/date-string-to-obj';
 import { MessageService } from 'primeng/api';
 import { paginationRowsPerPageOptions } from '../../../shared/data/master-data';
 import { getPopupWidth } from '../../../shared/functions/responsiveFunction';
+import { TablePaginatorComponent } from '../../../shared/components/table-paginator/table-paginator.component';
+import { FormsModule } from '@angular/forms';
 
 
 @Component({
   selector: 'app-accounts',
   templateUrl: './accounts.component.html',
   styleUrls: ['./accounts.component.css'],
-  imports: [CommonModule, TableModule, DialogModule, AccountsAddEditFormComponent, Popover, FilterFieldsContainerComponent, PaginatorModule]
+  imports: [CommonModule, FormsModule, TableModule, DialogModule, AccountsAddEditFormComponent, FilterFieldsContainerComponent, PaginatorModule, TablePaginatorComponent]
 })
 export class AccountsComponent implements OnInit {
 
@@ -29,6 +30,7 @@ export class AccountsComponent implements OnInit {
   accountsList:any[] = [];
   formMode: "view" | "edit" | "create" = "view";
   isVisibleAccountsAddEditDialog:boolean = false;
+  isVisibleAccountsFilterDialog: boolean = false;
   toastErrorMessage: string = 'Something went wrong';
   selectedAccounts: any;
   containerOffSetHeightClasses:any[] = ['ofH_calc_nav_bar', 'ofH_calc_body_header'];
@@ -37,6 +39,7 @@ export class AccountsComponent implements OnInit {
   popupWidth = getPopupWidth();
 
   filterFields = {
+    branchId: null,
     actionDate: null,
     paymentTypeId: null,
     isCredit: null,
@@ -46,6 +49,7 @@ export class AccountsComponent implements OnInit {
     actionDateTo: '' as string | null,
   };
   showFilterFields = {
+    branchId: true,
     actionDate: true,
     paymentTypeId: true,
     isCredit: true,
@@ -65,12 +69,18 @@ export class AccountsComponent implements OnInit {
   pageNo:number = 1;
   indexOfFirstRecord:number = 0;
   totalRecords:any;
+  loggedInUser:any;
+  branchOptions:any[] = [];
+  globalSearch:any;
 
   constructor(
     private service: AppComponentsApiService,
     private toasterMessage: MessageService
   ) {
+    this.getAllBranchAutocompleteData();
     this.getAllAccounts();
+    this.loggedInUser = JSON.parse(localStorage.getItem('USER-INFO') ?? "{}");
+    if(this.loggedInUser?.role == "2") this.showFilterFields.branchId = false;
   }
 
   ngOnInit() {
@@ -80,7 +90,8 @@ export class AccountsComponent implements OnInit {
     if (resetPage) this.pageNo = 1;
     let params:any = {
       pageSize : this.pageSize,
-      pageNo : this.pageNo
+      pageNo : this.pageNo,
+      search : this.globalSearch
     };
     this.filterFields.actionDateFrom = this.filterFields?.actionDate?.[0] ? dateObjToString(this.filterFields?.actionDate[0]) : null;
     this.filterFields.actionDateTo = this.filterFields?.actionDate?.[1] ? dateObjToString(this.filterFields?.actionDate[1]) : null;
@@ -88,16 +99,16 @@ export class AccountsComponent implements OnInit {
     params = { ...params, ...this.filterFields };
 
     this.service.getAllAccounts(params).subscribe((res:any)=>{
-      console.log(res);
+      // console.log(res);
       if(res?.Results) {
         this.accountsList = JSON.parse(JSON.stringify(res?.Results ?? []));
         this.xPagination = res?.XPagination;
-  
+
         this.indexOfFirstRecord = (this.xPagination.currentPage - 1) * this.xPagination.pageSize;
         this.totalRecords = this.xPagination.totalCount;
       } else {
         this.toasterMessage.add({ key: 'root-toast', severity: 'error', summary: 'Error', detail: this.toastErrorMessage });
-      }  
+      }
     })
   }
 
@@ -114,7 +125,7 @@ export class AccountsComponent implements OnInit {
     if(isCreateCustomerFormValid){
       this.isButtonLoading = true;
       this.service.createAccountEntry(formData).subscribe((res:any)=>{
-        console.log(res);   
+        // console.log(res);
         if(res?.Results?._id){
           this.isVisibleAccountsAddEditDialog = false;
           this.getAllAccounts();
@@ -146,7 +157,7 @@ export class AccountsComponent implements OnInit {
 
       const requestedPage = page + 1; // because your backend uses 1-based index
 
-      console.log('Go to page:', requestedPage);
+      // console.log('Go to page:', requestedPage);
 
       // Now call API with requestedPage and rows
       this.pageNo = requestedPage;
@@ -157,6 +168,7 @@ export class AccountsComponent implements OnInit {
 
     onFilterClear() {
       this.filterFields = {
+        branchId: null,
         actionDate: null,
         paymentTypeId: null,
         isCredit: null,
@@ -165,6 +177,21 @@ export class AccountsComponent implements OnInit {
         actionDateFrom: null,
         actionDateTo: null,
       };
+      this.getAllAccounts();
+    }
+
+    getAllBranchAutocompleteData() {
+      this.service.getAllBranchAutocompleteData().subscribe((res: any) => {
+        if (res && res?.length > 0) {
+          this.branchOptions = res;
+        } else {
+          console.warn('Unexpected response format:', res);
+          this.branchOptions = [];
+        }
+      });
+    }
+
+    onGlobalSearch(){
       this.getAllAccounts();
     }
 }

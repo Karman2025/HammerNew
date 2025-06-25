@@ -116,9 +116,9 @@ export class SlideButtonComponent implements AfterViewInit {
   }
 
   getTextColor(): string {
-    if (this.isDisable && !this.isCheckedIn) return '#dc3545';
-    if (this.isCheckedIn) return '#28a745';
-    return '#81a4bd';
+    if (this.isDisable && !this.isCheckedIn) return 'var(--ternary)';
+    if (this.isCheckedIn) return 'var(--primary-text-color)';
+    return 'var(--primary-text-color)';
   }
 }
 

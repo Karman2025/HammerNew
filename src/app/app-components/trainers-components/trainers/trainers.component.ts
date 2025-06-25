@@ -7,18 +7,19 @@ import { TrainerAddEditFormComponent } from "../trainer-add-edit-form/trainer-ad
 import { catchError, of } from 'rxjs';
 import { getOffsetHeightForModal, getOffsetHeightForPrimaryTable } from '../../../shared/functions/calcHeightOffset';
 import { MessageService } from 'primeng/api';
-import { Popover } from 'primeng/popover';
 import { getOffsetHeightByCustomClass } from '../../../shared/functions/calcHeightOffset';
 import { FilterFieldsContainerComponent } from '../../../shared/components/filter-fields-container/filter-fields-container.component';
 import { PaginatorModule } from 'primeng/paginator';
 import { paginationRowsPerPageOptions } from '../../../shared/data/master-data';
 import { TooltipModule } from 'primeng/tooltip';
 import { getPopupWidth } from '../../../shared/functions/responsiveFunction';
+import { TablePaginatorComponent } from '../../../shared/components/table-paginator/table-paginator.component';
+import { FormsModule } from '@angular/forms';
 
 
 @Component({
   selector: 'app-trainers',
-  imports: [CommonModule, TableModule, DialogModule, TrainerAddEditFormComponent, Popover, FilterFieldsContainerComponent, PaginatorModule, TooltipModule],
+  imports: [CommonModule, FormsModule, TableModule, DialogModule, TrainerAddEditFormComponent, FilterFieldsContainerComponent, PaginatorModule, TooltipModule, TablePaginatorComponent],
   templateUrl: './trainers.component.html',
   styleUrl: './trainers.component.css',
 })
@@ -30,6 +31,7 @@ export class TrainersComponent {
   trainersList:any[] = [];
   formMode: "view" | "edit" | "create" = "view";
   isVisibleTrainerAddEditDialog:boolean = false;
+  isVisibleTrainerFilterDialog: boolean = false;
   toastErrorMessage: string = 'Something went wrong';
   selectedTrainer: any;
   getBranchOptions: {_id: string, bch_Name: string, bch_Code: string}[] = [];
@@ -37,7 +39,7 @@ export class TrainersComponent {
   paginationRowsPerPage = paginationRowsPerPageOptions;
   isButtonLoading: boolean = false;
   popupWidth = getPopupWidth();
-  
+
 
   filterFields = {
     branchId: null,
@@ -68,6 +70,7 @@ export class TrainersComponent {
   indexOfFirstRecord:number = 0;
   totalRecords:any;
   loggedInUser:any;
+  globalSearch:any;
 
   constructor(private service:AppComponentsApiService, private toasterMessage: MessageService) {
     this.getAllTrainers();
@@ -105,7 +108,7 @@ export class TrainersComponent {
       })
     ).subscribe((res: any) => {
       if (res && Array.isArray(res)) {
-        console.log('getAllBranchAutocomplete', res);
+        // console.log('getAllBranchAutocomplete', res);
         this.getBranchOptions = res;
       } else {
         console.warn('Unexpected response format:', res);
@@ -118,12 +121,13 @@ export class TrainersComponent {
     if (resetPage) this.pageNo = 1;
     let param:any = {
       pageSize : this.pageSize,
-      pageNo : this.pageNo
+      pageNo : this.pageNo,
+      search : this.globalSearch
     };
     param = {...param, ...this.filterFields}
 
     this.service.getAllTrainer(param).subscribe((res:any)=>{
-      console.log(res)
+      // console.log(res)
       if(res?.Results) {
         this.trainersList = JSON.parse(JSON.stringify(res?.Results));
         this.xPagination = res?.XPagination;
@@ -147,7 +151,7 @@ export class TrainersComponent {
       this.isButtonLoading = true;
       if (this.formMode === 'create'){
         this.service.createTrainer(formData).subscribe((res:any) => {
-          console.log(res);
+          // console.log(res);
           // this.getAllTrainers();
           if (res?.Results && res?.Results?.error) {
             const errorMessage = res?.Results?.error;
@@ -161,7 +165,7 @@ export class TrainersComponent {
         })
       } else if (this.formMode === 'edit') {
         this.service.updateTrainer(formData).subscribe((res: any)=> {
-          console.log(res);
+          // console.log(res);
             // this.getAllTrainers();
             // this.isVisibleTrainerAddEditDialog = false;
             if (res?.Results && res?.Results?.error) {
@@ -196,7 +200,7 @@ export class TrainersComponent {
 
     const requestedPage = page + 1; // because your backend uses 1-based index
 
-    console.log('Go to page:', requestedPage);
+    // console.log('Go to page:', requestedPage);
 
     // Now call API with requestedPage and rows
     this.pageNo = requestedPage;
@@ -213,6 +217,10 @@ export class TrainersComponent {
       tnr_MobileNo: null,
       tnr_Email: null,
     };
+    this.getAllTrainers();
+  }
+
+  onGlobalSearch(){
     this.getAllTrainers();
   }
 }

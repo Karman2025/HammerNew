@@ -6,20 +6,21 @@ import { TableModule } from 'primeng/table';
 import { DialogModule } from 'primeng/dialog';
 import { MessageService } from 'primeng/api';
 import { getOffsetHeightForModal, getOffsetHeightForPrimaryTable } from '../../../shared/functions/calcHeightOffset';
-import { Popover } from 'primeng/popover';
 import { getOffsetHeightByCustomClass } from '../../../shared/functions/calcHeightOffset';
 import { FilterFieldsContainerComponent } from '../../../shared/components/filter-fields-container/filter-fields-container.component';
 import { PaginatorModule } from 'primeng/paginator';
 import { paginationRowsPerPageOptions } from '../../../shared/data/master-data';
 import { TooltipModule } from 'primeng/tooltip';
 import { getPopupWidth } from '../../../shared/functions/responsiveFunction';
+import { TablePaginatorComponent } from '../../../shared/components/table-paginator/table-paginator.component';
+import { FormsModule } from '@angular/forms';
 
 
 @Component({
   selector: 'app-branches',
   templateUrl: './branches.component.html',
   styleUrls: ['./branches.component.css'],
-  imports: [CommonModule, BranchAddEditFormComponent, TableModule, DialogModule, Popover, FilterFieldsContainerComponent, PaginatorModule, TooltipModule],
+  imports: [CommonModule, FormsModule, BranchAddEditFormComponent, TableModule, DialogModule, FilterFieldsContainerComponent, PaginatorModule, TooltipModule, TablePaginatorComponent],
 })
 export class BranchesComponent implements OnInit {
 
@@ -32,6 +33,7 @@ export class BranchesComponent implements OnInit {
   formMode: "view" | "edit" | "create" = "view";
   toastErrorMessage: string = 'Something went wrong';
   isVisibleBranchAddEditDialog:boolean = false;
+  isVisibleBranchFilterDialog: boolean = false;
   containerOffSetHeightClasses:any[] = ['ofH_calc_nav_bar', 'ofH_calc_body_header'];
   paginationRowsPerPage = paginationRowsPerPageOptions;
   isButtonLoading: boolean = false;
@@ -59,7 +61,7 @@ export class BranchesComponent implements OnInit {
   pageNo:number = 1;
   indexOfFirstRecord:number = 0;
   totalRecords:any;
-
+  globalSearch:any;
 
   constructor(private service:AppComponentsApiService, private toasterMessage: MessageService) {
     this.getAllBranches();
@@ -103,24 +105,25 @@ export class BranchesComponent implements OnInit {
 
   getAllBranches(resetPage: boolean = false){
     if (resetPage) this.pageNo = 1;
-    
+
     let params:any = {
       pageSize : this.pageSize,
-      pageNo : this.pageNo
+      pageNo : this.pageNo,
+      search : this.globalSearch
     };
     params = {...params, ...this.filterFields}
     this.service.getAllBranch(params).subscribe((res:any)=>{
-      console.log(res);
+      // console.log(res);
       if(res?.Results) {
         this.branchesList = JSON.parse(JSON.stringify(res?.Results ?? []));
         this.xPagination = res?.XPagination;
         this.indexOfFirstRecord = (this.xPagination.currentPage - 1) * this.xPagination.pageSize;
-        console.log(this.indexOfFirstRecord)
+        // console.log(this.indexOfFirstRecord)
         this.totalRecords = this.xPagination.totalCount;
       } else {
         this.toasterMessage.add({ key: 'root-toast', severity: 'error', summary: 'Error', detail: this.toastErrorMessage });
       }
-      
+
     })
   }
 
@@ -135,8 +138,8 @@ export class BranchesComponent implements OnInit {
      this.isButtonLoading = true;
      if (this.formMode === 'create'){
        this.service.createBranch(formData).subscribe((res:any) => {
-        console.log(res);
-        
+        // console.log(res);
+
         if (res?.Results && res?.Results?.error) {
           const errorMessage = res?.Results?.error;
           this.toasterMessage.add({ key: 'root-toast', severity: 'error', summary: 'Error', detail: errorMessage });
@@ -149,8 +152,8 @@ export class BranchesComponent implements OnInit {
       })
      } else if (this.formMode === 'edit') {
        this.service.updateBranch(formData).subscribe((res:any) => {
-        console.log(res);
-        
+        // console.log(res);
+
         if (res?.Results && res?.Results?.error) {
           const errorMessage = res?.Results?.error;
           this.toasterMessage.add({ key: 'root-toast', severity: 'error', summary: 'Error', detail: errorMessage });
@@ -207,14 +210,8 @@ export class BranchesComponent implements OnInit {
     this.getAllBranches();
   }
 
-//   get dialogWidth(): string {
-//     console.log(window.innerWidth);
-    
-//   if (window.innerWidth < 576) return '95vw';
-//   if (window.innerWidth < 768) return '80vw';
-//   if (window.innerWidth < 992) return '60vw';
-//   return '30vw'; 
-// }
-
+  onGlobalSearch(){
+    this.getAllBranches();
+  }
 
 }

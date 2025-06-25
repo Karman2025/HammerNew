@@ -30,7 +30,10 @@
             <a routerLink="/home/trainers">Trainers</a>
           </li>
           <li class="menu-item" routerLinkActive="active">
-            <a routerLink="/home/payments">Payments</a>
+            <a routerLink="/home/payments">Plans</a>
+          </li>
+          <li class="menu-item" routerLinkActive="active">
+            <a routerLink="/home/accounts">Accounts</a>
           </li>
           <!-- <li class="menu-item" routerLinkActive="active">
             <a routerLink="/home/reports">Reports</a>
@@ -38,9 +41,7 @@
           <li class="menu-item" routerLinkActive="active">
             <a routerLink="/home/attendance">Attendance</a>
           </li>
-          <li class="menu-item" routerLinkActive="active">
-            <a routerLink="/home/accounts">Accounts</a>
-          </li>
+
         </ng-container>
       </ul>
     </div>
@@ -54,25 +55,35 @@
         *ngIf="isMobileScreen"
         (click)="visible = true"
       >
-        <i class="fa-solid fa-bars"></i>
+        <!-- <i class="fa-solid fa-bars"></i> -->
+         <div class="hamburger-icon"></div>
       </button>
 
       <ng-container *ngIf="!isMobileScreen">
-        <div style="margin-right: 13px">
-          <span
-            (click)="op.toggle($event)"
-            class="px-2"
-            style="font-size: 1.5rem; cursor: pointer; color: var(--primary-text-color);"
-          >
+        <div>
+          <span (click)="op.toggle($event)" class="px-2 nav-user-icon">
             <i class="fa-regular fa-circle-user"></i>
           </span>
         </div>
-        <p-popover styleClass="profile-popover-card" class="p-3" #op>
+        <p-popover styleClass="profile-popover-card" #op>
           <div class="d-flex align-items-center justify-content-center">
             <ul class="profile-popover">
-              <li class="profile-popover-items">Usergmail.com</li>
               <li class="profile-popover-items">
-                <a routerLink="/signin" (click)="signOut()">Logout</a>
+                <div style="border-bottom: 2px solid var(--primary);" class="d-flex align-items-center pb-2 pt-2 px-3">
+                  <div>
+                    <span class="fs-1" style="color: var(--ternary);"><i class="fa-regular fa-circle-user"></i></span>
+                  </div>
+                  <div class="d-flex flex-column">
+                    <span class="px-2"> {{(loggedInUser?.firstName && loggedInUser?.lastName) ? (loggedInUser.firstName + ' ' + loggedInUser.lastName) : (loggedInUser?.bch_Name ?? loggedInUser?.tnr_Name) }}</span>
+                    <span style="font-size: 0.8rem; color: #ccc;" class="px-2">{{loggedInUser?.role == '1' ? 'Admin' : loggedInUser?.role == '2' ? 'Branch' : loggedInUser?.role == '3' ? 'Trainer' : ''}}</span>
+                  </div>
+                </div>
+              </li>
+              <li class="profile-popover-items">
+                <div (click)="signOut()" class="d-flex justify-content-center" style="padding: 1rem;">
+                  <span class="px-2"><i class="fa-solid fa-arrow-right-from-bracket"></i></span>
+                  <span>Logout</span>
+                </div>
               </li>
             </ul>
           </div>
@@ -81,7 +92,7 @@
     </div>
   </div>
 
-  <p-drawer #drawerRef [(visible)]="visible" [modal]="true" position="right">
+  <p-drawer #drawerRef [(visible)]="visible" [modal]="true" styleClass="mobile-drawer" position="right">
     <ng-template #headless>
       <div class="mobile-panel-section d-flex flex-column justify-content-between px-3 py-3">
         <div>
@@ -90,7 +101,7 @@
               <span class="website-logo">H</span>
             </div>
             <button (click)="closeCallback($event)" class="mobile-panel-close-btn d-flex justify-content-center align-items-center" type="button">
-              <i class="fa-solid fa-xmark"></i>
+              <i class="fa-solid fa-xmark c-pointer text-white"></i>
             </button>
           </div>
 
@@ -108,7 +119,10 @@
                 <a routerLink="/home/trainers" (click)="visible = false">Trainers</a>
               </li>
               <li class="mobile-menu-item" routerLinkActive="active">
-                <a routerLink="/home/payments" (click)="visible = false">Payments</a>
+                <a routerLink="/home/payments" (click)="visible = false">Plans</a>
+              </li>
+              <li class="mobile-menu-item" routerLinkActive="active">
+                <a routerLink="/home/accounts" (click)="visible = false">Accounts</a>
               </li>
               <!-- <li class="mobile-menu-item" routerLinkActive="active">
                     <a routerLink="/home/reports" (click)="visible = false">Reports</a>
@@ -116,23 +130,37 @@
               <li class="mobile-menu-item" routerLinkActive="active">
                 <a routerLink="/home/attendance" (click)="visible = false">Attendance</a>
               </li>
-              <li class="mobile-menu-item" routerLinkActive="active">
-                <a routerLink="/home/accounts" (click)="visible = false">Accounts</a>
-              </li>
+
             </ul>
           </div>
 
         </div>
         <div class="mobile-panel-footer d-flex flex-column align-items-center py-3 mt-3">
           <ul class="mobile-menu-user-block">
-            <li class="mobile-menu-user-list">Usergmail.com</li>
             <li class="mobile-menu-user-list">
-              <a routerLink="/signin" style="text-decoration: none;" (click)="signOut()">Logout</a>
+              <div style="border-bottom: 2px solid var(--primary);" class="d-flex align-items-center pb-1 pt-1 px-2">
+                <div>
+                  <span class="fs-1" style="color: var(--ternary);"><i class="fa-regular fa-circle-user"></i></span>
+                </div>
+                <div class="d-flex flex-column">
+                  <span class="px-2"> {{(loggedInUser?.firstName && loggedInUser?.lastName) ? (loggedInUser.firstName + ' ' +
+                    loggedInUser.lastName) : (loggedInUser?.bch_Name ?? loggedInUser?.tnr_Name) }}</span>
+                  <span style="font-size: 0.8rem; color: #ccc;" class="px-2">{{loggedInUser?.role == '1' ? 'Admin' :
+                    loggedInUser?.role == '2' ? 'Branch' : loggedInUser?.role == '3' ? 'Trainer' : ''}}</span>
+                </div>
+              </div>
+            </li>
+            <li class="mobile-menu-user-list">
+              <!-- <a routerLink="/signin" (click)="signOut()">Logout</a> -->
+              <div (click)="signOut()" class="d-flex justify-content-center">
+                <span class="px-2"><i class="fa-solid fa-arrow-right-from-bracket"></i></span>
+                <span>Logout</span>
+              </div>
             </li>
           </ul>
         </div>
       </div>
-      
+
     </ng-template>
   </p-drawer>
 </nav>

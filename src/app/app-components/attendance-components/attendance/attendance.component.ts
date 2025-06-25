@@ -5,7 +5,6 @@ import { AppComponentsApiService } from '../../app-components-api-service';
 import { DatePicker } from 'primeng/datepicker';
 import { FormsModule } from '@angular/forms'
 import { dateObjToString, newDateString } from '../../../shared/functions/date-string-to-obj';
-import { Popover } from 'primeng/popover';
 import { ButtonModule } from 'primeng/button';
 import { getOffsetHeightByCustomClass } from '../../../shared/functions/calcHeightOffset';
 import { TooltipModule } from 'primeng/tooltip';
@@ -15,12 +14,14 @@ import { MessageService } from 'primeng/api';
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
 import { getPopupWidth } from '../../../shared/functions/responsiveFunction';
 import { SkeletonModule } from 'primeng/skeleton';
+import { DialogModule } from 'primeng/dialog';
+
 
 @Component({
   selector: 'app-attendance',
   templateUrl: './attendance.component.html',
   styleUrls: ['./attendance.component.css'],
-   imports: [CommonModule, SlideButtonComponent, DatePicker, FormsModule, Popover, ButtonModule, TooltipModule, FilterFieldsContainerComponent, InfiniteScrollDirective, SkeletonModule]
+   imports: [CommonModule, SlideButtonComponent, DatePicker, FormsModule, ButtonModule, TooltipModule, FilterFieldsContainerComponent, InfiniteScrollDirective, SkeletonModule, DialogModule]
 })
 export class AttendanceComponent implements OnInit {
   attendanceList: any[] = [];
@@ -30,10 +31,11 @@ export class AttendanceComponent implements OnInit {
   formattedDate: string = '';
   toastErrorMessage: string = 'Something went wrong';
   isPastDay: boolean = false;
-  containerOffSetHeightClasses:any[] = ['ofH_calc_nav_bar', 'ofH_calc_body_header'];
+  containerOffSetHeightClasses:any[] = ['ofH_calc_nav_bar', 'ofH_calc_body_header', 'ofH_calc_mob_global_filter'];
   getBranchOptions: {_id: string, bch_Name: string, bch_Code: string}[] = [];
   popupWidth = getPopupWidth();
   showSkeletonLoader:boolean = false;
+  isVisibleFilterAttendanceDialog: boolean = false;
 
   filterFields = {
     branchId: null,
@@ -62,6 +64,7 @@ export class AttendanceComponent implements OnInit {
     hasNextPage: false,
     hasPreviousPage: false
   };
+  globalSearch:any;
 
   constructor(
     private service: AppComponentsApiService,
@@ -94,17 +97,17 @@ export class AttendanceComponent implements OnInit {
 
 
   attendanceDateSelect(event: any) {
-    console.log("Selected date: ", event);
+    // console.log("Selected date: ", event);
     this.attendanceDate = event; // stays as Date
     const formatted = dateObjToString(event)?.split('T')[0];
-    console.log("Formatted: ", formatted);
+    // console.log("Formatted: ", formatted);
     this.getAllAttendance(true);
   }
 
 
   onCheckin(item: any){
-    console.log('onslide')
-    console.log(item);
+    // console.log('onslide')
+    // console.log(item);
     this.selectedCustomer = JSON.parse(JSON.stringify(item));
     this.checkInCustomer();
   }
@@ -124,6 +127,7 @@ export class AttendanceComponent implements OnInit {
       pageSize : this.pageSize,
       pageNo : this.pageNo,
       attendanceDate: dateObjToString(selectedDate),
+      search : this.globalSearch
     };
 
     param = {...param, ...this.filterFields};
@@ -136,7 +140,7 @@ export class AttendanceComponent implements OnInit {
         } else {
           this.attendanceList = [...this.attendanceList, ...res.Results];
         }
-        console.log(this.attendanceList);
+        // console.log(this.attendanceList);
         this.xPagination = res?.XPagination;
       } else {
         console.warn('Unexpected response format:',res);
@@ -165,10 +169,10 @@ export class AttendanceComponent implements OnInit {
       "checkinTime": dateObjToString(currentTime),
       "attendanceDate": dateObjToString(todaysDate)
     }
-    console.log(payload);
+    // console.log(payload);
 
     this.service.customerCheckIn(payload, false).subscribe((res: any) => {
-      console.log("CheckIn successfull", res);
+      // console.log("CheckIn successfull", res);
       if (res?.Results) {
         // this.getAllAttendance(false,true);
         this.attendanceList.forEach((x:any)=>{
@@ -211,6 +215,10 @@ export class AttendanceComponent implements OnInit {
       this.pageNo++;
 
       this.getAllAttendance(false, false, true);
+    }
   }
-}
+
+  onGlobalSearch(){
+    this.getAllAttendance(true, true);
+  }
 }

@@ -16,13 +16,16 @@ import { FilterFieldsContainerComponent } from '../../../shared/components/filte
 import { PaginatorModule } from 'primeng/paginator';
 import { paginationRowsPerPageOptions } from '../../../shared/data/master-data';
 import { TooltipModule } from 'primeng/tooltip';
+import { TablePaginatorComponent } from '../../../shared/components/table-paginator/table-paginator.component';
+import { FormsModule } from '@angular/forms';
+import { CustomerDetailedViewComponent } from '../customer-detailed-view/customer-detailed-view.component';
 
 
 @Component({
   selector: 'app-customers',
   templateUrl: './customers.component.html',
   styleUrls: ['./customers.component.css'],
-  imports: [CommonModule, TableModule, DialogModule, CustomerAddEditFormComponent,Popover, FilterFieldsContainerComponent,PaginatorModule, TooltipModule],
+  imports: [CommonModule, FormsModule, TableModule, DialogModule, CustomerAddEditFormComponent,Popover, FilterFieldsContainerComponent,PaginatorModule, TooltipModule, TablePaginatorComponent, CustomerDetailedViewComponent],
 })
 export class CustomersComponent implements OnInit {
 
@@ -80,8 +83,15 @@ export class CustomersComponent implements OnInit {
   totalRecords:any;
   loggedInUser:any;
   isVisibleDeleteCustomerConfirmationDialog:boolean = false;
+  isVisibleFilterCustomerDetailsDialog:boolean = false;
   isDeletingCustomer:boolean = false;
   deleteCustomerDetails:any;
+  globalSearch:any;
+  showCustomerDetailedView:boolean = false;
+  disablePrevious:boolean = false;
+  disableNext:boolean = false;
+  selectedCustomerDetailsIndex:any = null;
+
   constructor(
     private service:AppComponentsApiService,
     private router: Router,
@@ -117,12 +127,15 @@ export class CustomersComponent implements OnInit {
     this.selectedCustomer = {};
     this.isVisibleCustomerddEditDialog = true;
   }
-  viewCustomer(customer: any) {
+  viewCustomer(customer: any,index:any) {
+    this.selectedCustomerDetailsIndex = JSON.parse(JSON.stringify(index));
+    this.enableDisablePreviousNext();
     this.setFormMode('view');
     this.selectedCustomer = JSON.parse(JSON.stringify(customer));
-    this.router.navigate(['/home/customers/customer-details'], {
-      queryParams: { customerId: this.selectedCustomer?._id }
-    });
+    this.showCustomerDetailedView = true;
+    // this.router.navigate(['/home/customers/customer-details'], {
+    //   queryParams: { customerId: this.selectedCustomer?._id }
+    // });
   }
 
   openDeleteCustomerConfirmationDialog(customer:any){
@@ -131,9 +144,9 @@ export class CustomersComponent implements OnInit {
   }
 
   deleteCustomer(){
-    console.log(this.deleteCustomerDetails)
+    // console.log(this.deleteCustomerDetails)
     this.service.deleteCustomer(this.deleteCustomerDetails._id).subscribe((res:any)=>{
-      console.log(res)
+      // console.log(res)
       if(res && res?.Results && res?.Results?.message == "Customer deleted successfully"){
         this.toasterMessage.add({ key: 'root-toast', severity: 'success', summary: 'Success', detail: 'Customer deleted successfully' });
         this.isVisibleDeleteCustomerConfirmationDialog = false;
@@ -149,20 +162,21 @@ export class CustomersComponent implements OnInit {
 
     let params:any = {
       pageSize : this.pageSize,
-      pageNo : this.pageNo
+      pageNo : this.pageNo,
+      search : this.globalSearch
     };
     this.filterFields.createdDateFrom = this.filterFields?.createdDate?.[0] ? dateObjToString(this.filterFields?.createdDate[0]) : null;
     this.filterFields.createdDateTo = this.filterFields?.createdDate?.[1] ? dateObjToString(this.filterFields?.createdDate[1]) : null;
     params = {...params, ...this.filterFields}
     this.service.getAllCustomer(params).subscribe((res:any)=>{
-      console.log(res);
+      // console.log(res);
       if(res?.Results?.length >= 0) {
         this.customersList = JSON.parse(JSON.stringify(res?.Results ?? []));
         this.xPagination = res?.XPagination;
         this.indexOfFirstRecord = (this.xPagination.currentPage - 1) * this.xPagination.pageSize;
         this.totalRecords = this.xPagination.totalCount;
       } else {
-        console.warn('Unexpected response format:',res);
+        // console.warn('Unexpected response format:',res);
         this.toasterMessage.add({ key: 'root-toast', severity: 'error', summary: 'Error', detail: this.toastErrorMessage });
       }
     })
@@ -198,14 +212,17 @@ onCustomerCreate() {
     formData.ctr_Dob = dateObjToString(formData?.ctr_Dob);
 
       this.service.createCustomer(formData).subscribe((res:any) => {
-        console.log(res);
+        // console.log(res);
         if(res?.Results?._id){
           this.isVisibleCustomerddEditDialog = false;
           this.getAllCustomers();
           if(this.loggedInUser?.role != "3"){
-            this.router.navigate(['/home/customers/customer-details'], {
-              queryParams: { customerId: res?.Results?._id }
-            });
+            // this.router.navigate(['/home/customers/customer-details'], {
+            //   queryParams: { customerId: res?.Results?._id }
+            // });
+            this.selectedCustomerDetailsIndex = null;
+            this.selectedCustomer = JSON.parse(JSON.stringify(res?.Results));
+            this.showCustomerDetailedView = true;
           }
           this.toasterMessage.add({ key: 'root-toast', severity: 'success', summary: 'Success', detail: 'Customer created successfully!' });
         } else {
@@ -234,7 +251,7 @@ onCustomerCreate() {
 
       const requestedPage = page + 1; // because your backend uses 1-based index
 
-      console.log('Go to page:', requestedPage);
+      // console.log('Go to page:', requestedPage);
 
       // Now call API with requestedPage and rows
       this.pageNo = requestedPage;
@@ -257,5 +274,45 @@ onCustomerCreate() {
         paymentPlanStatus: null
       };
       this.getAllCustomers();
+    }
+
+    onGlobalSearch(){
+      this.getAllCustomers();
+    }
+
+    onBackToList(){
+      this.showCustomerDetailedView = false;
+      this.selectedCustomer = {};
+      if(this.selectedCustomerDetailsIndex == null) {
+        this.globalSearch = "";
+        this.onFilterClear();
+      } else {
+        this.getAllCustomers();
+      }
+    }
+
+    onPreviousCustomer(){
+      this.selectedCustomerDetailsIndex = --this.selectedCustomerDetailsIndex;
+      this.selectedCustomer = JSON.parse(JSON.stringify(this.customersList[this.selectedCustomerDetailsIndex]));
+      this.enableDisablePreviousNext();
+    }
+
+    onNextCustomer(){
+      this.selectedCustomerDetailsIndex = ++this.selectedCustomerDetailsIndex;
+      this.selectedCustomer = JSON.parse(JSON.stringify(this.customersList[this.selectedCustomerDetailsIndex]));
+      this.enableDisablePreviousNext();
+    }
+
+    enableDisablePreviousNext(){
+      if(this.selectedCustomerDetailsIndex == 0){
+        this.disablePrevious = true;
+      } else {
+        this.disablePrevious = false;
+      }
+      if((this.customersList?.length - 1) == this.selectedCustomerDetailsIndex){
+        this.disableNext = true;
+      } else {
+        this.disableNext = false;
+      }
     }
 }

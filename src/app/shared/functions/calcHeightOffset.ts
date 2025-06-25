@@ -22,7 +22,7 @@ export const getOffsetHeightForModal = (extra: number = 0): string => { // For M
 };
 
 export const getOffsetHeightForPrimaryTable = (extra: number = 0): string => { // For Primary Table
-  const totalHeight = getTotalHeight("ofH_calc_nav_bar") + getTotalHeight("ofH_calc_body_header") + getTotalHeight("ofH_calc_pagin");
+  const totalHeight = getTotalHeight("ofH_calc_nav_bar") + getTotalHeight("ofH_calc_body_header") + getTotalHeight("ofH_calc_pagin") + getTotalHeight("ofH_calc_mob_global_filter");
 
   return `calc(100vh - ${totalHeight + extra}px)`;
 };

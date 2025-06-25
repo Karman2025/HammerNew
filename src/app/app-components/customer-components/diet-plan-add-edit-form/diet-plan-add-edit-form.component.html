@@ -39,12 +39,12 @@
               <!-- If in edit mode -->
               <ng-container *ngIf="item.get('isEdit')?.value; else showEditDelete">
                 <i class="fa-solid fa-check text-success" (click)="onSave(i)"></i>
-                <i class="fa-solid fa-xmark text-danger" (click)="onCancel(i)"></i>
+                <i style="color: #ccc;" class="fa-solid fa-xmark c-pointer" (click)="onCancel(i)"></i>
               </ng-container>
               <!-- If NOT in edit mode -->
               <ng-template #showEditDelete>
-                <i class="fa-solid fa-pen-to-square text-primary" (click)="onEdit(i)"></i>
-                <i class="fa-solid fa-trash text-danger" (click)="onDelete(i)"></i>
+                <i style="color: var(--ternary);" class="fa-solid fa-pen-to-square" (click)="onEdit(i)"></i>
+                <i style="color: #ccc;" class="fa-solid fa-trash" (click)="onDelete(i)"></i>
               </ng-template>
             </div>
           </div>
@@ -72,7 +72,7 @@
     <ng-container *ngIf="dietPlanFormMode != 'view'"> <!-- For Add Edit Mode -->
       <!-- Add Button -->
       <div class="col-12 pt-3 d-flex justify-content-end">
-        <button type="button" class="custom-primary-outerline-btn py-1" (click)="onAddDietPlan()">
+        <button type="button" class="custom-primary-btn py-1" (click)="onAddDietPlan()">
           <i class="fa-solid fa-plus"></i>
           <span class="px-1">Add</span>
         </button>

@@ -31,7 +31,10 @@ export class CustomerDetailedViewComponent implements OnInit {
   @ViewChild('PaymentPlanViewAddEditFormComponent', {static: false})
     paymentPlanViewAddEditFormComponent!: PaymentPlanViewAddEditFormComponent;
 
-
+  @Input() set CustomerId(value:any){
+    this.customerId = value;
+    this.getCustomerDetailsById(value);
+  }
   @Input() branchOptions:any[] = [];
   @Input() formMode:"view" | "edit" | "create" = "view";
   @Input() dietPlanFormMode:"view" | "edit" | "create" = "view";
@@ -45,11 +48,11 @@ export class CustomerDetailedViewComponent implements OnInit {
   isSaving: boolean = false;
   customerDietPlan:any[] = [];
   customerId:any;
-  containerOffSetHeightClasses:any[] = ['ofH_calc_nav_bar', 'ofH_calc_body_header'];
+  containerOffSetHeightClasses:any[] = ['ofH_calc_nav_bar', 'ofH_calc_body_header', 'ofH_calc_customer_detaile_nav'];
   paymentPlanOptions:any[] = paymentPlanOptions;
   customerFormPaymentPlanData:any = {};
   popupWidth = getPopupWidth();
-  
+
 
   constructor(
     private service: AppComponentsApiService,
@@ -60,10 +63,10 @@ export class CustomerDetailedViewComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.route.queryParams.subscribe(params => {
-      this.customerId = params['customerId'];
-      this.getCustomerDetailsById(this.customerId);
-    });
+    // this.route.queryParams.subscribe(params => {
+    //   this.customerId = params['customerId'];
+    //   this.getCustomerDetailsById(this.customerId);
+    // });
   }
 
   getCustomerDetailsById(customerId:any){
@@ -73,7 +76,7 @@ export class CustomerDetailedViewComponent implements OnInit {
       })
       this.customerData.showExtendPlan = res?.paymentPlan?.filter((x:any)=>x.status == 'Completed')?.length == res?.paymentPlan?.length || res?.paymentPlan?.length == 0;
       this.customerDetails = JSON.parse(JSON.stringify(res));
-      console.log(res);
+      // console.log(res);
 
       if(!this.customerDetails?.paymentPlan || !this.customerDetails?.paymentPlan?.length || this.customerDetails?.paymentPlan?.length == 0){
         this.addPaymentPlan();
@@ -82,6 +85,7 @@ export class CustomerDetailedViewComponent implements OnInit {
   }
 
   onCustomerInfoEdit(){
+    this.formMode = "edit";
     this.customerData = JSON.parse(JSON.stringify(this.customerDetails?.customerInfo))
     this.isVisibleCustomerEditDialog = true;
   }
@@ -197,7 +201,7 @@ onCustomerUpdate() {
         console.warn('Unexpected response format:', res);
         this.branchOptions = [];
       }
-      console.log(this.branchOptions)
+      // console.log(this.branchOptions)
     });
   }
 }

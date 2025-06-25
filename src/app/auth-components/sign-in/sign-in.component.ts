@@ -33,9 +33,9 @@ export class SignInComponent implements OnInit {
   }
 
   ngOnInit() {
-    if (localStorage.getItem('USER-JWT-TOKEN')) {
-      this.router.navigate(['/home/welcome']);
-    }
+    // if (localStorage.getItem('USER-JWT-TOKEN')) {
+    //   this.router.navigate(['/home/welcome']);
+    // }
   }
 
   onSignInSubmit() {
