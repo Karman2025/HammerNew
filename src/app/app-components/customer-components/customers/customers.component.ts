@@ -286,6 +286,8 @@ onCustomerCreate() {
       if(this.selectedCustomerDetailsIndex == null) {
         this.globalSearch = "";
         this.onFilterClear();
+      } else {
+        this.getAllCustomers();
       }
     }
 

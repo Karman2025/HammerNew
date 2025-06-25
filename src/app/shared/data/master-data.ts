@@ -108,4 +108,8 @@ export const paymentPlanStatus:any[] = [
     _id: "5",
     name: "In Active",
   },
+  {
+    _id: "6",
+    name: "Paused",
+  },
 ]
