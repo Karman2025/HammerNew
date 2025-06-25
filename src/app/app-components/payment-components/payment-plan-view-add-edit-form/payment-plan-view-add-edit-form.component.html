@@ -433,35 +433,37 @@
 </p-dialog>
 
 <p-dialog [draggable]="false" [showHeader]="false" class="primary-p-dialog" [modal]="true" [position]="'center'" [(visible)]="isVisibleUnFreezeCustomerModal" [style]="{ width: popupWidth }">
-  <div class="p-p-dialog-header ofH_calc_modal_header">
-    <div>
-      <span class="p-p-dialog-header-label">Resume Payemnt plan</span>
+  <ng-container *ngIf="isVisibleUnFreezeCustomerModal">
+    <div class="p-p-dialog-header ofH_calc_modal_header">
+      <div>
+        <span class="p-p-dialog-header-label">Resume Payemnt plan</span>
+      </div>
+      <div>
+        <button class="p-p-dialog-header-button" (click)="isVisibleUnFreezeCustomerModal = false" ><i class="fa-solid fa-xmark c-pointer text-white"></i></button>
+      </div>
     </div>
-    <div>
-      <button class="p-p-dialog-header-button" (click)="isVisibleUnFreezeCustomerModal = false" ><i class="fa-solid fa-xmark c-pointer text-white"></i></button>
-    </div>
-  </div>
-  <div class="p-p-dialog-body" [ngStyle]="{ 'max-height': getOffsetHeightForModal(93), 'overflow-x': 'hidden' }">
-    <form class="primary-form-control">
-      <div class="row">
-        <div class="col-12">
-          <div class="pt-1">
-            <label class="form-label" for="unfreezeDate">Plan Resume Date</label>
-            <div [ngClass]="{'form-validation-error': showUnFreezeDateValidationMsg}">
-              <p-datepicker class="primary-p-datepicker" [(ngModel)]="planUnFreezeDate" panelStyleClass="primary-p-datepicker-panel" name="unfreezeDate" placeholder="dd-mm-yyy" dateFormat="dd-MM-yy" appendTo="body" [minDate]="selectedPaymentPlan.freezeDate"/>
-              <div class="form-validation-msg">
-                <span>Required</span>
+    <div class="p-p-dialog-body" [ngStyle]="{ 'max-height': getOffsetHeightForModal(93), 'overflow-x': 'hidden' }">
+      <form class="primary-form-control">
+        <div class="row">
+          <div class="col-12">
+            <div class="pt-1">
+              <label class="form-label" for="unfreezeDate">Plan Resume Date</label>
+              <div [ngClass]="{'form-validation-error': showUnFreezeDateValidationMsg}">
+                <p-datepicker class="primary-p-datepicker" [(ngModel)]="planUnFreezeDate" panelStyleClass="primary-p-datepicker-panel" name="unfreezeDate" placeholder="dd-mm-yyy" dateFormat="dd-MM-yy" appendTo="body" [minDate]="selectedPaymentPlan.freezeDate"/>
+                <div class="form-validation-msg">
+                  <span>Required</span>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    </form>
-  </div>
-  <div class="p-p-dialog-footer ofH_calc_modal_footer">
-    <div>
-      <button (click)="isVisibleUnFreezeCustomerModal = false" class="custom-dark-form-btn mx-2 px-3 py-1"> Cancel </button>
-      <button [disabled]="disablePlanUnFreeze" class="custom-primary-form-btn px-3 py-1" (click)="freezeUnfreezeCustomerPaymentPlan()">Save</button>
+      </form>
     </div>
-  </div>
+    <div class="p-p-dialog-footer ofH_calc_modal_footer">
+      <div>
+        <button (click)="isVisibleUnFreezeCustomerModal = false" class="custom-dark-form-btn mx-2 px-3 py-1"> Cancel </button>
+        <button [disabled]="disablePlanUnFreeze" class="custom-primary-form-btn px-3 py-1" (click)="freezeUnfreezeCustomerPaymentPlan()">Save</button>
+      </div>
+    </div>
+  </ng-container>
 </p-dialog>

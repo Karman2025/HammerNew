@@ -149,6 +149,7 @@ export class PaymentPlanViewAddEditFormComponent implements OnInit {
     this.createPaymentPlanForm.reset(this.defaultValues);
     this.selectedPaymentPlan = JSON.parse(JSON.stringify(plan));
     this.isVisibleAddUpdatePaymentPlanDialog = true;
+    this.enableDisabledFieldsEditPlan();
   }
 
   editPaymentPlan(plan:any) {
@@ -222,10 +223,7 @@ export class PaymentPlanViewAddEditFormComponent implements OnInit {
             this.customerPaymentPlan[tempCustomerPaymentPlanId] = res?.Results?.customerPaymentPlan;
             const successMessage = 'Customer payment plan updated successfully'
             this.toasterMessage.add({ key: 'root-toast', severity: 'success', summary: 'Success', detail: successMessage });
-            this.createPaymentPlanForm.get('payableAmount')?.enable();
-            this.createPaymentPlanForm.get('paidAmount')?.enable();
-            this.createPaymentPlanForm.get('paymentMethod')?.enable();
-            this.createPaymentPlanForm.get('receiptNumber')?.enable();
+            this.enableDisabledFieldsEditPlan();
             this.changeShowExtendPlan.emit(false);
           } else {
             this.toasterMessage.add({ key: 'root-toast', severity: 'error', summary: 'Error', detail: res?.Results?.error ?? 'Something went wrong please try again later' });
@@ -233,6 +231,13 @@ export class PaymentPlanViewAddEditFormComponent implements OnInit {
         });
       }
     }
+  }
+
+  enableDisabledFieldsEditPlan(){
+    this.createPaymentPlanForm.get('payableAmount')?.enable();
+    this.createPaymentPlanForm.get('paidAmount')?.enable();
+    this.createPaymentPlanForm.get('paymentMethod')?.enable();
+    this.createPaymentPlanForm.get('receiptNumber')?.enable();
   }
 
   getMinEndDate() {

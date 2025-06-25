@@ -1,5 +1,13 @@
 export const paymentPlanOptions:any[] = [
   {
+      _id: "5",
+      name: "1 Months"
+  },
+  {
+      _id: "6",
+      name: "2 Months"
+  },
+  {
       _id: "1",
       name: "3 Months",
       duration: 90
@@ -10,6 +18,10 @@ export const paymentPlanOptions:any[] = [
       duration: 180
   },
   {
+      _id: "7",
+      name: "8 Months"
+  },
+  {
       _id: "3",
       name: "1 Year",
       duration: 360
@@ -18,6 +30,8 @@ export const paymentPlanOptions:any[] = [
       _id: "4",
       name: "Custom Period"
   },
+
+  //********** ID IS Not IN ORDER ************//
 ];
 
 export const paymentMethodsOptions:any[] = [
