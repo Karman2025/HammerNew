@@ -136,7 +136,7 @@
                     'badge-danger': customer?.paymentPlanStatus == 'Payment Due' || customer?.paymentPlanStatus == 'Expired',
                     'badge-warning': customer?.paymentPlanStatus == 'Pending',
                     'badge-success': customer?.paymentPlanStatus == 'Completed',
-                    'badge-inactive': customer?.paymentPlanStatus =='In Active'
+                    'badge-inactive': customer?.paymentPlanStatus == 'In Active' || customer?.paymentPlanStatus == 'Paused',
                   }">
                     {{ customer?.paymentPlanStatus }}
                   </span>

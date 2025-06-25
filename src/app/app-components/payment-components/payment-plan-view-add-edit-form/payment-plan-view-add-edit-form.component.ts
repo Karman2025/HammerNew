@@ -72,6 +72,15 @@ export class PaymentPlanViewAddEditFormComponent implements OnInit {
   paidAmountValidationMsg:string = 'Required';
   currentDate:Date = new Date();
   popupWidth = getPopupWidth();
+  isVisibleFreezeCustomerModal:boolean = false;
+  showFreezeDateValidationMsg:boolean = false;
+  disablePlanFreezeUnfreeze:boolean = false;
+  planFreezeDate:any;
+  freezeUnfreezeActionType:string = "";
+  isVisibleUnFreezeCustomerModal:boolean = false;
+  showUnFreezeDateValidationMsg:boolean = false;
+  disablePlanUnFreeze:boolean = false;
+  planUnFreezeDate:any;
 
   constructor(
     private fb: FormBuilder,
@@ -275,7 +284,7 @@ export class PaymentPlanViewAddEditFormComponent implements OnInit {
       }
       this.service.payCustomerBalancePaymentPlan(body).subscribe((res:any)=>{
         if(res?.Results?.message == 'Customer payment plan updated successfully'){
-            this.toasterMessage.add({ key: 'root-toast', severity: 'success', summary: 'Success', detail: 'Payment completed successfully' });
+          this.toasterMessage.add({ key: 'root-toast', severity: 'success', summary: 'Success', detail: 'Payment completed successfully' });
           this.isVisiblePayBalanceDialog = false;
           this.customerPaymentPlan?.forEach((x:any)=>{
             if(x?._id == this.selectedPaymentPlan?._id){
@@ -304,4 +313,73 @@ export class PaymentPlanViewAddEditFormComponent implements OnInit {
   getOffsetHeightForPrimaryTable(extra: any = 0) {
       return getOffsetHeightForPrimaryTable(extra);
   }
+
+  openFreezePaymentPlanModal(plan:any) {
+    this.selectedPaymentPlan = JSON.parse(JSON.stringify(plan));
+    this.isVisibleFreezeCustomerModal = true;
+    this.freezeUnfreezeActionType = "freeze";
+    this.showFreezeDateValidationMsg = false;
+    this.planFreezeDate = null;
+  }
+
+  openUnFreezePaymentPlanModal(plan:any) {
+    this.selectedPaymentPlan = JSON.parse(JSON.stringify(plan));
+    this.selectedPaymentPlan.freezeDate = dateStringToObj(this.selectedPaymentPlan?.freezeDate);
+    this.isVisibleUnFreezeCustomerModal = true;
+    this.freezeUnfreezeActionType = "unfreeze";
+    this.showUnFreezeDateValidationMsg = false;
+    this.planUnFreezeDate = null;
+  }
+
+  freezeUnfreezeCustomerPaymentPlan(){
+    this.showFreezeDateValidationMsg = false;
+    this.showUnFreezeDateValidationMsg = false;
+    if(
+      this.freezeUnfreezeActionType == 'freeze' ? (this.planFreezeDate != null && this.planFreezeDate != undefined && this.planFreezeDate) : true &&
+      this.freezeUnfreezeActionType == 'unfreeze' ? (this.planUnFreezeDate != null && this.planUnFreezeDate != undefined && this.planUnFreezeDate) : true
+    ) {
+      let body:any = {
+        customerPaymentPlanId: this.selectedPaymentPlan?._id,
+        actionType: this.freezeUnfreezeActionType
+      }
+      if(this.freezeUnfreezeActionType == 'freeze'){
+        body.freezeDate = this.planFreezeDate;
+      } else if(this.freezeUnfreezeActionType == 'unfreeze'){
+        body.unfreezeDate = this.planUnFreezeDate;
+      }
+      this.disablePlanFreezeUnfreeze = true;
+      this.service.freezeUnfreezeCustomerPaymentPlan(body).subscribe((res:any) => {
+        if(res?.Results?.customerPaymentPlan?._id){
+          if(this.freezeUnfreezeActionType == 'freeze'){
+            this.toasterMessage.add({ key: 'root-toast', severity: 'success', summary: 'Success', detail: 'Payment paused successfully' });
+            this.isVisibleFreezeCustomerModal = false;
+          } else if(this.freezeUnfreezeActionType == 'unfreeze'){
+            this.toasterMessage.add({ key: 'root-toast', severity: 'success', summary: 'Success', detail: 'Payment Resumed successfully' });
+            this.isVisibleUnFreezeCustomerModal = false;
+          }
+          this.customerPaymentPlan?.forEach((x:any)=>{
+            if(x?._id == this.selectedPaymentPlan?._id){
+              x.paymentStatus = res?.Results?.customerPaymentPlan?.paymentStatus;
+              x.daysLeftAfterFreeze = res?.Results?.customerPaymentPlan?.daysLeftAfterFreeze;
+              x.freezeDate = res?.Results?.customerPaymentPlan?.freezeDate ?? null;
+              x.unfreezeDate = res?.Results?.customerPaymentPlan?.unfreezeDate ?? null;
+              x.planEndDate = res?.Results?.customerPaymentPlan?.planEndDate ?? null;
+              x.freezeDate = res?.Results?.customerPaymentPlan?.freezeDate ?? null;
+              x.planEndsIn = res?.Results?.customerPaymentPlan?.planEndsIn ?? null;
+            }
+          })
+        } else {
+          this.toasterMessage.add({ key: 'root-toast', severity: 'error', summary: 'Error', detail: res?.Results?.error ?? 'Something went wrong please try again later' });
+        }
+      this.disablePlanFreezeUnfreeze = false;
+      })
+    } else {
+      if(this.freezeUnfreezeActionType == 'freeze'){
+        this.showFreezeDateValidationMsg = true;
+      } else if(this.freezeUnfreezeActionType == 'unfreeze'){
+        this.showUnFreezeDateValidationMsg = true;
+      }
+    }
+  }
+
 }
