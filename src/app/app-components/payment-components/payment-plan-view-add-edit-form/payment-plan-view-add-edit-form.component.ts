@@ -81,6 +81,7 @@ export class PaymentPlanViewAddEditFormComponent implements OnInit {
   showUnFreezeDateValidationMsg:boolean = false;
   disablePlanUnFreeze:boolean = false;
   planUnFreezeDate:any;
+  loggedInUser:any = {};
 
   constructor(
     private fb: FormBuilder,
@@ -88,6 +89,7 @@ export class PaymentPlanViewAddEditFormComponent implements OnInit {
     private toasterMessage: MessageService
   ) {
     this.inItFormControl();
+    this.loggedInUser = JSON.parse(localStorage.getItem('USER-INFO') ?? "{}");
 
     // Listen for changes and update the object directly
     if(this.createPaymentPlanForm){

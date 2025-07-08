@@ -112,7 +112,7 @@
                     <span class="c-pointer" pTooltip="View" tooltipPosition="top" (click)="viewTrainer(trainer)">
                       <i class="fa-regular fa-eye"></i>
                     </span>
-                    <span class="c-pointer" pTooltip="Edit" tooltipPosition="top" (click)="editTrainer(trainer)">
+                    <span *ngIf="loggedInUser?.role == '1'" class="c-pointer" pTooltip="Edit" tooltipPosition="top" (click)="editTrainer(trainer)">
                       <i class="fa-regular fa-pen-to-square"></i>
                     </span>
                     <!-- <span class="c-pointer" pTooltip="Delete" tooltipPosition="top">

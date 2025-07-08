@@ -52,6 +52,7 @@ export class CustomerDetailedViewComponent implements OnInit {
   paymentPlanOptions:any[] = paymentPlanOptions;
   customerFormPaymentPlanData:any = {};
   popupWidth = getPopupWidth();
+  loggedInUser: any = {};
 
 
   constructor(
@@ -60,6 +61,8 @@ export class CustomerDetailedViewComponent implements OnInit {
     private route: ActivatedRoute
   ) {
     this.getAllBranchAutocompleteData();
+    this.loggedInUser = JSON.parse(localStorage.getItem('USER-INFO') ?? "{}");
+
   }
 
   ngOnInit() {
