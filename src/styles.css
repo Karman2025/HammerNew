@@ -1335,7 +1335,8 @@ body {
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--primary); /* Thumb color on hover */
+  /* background: var(--primary); Thumb color on hover */
+  cursor: pointer;
 }
 
 .primary-p-table .p-datatable-thead{
