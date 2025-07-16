@@ -123,10 +123,10 @@
                 <i class="fa-solid fa-pen-to-square"></i>
               </span>
            </ng-container>
+           <span *ngIf="plan?.paymentStatus != 'Paused'" (click)="openFreezePaymentPlanModal(plan)" pTooltip="Pause Plan" tooltipPosition="top" class="c-pointer">
+             <i class="fa-regular fa-circle-pause"></i>
+           </span>
             <ng-container *ngIf="plan?.paymentStatus != 'Completed'">
-              <span *ngIf="plan?.paymentStatus != 'Paused'" (click)="openFreezePaymentPlanModal(plan)" pTooltip="Pause Plan" tooltipPosition="top" class="c-pointer">
-                <i class="fa-regular fa-circle-pause"></i>
-              </span>
               <span *ngIf="plan?.paymentStatus == 'Paused'" (click)="openUnFreezePaymentPlanModal(plan)" pTooltip="Resume Plan" tooltipPosition="top" class="c-pointer">
                 <i class="fa-regular fa-circle-play"></i>
               </span>
