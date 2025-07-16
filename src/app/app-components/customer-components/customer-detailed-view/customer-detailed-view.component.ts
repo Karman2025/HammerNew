@@ -52,6 +52,7 @@ export class CustomerDetailedViewComponent implements OnInit {
   paymentPlanOptions:any[] = paymentPlanOptions;
   customerFormPaymentPlanData:any = {};
   popupWidth = getPopupWidth();
+  loggedInUser: any = {};
 
 
   constructor(
@@ -60,6 +61,8 @@ export class CustomerDetailedViewComponent implements OnInit {
     private route: ActivatedRoute
   ) {
     this.getAllBranchAutocompleteData();
+    this.loggedInUser = JSON.parse(localStorage.getItem('USER-INFO') ?? "{}");
+
   }
 
   ngOnInit() {
@@ -71,10 +74,10 @@ export class CustomerDetailedViewComponent implements OnInit {
 
   getCustomerDetailsById(customerId:any){
     this.service.getCustomerDetailsById(customerId).subscribe((res:any)=>{
-      res?.paymentPlan?.forEach((x:any)=>{
-        x.status = x?.payableAmount > x?.paidAmount ? 'Pending' : 'Completed'
-      })
-      this.customerData.showExtendPlan = res?.paymentPlan?.filter((x:any)=>x.status == 'Completed')?.length == res?.paymentPlan?.length || res?.paymentPlan?.length == 0;
+      // res?.paymentPlan?.forEach((x:any)=>{
+      //   x.status = x?.payableAmount > x?.paidAmount ? 'Pending' : 'Completed'
+      // })
+      this.customerData.showExtendPlan = res?.paymentPlan?.filter((x:any)=>x.paymentStatus == 'Completed')?.length == res?.paymentPlan?.length || res?.paymentPlan?.length == 0;
       this.customerDetails = JSON.parse(JSON.stringify(res));
       // console.log(res);
 

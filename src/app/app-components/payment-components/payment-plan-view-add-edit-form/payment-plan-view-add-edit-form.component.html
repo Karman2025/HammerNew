@@ -118,13 +118,15 @@
         </td>
         <td pFrozenColumn alignFrozen="right">
           <div class="d-flex align-items-center gap-3" style="justify-content: unset;">
-            <span *ngIf="IsCustomer && plan?.paymentStatus != 'Paused'" (click)="editPaymentPlan(plan)" pTooltip="Edit" tooltipPosition="top" class="c-pointer">
-              <i class="fa-solid fa-pen-to-square"></i>
-            </span>
-            <ng-container *ngIf="plan?.paymentStatus != 'Completed'">
-              <span *ngIf="plan?.paymentStatus != 'Paused'" (click)="openFreezePaymentPlanModal(plan)" pTooltip="Pause Plan" tooltipPosition="top" class="c-pointer">
-                <i class="fa-regular fa-circle-pause"></i>
+           <ng-container *ngIf="loggedInUser?.role == '1'">
+              <span *ngIf="IsCustomer && plan?.paymentStatus != 'Paused'" (click)="editPaymentPlan(plan)" pTooltip="Edit" tooltipPosition="top" class="c-pointer">
+                <i class="fa-solid fa-pen-to-square"></i>
               </span>
+           </ng-container>
+           <span *ngIf="plan?.paymentStatus != 'Paused'" (click)="openFreezePaymentPlanModal(plan)" pTooltip="Pause Plan" tooltipPosition="top" class="c-pointer">
+             <i class="fa-regular fa-circle-pause"></i>
+           </span>
+            <ng-container *ngIf="plan?.paymentStatus != 'Completed'">
               <span *ngIf="plan?.paymentStatus == 'Paused'" (click)="openUnFreezePaymentPlanModal(plan)" pTooltip="Resume Plan" tooltipPosition="top" class="c-pointer">
                 <i class="fa-regular fa-circle-play"></i>
               </span>
@@ -401,7 +403,7 @@
 <p-dialog [draggable]="false" [showHeader]="false" class="primary-p-dialog" [modal]="true" [position]="'center'" [(visible)]="isVisibleFreezeCustomerModal" [style]="{ width: popupWidth }">
   <div class="p-p-dialog-header ofH_calc_modal_header">
     <div>
-      <span class="p-p-dialog-header-label">Pause Payemnt plan</span>
+      <span class="p-p-dialog-header-label">Pause Payment plan</span>
     </div>
     <div>
       <button class="p-p-dialog-header-button" (click)="isVisibleFreezeCustomerModal = false" ><i class="fa-solid fa-xmark c-pointer text-white"></i></button>

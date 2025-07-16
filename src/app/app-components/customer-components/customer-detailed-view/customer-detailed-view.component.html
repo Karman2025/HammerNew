@@ -10,7 +10,7 @@
             <div>
               <span class="fw-bold text-white">Customer Info</span>
             </div>
-            <div>
+            <div *ngIf="loggedInUser?.role == '1'">
               <button (click)="onCustomerInfoEdit()" style="font-size: 0.9rem;" class="custom-primary-btn py-1">
                 <span><i class="fa-solid fa-pen-to-square"></i></span>
                 <span class="px-1"></span>
